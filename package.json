@@ -10,6 +10,7 @@
     "pg": "^7.4.3",
     "react": "16.3.1",
     "react-native": "0.55.2",
+    "react-native-base64": "0.0.1",
     "react-native-elements": "^0.19.1",
     "react-native-vector-icons": "^5.0.0",
     "react-navigation": "^2.9.3"

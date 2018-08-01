@@ -1,6 +1,8 @@
 import React, {Component } from 'react';
 import {View} from 'react-native';
 import {Icon, Button, FormLabel, FormInput, FormValidationMessage} from 'react-native-elements';
+import VistaAPI from '../../api/VistaAPI'
+
 
 class Login extends Component {
 
@@ -11,12 +13,15 @@ class Login extends Component {
     }
 
     render(){
-       function getMesas() {
+        VistaAPI.create({
+            uri: '/GetMesas/2',
+            method: 'GET'
+        });
 
-     
-          
-    }
-     
+        const response = VistaAPI.response();
+        
+
+        console.log(response);
 
         return( 
             <View>
@@ -25,7 +30,7 @@ class Login extends Component {
                 <FormLabel>Senha</FormLabel>
                 <FormInput placeholder="Senha" secureTextEntry={true}/>
                 <FormValidationMessage>{ this.state.loginSuccess ? '' : 'Usuário ou senha incorretos' }</FormValidationMessage>
-                <Button onPress={ () => { getMesas() }}  title="Entrar" />
+                <Button onPress={ () => { alert('Voce fez o login!')}}  title="Entrar" />
             </View>
             
         )
