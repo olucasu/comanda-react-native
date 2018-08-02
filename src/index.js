@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 
-import AppNav from './router'
+import AppNav from './router';
 import Login from './screens/Login';
 
 export default class App extends Component {  
   
     state = {
-      isLoggedIn : false,
+      isLoggedIn : true,
       HasConfiguration: false
     }
   

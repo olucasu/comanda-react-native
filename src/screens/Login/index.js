@@ -13,17 +13,8 @@ class Login extends Component {
     }
 
     render(){
-        VistaAPI.create({
-            uri: '/GetMesas/2',
-            method: 'GET'
-        });
-
-        const response = VistaAPI.response();
-        
-
-        console.log(response);
-
-        return( 
+              
+         return( 
             <View>
                 <FormLabel>Usuário</FormLabel>
                 <FormInput placeholder="Usuário" />

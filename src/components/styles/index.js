@@ -11,6 +11,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
    
     },
+    horizontal: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10
+    },
     item: {
         alignItems: "center",
         backgroundColor: "#fff",

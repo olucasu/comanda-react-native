@@ -1,7 +1,7 @@
 import React from 'react';
 import { YellowBox } from 'react-native'
 import {Icon} from 'react-native-elements';
-import { createBottomTabNavigator, createStackNavigator} from 'react-navigation';
+import { createBottomTabNavigator,createMaterialTopTabNavigator , createStackNavigator } from 'react-navigation';
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 
@@ -18,17 +18,41 @@ import Configuracoes from '../screens/Configuracoes';
     * Navegação interna 
 */
 
-const MesasNav = createStackNavigator({
-    'Mesas':{
-        screen: Mesas
+const InsideTabMesa = createMaterialTopTabNavigator({
+    MesasLivres : {
+        screen: Mesas,
+        navigationOptions : {
+            title: 'Livres',
+            header: null
+        }
     },
-    'Details': {
+    MesasOcupadas : {
+        screen: Mesas,
+        navigationOptions : {
+            title: 'Ocupadas'
+        }
+    }
+})
+
+const MesasNav = createStackNavigator({
+    Mesas:{
+        screen: InsideTabMesa,
+        navigationOptions : {
+            header: null
+        }
+
+    },
+    Details: {
         screen: MesaDetails,
         navigationOptions: ({navigation}) => ({
             title: navigation.getParam('screenTitle', 'Mesa não identificada')
         })
     }
 });
+
+
+
+
 
 /*
     * Navegação Geral 
