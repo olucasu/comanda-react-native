@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         paddingTop: 60,
         paddingHorizontal : 15,
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: 'column',
    
     },
     horizontal: {
