@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
   Alert
 } from 'react-native'
-import { Icon, FormLabel, FormInput } from 'react-native-elements'
 import styles from '../../components/styles'
 import VistaAPI from '../../api/VistaAPI'
 
@@ -42,7 +41,6 @@ class Mesas extends Component {
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
-
       this.setState({
         tables: responseJson,
         isLoading: false,
@@ -54,10 +52,6 @@ class Mesas extends Component {
         error: response.error
       })
     }
-  }
-
-  componentWillMount () {
-    this.fetchData()
   }
 
   componentDidMount () {
@@ -110,11 +104,6 @@ class Mesas extends Component {
                 >
                   <Text> {item.tipo_mesa_cartao + ' ' + item.id}</Text>
                   <Text>{item.status_descricao}</Text>
-                  <Icon
-                    name='food'
-                    iconStyle={styles.icon}
-                    type='material-community'
-                  />
                 </TouchableOpacity>
               )
             }}

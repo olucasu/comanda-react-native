@@ -1,12 +1,15 @@
 import React from 'react'
 import { YellowBox } from 'react-native'
-import { Icon , Header} from 'react-native-elements'
 import {
   createMaterialTopTabNavigator,
   createStackNavigator,
   createDrawerNavigator
 } from 'react-navigation'
-import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
+import Menu from '../components/Menu'
+
+import {
+  createMaterialBottomTabNavigator
+} from 'react-navigation-material-bottom-tabs'
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 
 /*
@@ -16,7 +19,6 @@ YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 import Mesas from '../screens/Mesas'
 import MesaDetails from '../screens/Mesas/MesaDetails'
 import Configuracoes from '../screens/Configuracoes'
-
 
 /*
     * Navegação interna
@@ -28,7 +30,7 @@ const InsideTabMesa = createMaterialTopTabNavigator(
       screen: Mesas,
       navigationOptions: navigation => {
         return {
-          title: 'Todas',
+          title: 'Todas'
         }
       }
     },
@@ -36,7 +38,7 @@ const InsideTabMesa = createMaterialTopTabNavigator(
       screen: Mesas,
       navigationOptions: navigation => {
         return {
-          title: 'Livre',
+          title: 'Livre'
         }
       }
     },
@@ -61,32 +63,36 @@ const InsideTabMesa = createMaterialTopTabNavigator(
   },
   {
     tabBarOptions: {
-      scrollEnabled: true
-    }
+      scrollEnabled: true,
+      tabStyle:{
+        backgroundColor: '#0097A7'
+      },
+    },
+  
+    lazy: true,
+    initialRouteName: 'Todas',
+    optimizationsEnabled : true
   }
 )
 
 const MesasNav = createStackNavigator({
   Mesas: {
     screen: InsideTabMesa,
-    navigationOptions: ({navigation}) => {
-        return(
-            {
-                title: 'Mesas',
-                // header:''.,
-                headerMode: 'screen',
-                headerTintColor: '#fff',
-                headerStyle:{
-                    backgroundColor:'#2196F3',
-                    shadowRadius: 0,
-                    elevation: 0
-                },
-                headerTitleStyle: {
-                    fontWeight: '300',
-                },
-                // headerLeft :<Icon name='cogs' type='material-community' navigate={navigation.navigate('DrawerOpen')}  color='#517fa4' /> ,
-            }
-        )
+    navigationOptions: ({ navigation }) => {
+      return {
+        title: 'Mesas',
+        header: <Menu navigation={navigation} />,
+        headerMode: 'screen',
+        headerTintColor: '#fff',
+        headerStyle: {
+          backgroundColor: '#2196F3',
+          shadowRadius: 0,
+          elevation: 0
+        },
+        headerTitleStyle: {
+          fontWeight: '300'
+        }
+      }
     }
   },
   Details: {
@@ -95,13 +101,20 @@ const MesasNav = createStackNavigator({
       title: navigation.getParam('screenTitle', 'Mesa não identificada')
     })
   }
+},
+{   
+  transitionConfig: () => ({
+    transitionSpec: {
+      duration: 200
+    },
+  })
 })
 
 /*
     * Navegação Geral
 */
 
-const App =  createDrawerNavigator({
+const App = createDrawerNavigator({
   Home: {
     screen: MesasNav,
     navigationOptions: ({ navigation }) => ({

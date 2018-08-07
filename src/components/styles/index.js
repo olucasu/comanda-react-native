@@ -2,7 +2,14 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 
 
+const defaultBgColor = '#0097A7'; 
+
+
 const styles = StyleSheet.create({
+    header:{
+        backgroundColor:defaultBgColor,
+        margin: 0        
+    },
     container :{
         paddingBottom: 60,
         paddingTop: 60,
