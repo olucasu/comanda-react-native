@@ -1,26 +1,26 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
 
-import AppNav from './router';
-import Login from './screens/Login';
+import {AppNav, Auth} from './router'
 
-export default class App extends Component {  
-  
-    state = {
-      isLoggedIn : true,
-      HasConfiguration: false
+export default class App extends Component {
+  state = {
+    isLoggedIn: false,
+    HasConfiguration: false
+  }
+
+
+  callBack(){
+    return this
+  }  
+
+  render () {
+
+    console.dir(AppNav);
+    if (this.state.isLoggedIn) {
+      return <AppNav />
+    } else {
+      return <Auth parentState={this.callBack} />
+    
     }
-  
-  render(){
-      if(this.state.isLoggedIn) {
-          return(
-            <AppNav/>
-          )
-      } else {
-          return(
-            <Login />
-          )
-      }
-    }
+  }
 }
-
-

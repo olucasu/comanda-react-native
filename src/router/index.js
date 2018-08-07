@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {Component} from 'react'
 import { YellowBox } from 'react-native'
 import {
   createMaterialTopTabNavigator,
   createStackNavigator,
-  createDrawerNavigator
+  createDrawerNavigator,
+  createSwitchNavigator
 } from 'react-navigation'
 import Menu from '../components/Menu'
 
@@ -19,6 +20,7 @@ YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 import Mesas from '../screens/Mesas'
 import MesaDetails from '../screens/Mesas/MesaDetails'
 import Configuracoes from '../screens/Configuracoes'
+import Login from '../screens/Login'
 
 /*
     * Navegação interna
@@ -57,16 +59,13 @@ const InsideTabMesa = createMaterialTopTabNavigator(
     'RESERVADA(O)': {
       screen: Mesas,
       navigationOptions: {
-        title: 'Reservadas'
+        title: 'Reservadas Com um belo titulo grande'
       }
     }
   },
   {
     tabBarOptions: {
       scrollEnabled: true,
-      tabStyle:{
-        backgroundColor: '#0097A7'
-      },
     },
   
     lazy: true,
@@ -110,28 +109,67 @@ const MesasNav = createStackNavigator({
   })
 })
 
+
+
+
+
+
+/*
+  *Autenticação
+*/
+
+const LoginStack = createStackNavigator({
+  Login: {
+    screen: Login,
+    navigationOptions : navigator => {
+      return {
+        title: 'Login'
+      }
+    }
+  },
+  Configuracoes : {
+    screen: Configuracoes
+  }  
+})
+
+
 /*
     * Navegação Geral
 */
-
-const App = createDrawerNavigator({
-  Home: {
-    screen: MesasNav,
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: () => {
-        return <Icon name='home' type='material-community' color='#517fa4' />
-      },
-      title: 'Mesas'
-    })
-  },
-  Configuracoes: {
-    screen: Configuracoes,
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: () => {
-        return <Icon name='cogs' type='material-community' color='#517fa4' />
-      }
-    })
+export class AppNav extends Component {
+  render(){
+    return(
+      createDrawerNavigator({
+        Home: {
+          screen: MesasNav,
+          navigationOptions: ({ navigation }) => ({
+            tabBarIcon: () => {
+              return <Icon name='home' type='material-community' color='#517fa4' />
+            },
+            title: 'Mesas'
+          })
+        },
+        Configuracoes: {
+          screen: Configuracoes,
+          navigationOptions: ({ navigation }) => ({
+            tabBarIcon: () => {
+              return <Icon name='cogs' type='material-community' color='#517fa4' />
+            }
+          })
+        }
+      })
+    )
   }
-})
+}
 
-export default App
+export class Auth extends Component {
+  render(){
+    return(
+      createSwitchNavigator({
+        Login: {
+          screen: LoginStack
+        }
+      })
+    )
+  }
+}

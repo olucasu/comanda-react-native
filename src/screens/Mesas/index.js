@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import styles from '../../components/styles'
 import VistaAPI from '../../api/VistaAPI'
+import { Container, Icon } from 'native-base';
 
 class Mesas extends Component {
   static navigationOptions = {}
@@ -69,6 +70,25 @@ class Mesas extends Component {
 
     this.forceUpdate()
   }
+  
+  getStatusStyle(status){
+    switch(status) {
+      case 'OCUPADA(O)':
+          return 'tableCardOcupado'
+          break;
+      case 'CONTA':
+          return 'tableCardConta'
+          break;
+      case 'RESERVADA(O)':
+          return 'tableCardReservado'
+          break;
+      case 'Livre':
+          return 'tableCardLivre'
+          break;
+      default:
+          return 'tableCardLivre'
+    }
+  }
 
   render () {
 
@@ -83,7 +103,9 @@ class Mesas extends Component {
     } else {
       if (!this.state.error) {
         return (
-          <FlatList
+          <Container>
+          <FlatList 
+            style={styles.container}
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
@@ -94,20 +116,27 @@ class Mesas extends Component {
             data={tables}
             numColumns={2}
             renderItem={({ item }) => {
+
+              const styleStatus = this.getStatusStyle(item.status_descricao)
+              const tipoMesa = item.tipo_mesa_cartao === 'MESA'? 'Mesa' : 'Cartão';     
+
               return (
+
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate('Details', {
-                      screenTitle: item.tipo_mesa_cartao + ' ' + item.id
+                      screenTitle: tipoMesa + ' ' + item.id
                     })}
-                  style={styles.item}
+                  style={[styles.tableCard, styles[styleStatus]]}
                 >
-                  <Text> {item.tipo_mesa_cartao + ' ' + item.id}</Text>
-                  <Text>{item.status_descricao}</Text>
+                  <Text style={styles.tableCardText}><Icon type="material-icons" f  name="credit_card" style={styles.icon} /> {tipoMesa}</Text>
+                  <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.id}</Text>
                 </TouchableOpacity>
               )
             }}
           />
+
+          </Container>
         )
       } else {
         return (

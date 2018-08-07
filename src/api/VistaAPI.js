@@ -9,6 +9,10 @@
 // LISTAR PRODUTOS
 // http:urlServer/datasnap/rest/TServerFOOD/GETProdutos/IdEmpresa/IdGrupo/IdProduto/(STRING)DescricaoProduto
 
+//Login Usuário
+// http:urlServer/datasnap/rest/TServerFOOD/GETUsuario/login/senha
+
+
 import base64 from '../components/util/base64'
 
 class VistaAPI {
