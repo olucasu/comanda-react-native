@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
 import {Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
-import {styles} from '../styles'; 
+import {styles,Colors} from '../styles'; 
 export default class Menu extends Component {
   render() {
     
     const navigation = this.props.navigation;
-
     return (
-     
-        <Header style={styles.header} hasTabs={true}>
+        <Header androidStatusBarColor={Colors.primaryColor} style={styles.header} hasTabs={true}>
           <Left>
             <Button onPress={()=>navigation.openDrawer()} transparent>
               <Icon style={styles.headerIcon} name='menu' />

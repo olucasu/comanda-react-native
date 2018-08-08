@@ -124,7 +124,23 @@ class VistaAPI {
     }
 
     try {
-      let promiseTimeout = await this.startFetch(20000, fetch(that.state.endPoint, params))
+      let promiseTimeout = await this.startFetch(40000, fetch(that.state.endPoint, params))
+      return promiseTimeout
+    } catch (e) {
+      return {
+        ok: false,
+        error: typeof e.message !== 'undefined' ? e.message : e.error
+      }
+    }
+  }
+
+  async getCustomEndPoint () {
+    let params = {
+      method: 'GET',
+    }
+    const that = this;
+    try {
+      let promiseTimeout = await this.startFetch(40000, fetch(that.state.endPoint, params))
       return promiseTimeout
     } catch (e) {
       return {

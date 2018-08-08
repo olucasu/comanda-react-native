@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View , ActivityIndicator} from 'react-native'
 import VistaAPI from '../api/VistaAPI'
+import {styles,Colors} from '../components/styles'
+
 import {
   Container,
   Header,
@@ -29,41 +31,44 @@ class Login extends Component {
       idUsuario: '',
       idColaborador: '',
       idEmpresa: '',
-      idCaixa: ''
+      idCaixa: '',
+      isLoggedIn: false
     }
   }
 
   async fetchData () {
+  
+  
     this.setState({
       isLoading: true
     })
-
     const auth =  this.state.usuarioNome +'/'+this.state.usuarioSenha;
 
-    VistaAPI.create({
-      uri: 'GETUsuario/' + auth,
-      method: 'GET'
-    })
+    // VistaAPI.create({
+    //   uri: 'GETUsuario/' + auth,
+    //   method: 'GET'
+    // })
+    VistaAPI.setCustomEndPoint('https://swapi.co/api/people/1')
 
-    console.dir(VistaAPI);
-
-    let response = await VistaAPI.response()
+    let response = await VistaAPI.getCustomEndPoint()
 
     if (typeof response !== 'undefined' && response.ok) {
-      let responseJson = await response.json()
 
-      console.log(responseJson)
+      let responseJson = await response.json()
+      
 
       this.setState({
-        tables: responseJson,
         isLoading: false,
-        error: false
+        error: false,
+        isLoggedIn: true
       })
+
     } else {
       this.setState({
         isLoading: false,
         error: response.error
       })
+      alert('Não foi possível fazer o login', this.state.error);
     }
   }
 
@@ -73,7 +78,20 @@ class Login extends Component {
 
   render () {
 
+    if(this.state.isLoggedIn) {
+      this.props.parentState(true);
+    }
+
+    if (this.state.isLoading) {
+      return (
+        <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size='large' color={Colors.secondaryColor} />
+        </View>
+      )
+    } else {
+      
     return (
+
       <Container>
         <Content>
           <Form>
@@ -108,6 +126,8 @@ class Login extends Component {
 
       </Container>
     )
+    }
+
   }
 }
 

@@ -9,9 +9,11 @@ import {
   ActivityIndicator,
   Alert
 } from 'react-native'
-import {styles, Colors} from '../../components/styles'
-import VistaAPI from '../../api/VistaAPI'
+import {styles, Colors} from '../../components/styles';
+import Loader from '../../components/Helpers/loader';
+import VistaAPI from '../../api/VistaAPI';
 import { Container, Icon } from 'native-base';
+import {getIconMesa} from '../../components/Helpers/uiHelper';
 
 class Mesas extends Component {
   static navigationOptions = {}
@@ -96,9 +98,7 @@ class Mesas extends Component {
 
     if (this.state.isLoading) {
       return (
-        <View style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator size='large' color={Colors.secondaryColor} />
-        </View>
+        <Loader />
       )
     } else {
       if (!this.state.error) {
@@ -118,10 +118,10 @@ class Mesas extends Component {
             renderItem={({ item }) => {
 
               const styleStatus = this.getStatusStyle(item.status_descricao)
-              const tipoMesa = item.tipo_mesa_cartao === 'MESA'? 'Mesa' : 'Cartão';     
+              const tipoMesa = item.tipo_mesa_cartao === 'MESA'? 'Mesa' : 'Cartão';   
+              let icon = getIconMesa(item.status_descricao);
 
               return (
-
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate('Details', {
@@ -129,7 +129,7 @@ class Mesas extends Component {
                     })}
                   style={[styles.tableCard, styles[styleStatus]]}
                 >
-                  <Text style={styles.tableCardText}><Icon type="material-icons" f  name="credit_card" style={styles.icon} /> {tipoMesa}</Text>
+                  <Text style={styles.tableCardText}>{icon}{tipoMesa}</Text>
                   <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.id}</Text>
                 </TouchableOpacity>
               )
@@ -141,7 +141,6 @@ class Mesas extends Component {
       } else {
         return (
           <ScrollView
-            style={styles.container}
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
