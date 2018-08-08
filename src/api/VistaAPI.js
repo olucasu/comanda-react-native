@@ -91,8 +91,7 @@ class VistaAPI {
     }
 
     try {
-      let promiseTimeout = await this.startFetch(10000, fetch(that.state.endPoint, params))
-
+      let promiseTimeout = await this.startFetch(5000, fetch(that.state.endPoint, params))
       return promiseTimeout
     } catch (e) {
       return {

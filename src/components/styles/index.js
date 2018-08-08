@@ -1,14 +1,42 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
-
-
-const defaultBgColor = '#2196F3'; 
-const containerColor = '#f6f6f6';
+import Colors from './Colors'
 
 const styles = StyleSheet.create({
+
+// Header
     header:{
-        backgroundColor:defaultBgColor,
+        backgroundColor:Colors.defaultBgColor,
         margin: 0        
+    },
+    headerIcon: {
+        color:Colors.defaultDarkColor
+    },
+    headerText: {
+        color:Colors.defaultDarkColor,
+        fontFamily: 'sans-serif',
+        fontWeight: '900',
+    },
+// Tabs
+    
+    tabBar:{
+        backgroundColor:Colors.defaultBgColor,
+        elevation: 3,
+    },
+    tab:{
+        alignContent:'stretch',
+    },
+    tabLabel:{
+        fontFamily: 'sans-serif',
+        fontWeight: '900',
+        fontSize: 12,
+    },
+    tabIndicator:{
+        backgroundColor: Colors.primaryColor,
+    
+    },
+    tabIndicatorLabel:{
+        color: Colors.primaryColor
     },
     tableCard:{
         elevation: 1,
@@ -36,7 +64,7 @@ const styles = StyleSheet.create({
         borderColor:"#212121"
     },
     tableCardText:{
-        color: '#424242',
+        color: Colors.defaultDarkColor ,
         fontWeight:'400'
     },
     tableCardNumber:{
@@ -48,7 +76,11 @@ const styles = StyleSheet.create({
         paddingBottom: 60,
         paddingTop: 60,
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: Colors.defaultBgColor
+    },
+    alignItemsCenter : {
+        alignItems: 'center'
     },
     horizontal: {
         flexDirection: 'row',
@@ -75,4 +107,6 @@ const styles = StyleSheet.create({
 });
 
 
-export default styles;
+export {styles, Colors};
+
+

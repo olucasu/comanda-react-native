@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   Alert
 } from 'react-native'
-import styles from '../../components/styles'
+import {styles, Colors} from '../../components/styles'
 import VistaAPI from '../../api/VistaAPI'
 import { Container, Icon } from 'native-base';
 
@@ -97,7 +97,7 @@ class Mesas extends Component {
     if (this.state.isLoading) {
       return (
         <View style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator size='large' color='#0000ff' />
+          <ActivityIndicator size='large' color={Colors.secondaryColor} />
         </View>
       )
     } else {
@@ -141,6 +141,7 @@ class Mesas extends Component {
       } else {
         return (
           <ScrollView
+            style={styles.container}
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}

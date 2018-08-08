@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {styles, Colors} from '../components/styles'
 import { YellowBox } from 'react-native'
 import {
   createMaterialTopTabNavigator,
@@ -11,6 +12,7 @@ import Menu from '../components/Menu'
 import {
   createMaterialBottomTabNavigator
 } from 'react-navigation-material-bottom-tabs'
+
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 
 /*
@@ -20,7 +22,6 @@ YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 import Mesas from '../screens/Mesas'
 import MesaDetails from '../screens/Mesas/MesaDetails'
 import Configuracoes from '../screens/Configuracoes'
-import Login from '../screens/Login'
 
 /*
     * Navegação interna
@@ -59,15 +60,26 @@ const InsideTabMesa = createMaterialTopTabNavigator(
     'RESERVADA(O)': {
       screen: Mesas,
       navigationOptions: {
-        title: 'Reservadas Com um belo titulo grande'
+        title: 'Reservadas'
       }
     }
   },
   {
     tabBarOptions: {
       scrollEnabled: true,
+      activeTintColor: Colors.primaryColor,
+      inactiveTintColor: Colors.secondaryColor, 
+      style:styles.tabBar,
+      pressOpacity:0.3,
+      labelStyle: styles.tabLabel,
+      indicatorStyle: styles.tabIndicator,
+      pressColor: Colors.primaryColor,
+      tabStyle : styles.tab
     },
-  
+    initialLayout: {
+      height:30,
+      width: 300
+    },
     lazy: true,
     initialRouteName: 'Todas',
     optimizationsEnabled : true
@@ -109,37 +121,7 @@ const MesasNav = createStackNavigator({
   })
 })
 
-
-
-
-
-
-/*
-  *Autenticação
-*/
-
-const LoginStack = createStackNavigator({
-  Login: {
-    screen: Login,
-    navigationOptions : navigator => {
-      return {
-        title: 'Login'
-      }
-    }
-  },
-  Configuracoes : {
-    screen: Configuracoes
-  }  
-})
-
-
-/*
-    * Navegação Geral
-*/
-export class AppNav extends Component {
-  render(){
-    return(
-      createDrawerNavigator({
+ const AppNav = createDrawerNavigator({
         Home: {
           screen: MesasNav,
           navigationOptions: ({ navigation }) => ({
@@ -157,19 +139,10 @@ export class AppNav extends Component {
             }
           })
         }
-      })
-    )
-  }
-}
+  })
 
-export class Auth extends Component {
-  render(){
-    return(
-      createSwitchNavigator({
-        Login: {
-          screen: LoginStack
-        }
-      })
-    )
-  }
-}
+
+export default AppNav
+
+
+

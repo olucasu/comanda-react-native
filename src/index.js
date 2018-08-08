@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
-import {AppNav, Auth} from './router'
-
+import AppNav from './router'
+import Login  from './router/login'
 export default class App extends Component {
   state = {
     isLoggedIn: false,
@@ -15,12 +15,7 @@ export default class App extends Component {
 
   render () {
 
-    console.dir(AppNav);
-    if (this.state.isLoggedIn) {
       return <AppNav />
-    } else {
-      return <Auth parentState={this.callBack} />
     
-    }
   }
 }
