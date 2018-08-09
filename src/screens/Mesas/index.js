@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   Alert
 } from 'react-native'
-import {styles, Colors} from '../../components/styles';
+import {styles, Colors} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
 import { Container, Icon } from 'native-base';

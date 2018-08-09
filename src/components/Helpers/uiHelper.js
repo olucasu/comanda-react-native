@@ -1,13 +1,11 @@
 import React from 'react';
 import {Icon} from 'native-base';
-import {Colors,styles} from '../../components/styles';
+import {Colors,styles} from '../../components/Styles';
 
 
 const getIconMesa = (tipoMesa) => {
     
     let type, name;
-
-    console.log(tipoMesa);
 
     switch(tipoMesa) {
         case 'OCUPADA(O)':

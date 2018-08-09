@@ -13,7 +13,7 @@
 // http:urlServer/datasnap/rest/TServerFOOD/GETUsuario/login/senha
 
 
-import base64 from '../components/util/base64'
+import base64 from '../components/Util/base64'
 
 class VistaAPI {
   state = {
@@ -29,6 +29,8 @@ class VistaAPI {
 
   // Responsável por controlar o tempo de resposta do servidor;
   startFetch (ms, promise) {
+
+    console.log('VistaApi trabalhando! go! go! go!...');
 
     let timeout = new Promise((resolve, reject) => {
       let id = setTimeout(() => {
@@ -103,7 +105,6 @@ class VistaAPI {
 
   }
 
-
   /**
         * Response
         * Retorna uma 'promise' baseada nas configurações feitas no método create
@@ -124,7 +125,7 @@ class VistaAPI {
     }
 
     try {
-      let promiseTimeout = await this.startFetch(40000, fetch(that.state.endPoint, params))
+      let promiseTimeout = await this.startFetch(30000, fetch(that.state.endPoint, params))
       return promiseTimeout
     } catch (e) {
       return {
@@ -140,7 +141,7 @@ class VistaAPI {
     }
     const that = this;
     try {
-      let promiseTimeout = await this.startFetch(40000, fetch(that.state.endPoint, params))
+      let promiseTimeout = await this.startFetch(60000, fetch(that.state.endPoint, params))
       return promiseTimeout
     } catch (e) {
       return {

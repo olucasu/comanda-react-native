@@ -1,13 +1,14 @@
-import React from 'react';
-import { styles, Colors } from '../components/styles';
+import React, {Component} from 'react';
+import { styles, Colors } from '../components/Styles';
 import {Icon} from 'native-base';
 import { YellowBox } from 'react-native'
 import {
   createMaterialTopTabNavigator,
   createStackNavigator,
-  createDrawerNavigator
+  createDrawerNavigator,
+  createSwitchNavigator
 } from 'react-navigation'
-import Menu from '../components/Menu'
+import Menu from '../components/Menu';
 import CustomDrawer from '../components/Menu/CustomDrawer'
 
 import {
@@ -17,12 +18,25 @@ import {
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 
 /*
+  * Importando fluxo de autenticação 
+*/
+
+import AuthLoading from '../auth/Loading';
+import Login from '../auth/Login';
+
+
+/*
     * Importando telas
 */
 
+
+//Mesas
 import Mesas from '../screens/Mesas'
 import MesaDetails from '../screens/Mesas/MesaDetails'
+
+//Configurações
 import Configuracoes from '../screens/Configuracoes'
+import ConfigurarUrlServer from '../screens/Configuracoes/ConfigurarUrlServer';
 
 /*
     * Navegação interna
@@ -169,4 +183,64 @@ const AppNav = createDrawerNavigator({
   }
 )
 
-export { AppNav }
+class WrapperWithRootNavigation extends Component {
+  constructor(props){
+    super(props)
+  }
+  render(){
+    return(
+       <AppNav screenProps={{rootNavigation: this.props.navigation}} />
+    )
+  }
+}
+
+
+const configStack = createStackNavigator({
+    Configuracoes : {
+        screen: Configuracoes,
+        navigationOptions: {
+          header: null
+        }
+    },
+    ConfigurarUrlServer: {
+        screen: ConfigurarUrlServer
+    }
+})
+
+const loginStack = createStackNavigator({
+  Login: {
+    screen: Login,
+    navigationOptions:{
+      header:null
+    }
+  },
+  Configuracoes:{
+    screen:Configuracoes,
+    navigationOptions:{
+      title:'Configurações',
+      
+    }
+  },
+  ConfigurarUrlServer: {
+    screen: ConfigurarUrlServer,
+    navigationOptions:{
+      title:'Configurar Servidor '
+    }
+  }
+})
+
+
+const AppAuth = createSwitchNavigator(
+    {
+      AuthLoading: AuthLoading,
+      Auth: {
+        screen: loginStack
+      },
+      AppNav: WrapperWithRootNavigation,
+    },
+    {
+      initialRouteName: 'AuthLoading'
+    }
+);
+
+export { AppAuth }

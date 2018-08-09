@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {View, ActivityIndicator} from 'react-native';
 
-import { styles, Colors } from '../styles'
+import { styles, Colors } from '../Styles'
 class Loader extends Component {
   render () {
     return (

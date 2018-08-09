@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
-import {styles,Colors} from '../styles'; 
+import {styles,Colors} from '../Styles'; 
 export default class Menu extends Component {
   render() {
     
