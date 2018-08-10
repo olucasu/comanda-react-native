@@ -12,12 +12,19 @@
 //Login Usuário
 // http:urlServer/datasnap/rest/TServerFOOD/GETUsuario/login/senha
 
-
+import {AsyncStorage} from 'react-native';
 import base64 from '../components/Util/base64'
 
 class VistaAPI {
+
+  constructor(){
+    this.setUrlServerAsync();
+  }
+
+  /*
+    *Estado Inicial do Componente
+  */
   state = {
-    baseUrl: 'http://192.168.1.5:5001/datasnap/rest/TServerFOOD/',
     username: 'vistatec',
     password: 'KalisbaTec08809',
     method: '',
@@ -27,10 +34,20 @@ class VistaAPI {
     endPoint: ''
   }
 
-  // Responsável por controlar o tempo de resposta do servidor;
+
+  /*
+    *Recupera URL do servidor das configurações internas do App
+  */
+  async setUrlServerAsync(){
+    this.state.baseUrl = await AsyncStorage.getItem('urlServer');
+  }
+
+/*
+  * Responsável por controlar o tempo de resposta do servidor;
+  * Retorna uma promise race.
+*/
   startFetch (ms, promise) {
 
-    console.log('VistaApi trabalhando! go! go! go!...');
 
     let timeout = new Promise((resolve, reject) => {
       let id = setTimeout(() => {
@@ -49,12 +66,12 @@ class VistaAPI {
     }
   }
 
-  /**
-        * Create request
-        * Recebe objeto
-        * uri - treicho da url que representa o métodos
-        * method - "POST", "GET"
-    */
+  /*
+    * Create request
+    * Recebe objeto
+    * uri - treicho da url que representa o métodos
+    * method - "POST", "GET"
+  */
   create (obj) {
     this.state.method = obj.method
     this.state.uri = obj.uri
@@ -105,9 +122,9 @@ class VistaAPI {
 
   }
 
-  /**
-        * Response
-        * Retorna uma 'promise' baseada nas configurações feitas no método create
+  /*
+    * Response
+    * Retorna uma 'promise' baseada nas configurações feitas no método create
   */
 
   async response () {
@@ -116,6 +133,7 @@ class VistaAPI {
     const method = this.state.method
     this.state.endPoint = url;
     const that = this;
+
 
     let params = {
       method: method,

@@ -1,14 +1,10 @@
 import React from 'react';
-import { Text, FlatList, Image, ScrollView, View, AsyncStorage } from 'react-native'
+import { Text, FlatList, Image, ScrollView, View, AsyncStorage } from 'react-native';
 import {
   Header,
   Content,
   ListItem,
   Icon,
-  List,
-  Left,
-  Body,
-  Right
 } from 'native-base'
 import { Colors } from '../../components/Styles'
 
@@ -39,18 +35,16 @@ const items = [
   }
 ]
 
-
-
-
 const CustomDrawer = props => {
 
-  const logout =  async () => {
-    await AsyncStorage.clear();
-    props.screenProps.rootNavigation.navigate('AuthLoading');
-  }
+  //TODO Refatorar e mover para outro componente
+  const logout = async() =>{
+    await AsyncStorage.removeItem('usuario');
+    await AsyncStorage.removeItem('userToken');
+    return props.screenProps.rootNavigation.navigate('AuthLoading');
+  } 
   
   return (
-
     <ScrollView>
       <Header
         androidStatusBarColor={Colors.secondaryColor}

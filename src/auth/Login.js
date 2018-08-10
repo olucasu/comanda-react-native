@@ -40,25 +40,26 @@ class Login extends Component {
 
   async login () {
     
-    this.setState({
-      isLoading: true
-    })
+    this.setState({isLoading: true})
 
-    console.log(this.state);
+    const configs = await this._getConfigsAsync();
+
+    if( typeof configs.urlServer !== 'undefined' && typeof configs.urlServer !== null ) {
+      this.setState({isLoading:false})
+      alert('Voce precisa configurar a URL do servidor primeiramente');
+      return this.props.navigation.navigate('ConfigurarUrlServer');
+    }
 
     const auth = this.state.usuarioNome + '/' + this.state.usuarioSenha
 
-    console.log('Fetch!')
     VistaAPI.create({
       uri: 'GETUsuario/' + auth,
       method: 'GET'
     })
 
-    console.dir(VistaAPI)
 
     let response = await VistaAPI.response()
 
-    console.log(response)
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
@@ -110,10 +111,14 @@ class Login extends Component {
     try {
       await AsyncStorage.setItem('userToken', 'Logado')
       await AsyncStorage.setItem('usuario', JSON.stringify(self.state.usuario))
-      console.dir('store!')
     } catch (error) {
-      console.dir(error)
+      console.error(error)
     }
+  }
+
+  _getConfigsAsync = async () => {
+    const urlServer = await AsyncStorage.getItem('urlServer');
+    return({urlServer: urlServer})
   }
   render () {
     if (this.state.isLoading) {

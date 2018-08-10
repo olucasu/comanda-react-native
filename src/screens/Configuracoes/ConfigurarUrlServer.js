@@ -28,10 +28,9 @@ class ConfigurarUrlServer extends Component {
     let self = this;
     try {
       await AsyncStorage.setItem('urlServer', self.state.urlServer)
-      console.dir('store!')
       this.props.navigation.navigate('Login');
     } catch (error) {
-      console.dir(error)
+      console.error(error)
     }
   }
 
@@ -44,7 +43,7 @@ class ConfigurarUrlServer extends Component {
         this.setState({urlServer: urlServer});
         
     } catch(error) {
-        console.dir(error);
+        console.error(error);
     }
  
 }

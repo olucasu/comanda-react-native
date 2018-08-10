@@ -1,7 +1,6 @@
 import React , {Component} from 'react';
 import{
-    AsyncStorage,
-    View
+    AsyncStorage
 } from 'react-native'
 import Loader from '../components/Helpers/loader';
 
@@ -14,7 +13,6 @@ class Loading extends Component {
     
     _startLoginAsync = async () => {
 
-        console.log('carregando...');
 
         try{
             //Recupera autorização de usuário
@@ -23,19 +21,15 @@ class Loading extends Component {
             //Recupera a string JSON de usuário
             const usuario = await AsyncStorage.getItem('usuario');
 
-            //Recupera a string JSON de usuário
+            //Recupera URL do server
             const urlServer = await AsyncStorage.getItem('urlServer');
-
-
+            
             this.props.navigation.navigate(userToken? 'AppNav' : 'Auth')
 
-            console.log(userToken);
-            console.log(urlServer);
-            console.log(JSON.parse(usuario))
 
           
         } catch(error) {
-            console.dir(error);
+            console.error(error);
         }
      
     }
