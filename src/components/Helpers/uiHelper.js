@@ -9,8 +9,8 @@ const getIconMesa = (tipoMesa) => {
 
     switch(tipoMesa) {
         case 'OCUPADA(O)':
-            type = 'EvilIcons';
-            name = 'cart'
+            type = 'MaterialIcons';
+            name = 'block'
             break;
         case 'CONTA':
             type = 'EvilIcons';
@@ -22,7 +22,7 @@ const getIconMesa = (tipoMesa) => {
             break;
         case 'LIVRE':
             type = 'MaterialIcons';
-            name = 'favorite-border';
+            name = 'check';
             break;
         default:
             type = 'MaterialIcons';

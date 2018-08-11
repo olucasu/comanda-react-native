@@ -1,18 +1,24 @@
 import React , {Component} from 'react';
 import{
     AsyncStorage
-} from 'react-native'
+} from 'react-native';
 import Loader from '../components/Helpers/loader';
 
 class Loading extends Component {
     
     constructor(props){
         super(props);
+        console.log('Loading...')
+
         this._startLoginAsync();
     }
     
-    _startLoginAsync = async () => {
 
+    componentDidMount(){
+        this.forceUpdate();
+    }
+
+    _startLoginAsync = async () => {
 
         try{
             //Recupera autorização de usuário

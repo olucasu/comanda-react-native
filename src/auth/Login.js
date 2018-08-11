@@ -21,34 +21,30 @@ class Login extends Component {
     this.state = {
       status: false,
       isLoading: false,
-      usuarioNome: '',
-      usuarioSenha: '',
+      urlServer: "",
+      usuarioNome: "",
+      usuarioSenha: "",
       usuario: {
-        vvendas_portador: '',
-        vcaixa_id: '',
-        vid_colaborador: '',
-        vStatus: '',
-        vcaixa_abertura: '',
-        vid_empresa: '',
-        vMensagem: '',
-        vpdv_formapagto: '',
-        vid_usuario: '',
-        vpdv_cliente: ''
+        vvendas_portador: "",
+        vcaixa_id: "",
+        vid_colaborador: "",
+        vStatus: "",
+        vcaixa_abertura: "",
+        vid_empresa: "",
+        vMensagem: "",
+        vpdv_formapagto: "",
+        vid_usuario: "",
+        vpdv_cliente: ""
       }
     }
+
+    this._getConfigsAsync();
+
   }
 
   async login () {
-    
-    this.setState({isLoading: true})
-
-    const configs = await this._getConfigsAsync();
-
-    if( typeof configs.urlServer !== 'undefined' && typeof configs.urlServer !== null ) {
-      this.setState({isLoading:false})
-      alert('Voce precisa configurar a URL do servidor primeiramente');
-      return this.props.navigation.navigate('ConfigurarUrlServer');
-    }
+    this.setState({ isLoading: true })
+    console.warn(this.state);
 
     const auth = this.state.usuarioNome + '/' + this.state.usuarioSenha
 
@@ -57,9 +53,7 @@ class Login extends Component {
       method: 'GET'
     })
 
-
     let response = await VistaAPI.response()
-
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
@@ -116,10 +110,19 @@ class Login extends Component {
     }
   }
 
+  componentDidMount(){
+    this.forceUpdate();
+  }
+
   _getConfigsAsync = async () => {
     const urlServer = await AsyncStorage.getItem('urlServer');
-    return({urlServer: urlServer})
+    
+    console.log(urlServer);
+    this.setState({
+      urlServer: urlServer == null ? "": urlServer
+    })
   }
+
   render () {
     if (this.state.isLoading) {
       return <Loader />

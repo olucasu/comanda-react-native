@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, FlatList, Image, ScrollView, View, AsyncStorage } from 'react-native';
+import { Text, FlatList, Image, ScrollView,SafeAreaView, View, AsyncStorage } from 'react-native';
 import {
   Header,
   Content,
@@ -50,10 +50,13 @@ const CustomDrawer = props => {
         androidStatusBarColor={Colors.secondaryColor}
         style={{ marginBottom: 15, backgroundColor: '#ECEFF1', height: 170 }}
       >
-          <Image
+        <SafeAreaView style={{  justifyContent: 'center',alignItems: 'center',}}>
+        <Image
             style={{ height: 120, width: 120 }}
             source={require('../../assets/img/vista.png')}
           />
+        </SafeAreaView>
+       
       </Header>
       <Content>
         <FlatList
@@ -73,6 +76,7 @@ const CustomDrawer = props => {
       </Content>
       <Content>
         <ListItem
+        style={{ marginLeft: 24 }}
           noBorder
           Icon
           onPress={() => logout() }

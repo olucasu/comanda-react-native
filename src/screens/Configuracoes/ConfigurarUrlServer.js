@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { AsyncStorage } from 'react-native'
+import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
 import {
   Container,
   Button,
@@ -27,10 +27,13 @@ class ConfigurarUrlServer extends Component {
   _storeDataAsync = async () => {
     let self = this;
     try {
-      await AsyncStorage.setItem('urlServer', self.state.urlServer)
-      this.props.navigation.navigate('Login');
+
+      if(self.state.urlServer != "" || self.state.urlServer != null)
+        await AsyncStorage.setItem('urlServer', self.state.urlServer.trim())
+      
+        this.props.navigation.navigate('AuthLoading');
     } catch (error) {
-      console.error(error)
+      console.log(error)
     }
   }
 
@@ -43,7 +46,7 @@ class ConfigurarUrlServer extends Component {
         this.setState({urlServer: urlServer});
         
     } catch(error) {
-        console.error(error);
+        console.log(error);
     }
  
 }

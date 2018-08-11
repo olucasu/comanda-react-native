@@ -18,6 +18,7 @@ import base64 from '../components/Util/base64'
 class VistaAPI {
 
   constructor(){
+    console.log('VistaAPI está trabalhando...')
     this.setUrlServerAsync();
   }
 
@@ -25,6 +26,7 @@ class VistaAPI {
     *Estado Inicial do Componente
   */
   state = {
+    baseUrl:'',
     username: 'vistatec',
     password: 'KalisbaTec08809',
     method: '',
@@ -39,7 +41,10 @@ class VistaAPI {
     *Recupera URL do servidor das configurações internas do App
   */
   async setUrlServerAsync(){
-    this.state.baseUrl = await AsyncStorage.getItem('urlServer');
+    const urlServer = await AsyncStorage.getItem('urlServer')
+    this.state.baseUrl = urlServer;
+
+    console.log(this.state);
   }
 
 /*
