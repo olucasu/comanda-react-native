@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { AsyncStorage } from 'react-native'
-import VistaAPI from '../api/VistaAPI'
+import { AsyncStorage, Alert } from 'react-native'
+import VistaAPI from '../api/VistaAPI';
 import Loader from '../components/Helpers/loader'
 
 import {
@@ -11,12 +11,15 @@ import {
   Input,
   Button,
   Text,
-  Label
+  Label,
 } from 'native-base'
 
 class Login extends Component {
   constructor (props) {
+
     super(props)
+
+    this.api = new VistaAPI();
 
     this.state = {
       status: false,
@@ -39,21 +42,36 @@ class Login extends Component {
     }
 
     this._getConfigsAsync();
+  }
+
+  async fakeLogin(){
+
+    this.setState({isLoading: true});
+
+    this.setState({isLoading: false});
+  
+    this.props.navigation.navigate('AppNav');
+    
 
   }
 
   async login () {
+
+    if(this.state.urlServer == "") {
+      Alert.alert('Mas primeiro: ', 'Configure a URL do servidor');
+      return this.props.navigation.navigate('ConfigurarUrlServer');
+    }
+
     this.setState({ isLoading: true })
-    console.warn(this.state);
-
     const auth = this.state.usuarioNome + '/' + this.state.usuarioSenha
+    
 
-    VistaAPI.create({
+    this.api.create({
       uri: 'GETUsuario/' + auth,
       method: 'GET'
     })
 
-    let response = await VistaAPI.response()
+    let response = await this.api.response()
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
@@ -96,7 +114,8 @@ class Login extends Component {
         isLoading: false,
         error: response.error
       })
-      alert('Não foi possível fazer o Login: ' + response.error)
+
+      Alert.alert('Opa, tivemos um problema', response.error ? response.error : "Não consegui realizar o login, a URL está correta?"  );
     }
   }
 
@@ -117,7 +136,6 @@ class Login extends Component {
   _getConfigsAsync = async () => {
     const urlServer = await AsyncStorage.getItem('urlServer');
     
-    console.log(urlServer);
     this.setState({
       urlServer: urlServer == null ? "": urlServer
     })
@@ -163,6 +181,10 @@ class Login extends Component {
                 full
               >
                 <Text>Configurações</Text>
+              </Button>
+              <Button  warning
+                full onPress={ () => this.props.navigation.navigate('tests')}>
+              <Text>tests</Text>
               </Button>
             </Form>
           </Content>

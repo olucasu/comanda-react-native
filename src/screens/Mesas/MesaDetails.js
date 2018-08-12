@@ -11,6 +11,7 @@ export default class MesaDetails extends Component {
   
   constructor (props) {
     super(props)
+    this.api = new VistaAPI();
     this.state = {
       status: 'desocupada',
       modalVisible: false,
@@ -25,12 +26,12 @@ export default class MesaDetails extends Component {
       isLoading: true
     })
 
-    VistaAPI.create({
+    this.api.create({
       uri: 'GetGrupos/2/',
       method: 'GET'
     })
 
-    let response = await VistaAPI.response()
+    let response = await this.api.response()
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
@@ -65,11 +66,11 @@ export default class MesaDetails extends Component {
       categoriaSelecionada: categoria
     })
 
-    VistaAPI.create({
+    this.api.create({
       uri: 'GetProdutos/2/' + categoria
     })
 
-    let response = await VistaAPI.response()
+    let response = await this.api.response()
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
@@ -85,12 +86,12 @@ export default class MesaDetails extends Component {
     const string = this.state.nomeProduto;
     let uri = ! isNaN(string) ? 'GetProdutos/2/0/'+ string : 'GetProdutos/2/0/0/' + string.toUpperCase();
 
-    VistaAPI.create({uri: uri})
+    this.api.create({uri: uri})
     
     if( ! isNaN(string) || string.length > 3) {
       if(string === '') return false;
      
-      let response = await VistaAPI.response()
+      let response = await this.api.response()
 
       if (typeof response !== 'undefined' && response.ok) {
         let responseJson = await response.json()
@@ -102,12 +103,12 @@ export default class MesaDetails extends Component {
 
   async enviarPedido(){
 
-    VistaAPI.create({method:'POST'})
+    this.api.create({method:'POST'})
     
-    VistaAPI.setCustomEndPoint('https://jsonplaceholder.typicode.com/posts')
+    this.api.setCustomEndPoint('https://jsonplaceholder.typicode.com/posts')
     
     
-    let response = await VistaAPI.post()
+    let response = await this.api.post()
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()

@@ -12,7 +12,7 @@ import VistaAPI from '../../api/VistaAPI';
 import { Container, Icon } from 'native-base';
 import {getIconMesa} from '../../components/Helpers/uiHelper';
 
-class Mesas extends Component {
+class List extends Component {
   static navigationOptions = {}
 
   constructor (props) {
@@ -34,20 +34,16 @@ class Mesas extends Component {
     })
 
     this.api.create({
-      uri: 'GetMesas/2/'+this.state.routeName,
+      uri: this.state.routeName,
       method: 'GET'
     })
 
-    let response = await this.api.response()
-
-    console.log(response);
-
+    let response = await this.api.getCustomEndPoint()
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
-
       this.setState({
-        tables: responseJson,
+        tables: responseJson.results,
         isLoading: false,
         error: false
       })
@@ -74,25 +70,7 @@ class Mesas extends Component {
 
     this.forceUpdate()
   }
-  
-  getStatusStyle(status){
-    switch(status) {
-      case 'OCUPADA(O)':
-          return 'tableCardOcupado'
-          break;
-      case 'CONTA':
-          return 'tableCardConta'
-          break;
-      case 'RESERVADA(O)':
-          return 'tableCardReservado'
-          break;
-      case 'Livre':
-          return 'tableCardLivre'
-          break;
-      default:
-          return 'tableCardLivre'
-    }
-  }
+ 
 
   render () {
 
@@ -105,7 +83,6 @@ class Mesas extends Component {
     } else {
       if (!this.state.error) {
 
-        
         return (
           <Container>
           <FlatList 
@@ -120,21 +97,12 @@ class Mesas extends Component {
             data={tables}
             numColumns={2}
             renderItem={({ item }) => {
-
-              const styleStatus = this.getStatusStyle(item.status_descricao)
-              const tipoMesa = item.tipo_mesa_cartao === 'MESA'? 'Mesa' : 'Cartão';   
-              let icon = getIconMesa(item.status_descricao);
-
               return (
                 <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate('Details', {
-                      screenTitle: tipoMesa + ' ' + item.id
-                    })}
-                  style={[styles.tableCard, styles[styleStatus]]}
+                  
+                  style={styles.tableCar}
                 >
-                  <Text style={styles.tableCardText}>{icon}{tipoMesa}</Text>
-                  <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.id}</Text>
+                  <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.name}</Text>
                 </TouchableOpacity>
               )
             }}
@@ -161,4 +129,4 @@ class Mesas extends Component {
   }
 }
 
-export default Mesas
+export default List
