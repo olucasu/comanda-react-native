@@ -10,9 +10,10 @@ import {styles} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
 import { Container } from 'native-base';
+import {getIconMesa} from '../../components/Helpers/uiHelper';
 
-class List extends Component {
-  static navigationOptions = {}
+class MesasLivres extends Component {
+  
 
   constructor (props) {
     super(props)
@@ -34,16 +35,17 @@ class List extends Component {
     const api = new VistaAPI;
 
     api.create({
-      uri: this.state.routeName,
+      uri: 'GetMesas/2/'+this.state.routeName,
       method: 'GET'
     })
 
-    let response = await api.getCustomEndPoint()
+    let response = await api.response()
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
+
       this.setState({
-        tables: responseJson.results,
+        tables: responseJson,
         isLoading: false,
         error: false
       })
@@ -56,9 +58,13 @@ class List extends Component {
   }
 
   componentDidMount () {
-    this.fetchData()
+ 
   }
 
+
+  componentWillReceiveProps() {
+    console.log(this.state.routeName)
+  }
   _onRefresh () {
     this.setState({
       refreshing: true
@@ -70,7 +76,25 @@ class List extends Component {
 
     this.forceUpdate()
   }
- 
+  
+  getStatusStyle(status){
+    switch(status) {
+      case 'OCUPADA(O)':
+          return 'tableCardOcupado'
+          break;
+      case 'CONTA':
+          return 'tableCardConta'
+          break;
+      case 'RESERVADA(O)':
+          return 'tableCardReservado'
+          break;
+      case 'Livre':
+          return 'tableCardLivre'
+          break;
+      default:
+          return 'tableCardLivre'
+    }
+  }
 
   render () {
 
@@ -83,6 +107,7 @@ class List extends Component {
     } else {
       if (!this.state.error) {
 
+        
         return (
           <Container>
           <FlatList 
@@ -97,12 +122,21 @@ class List extends Component {
             data={tables}
             numColumns={2}
             renderItem={({ item }) => {
+
+              const styleStatus = this.getStatusStyle(item.status_descricao)
+              const tipoMesa = item.tipo_mesa_cartao === 'MESA'? 'Mesa' : 'Cartão';   
+              let icon = getIconMesa(item.status_descricao);
+
               return (
                 <TouchableOpacity
-                  
-                  style={styles.tableCar}
+                  onPress={() =>
+                    this.props.navigation.navigate('Details', {
+                      screenTitle: tipoMesa + ' ' + item.id
+                    })}
+                  style={[styles.tableCard, styles[styleStatus]]}
                 >
-                  <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.name}</Text>
+                  <Text style={styles.tableCardText}>{icon}{tipoMesa}</Text>
+                  <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.id}</Text>
                 </TouchableOpacity>
               )
             }}
@@ -129,4 +163,4 @@ class List extends Component {
   }
 }
 
-export default List
+export default MesasLivres

@@ -1,15 +1,8 @@
-import React , {Component} from 'react';
 import { styles, Colors } from '../components/Styles';
-import { Icon, View } from 'native-base'
-import { YellowBox } from 'react-native'
 import {
   createMaterialTopTabNavigator,
   createStackNavigator,
-  createDrawerNavigator,
 } from 'react-navigation'
-import Menu from '../components/Menu'
-import CustomDrawer from '../components/Menu/CustomDrawer'
-
 
 /*
     * Importando telas
@@ -17,11 +10,6 @@ import CustomDrawer from '../components/Menu/CustomDrawer'
 
 // List
 import List from './screens/List'
-
-// Configurações
-import Configuracoes from './screens/Configs'
-import ConfigurarUrlServer from './screens/ConfigurarUrlServer'
-
 
 const InsideTabMesa = createMaterialTopTabNavigator(
     {
@@ -62,6 +50,7 @@ const InsideTabMesa = createMaterialTopTabNavigator(
     },
     {
       tabBarOptions: {
+        lazy: true,
         scrollEnabled: true,
         activeTintColor: Colors.primaryColor,
         inactiveTintColor: Colors.secondaryColor,

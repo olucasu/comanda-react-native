@@ -1,4 +1,4 @@
-//Rotas da API
+// Rotas da API
 
 // LISTAR MESAS
 // http:urlServer/datasnap/rest/TServerFOOD/GETMesas/IdEmpresa/(STRING)Status
@@ -9,50 +9,61 @@
 // LISTAR PRODUTOS
 // http:urlServer/datasnap/rest/TServerFOOD/GETProdutos/IdEmpresa/IdGrupo/IdProduto/(STRING)DescricaoProduto
 
-//Login Usuário
+// Login Usuário
 // http:urlServer/datasnap/rest/TServerFOOD/GETUsuario/login/senha
 
-import {AsyncStorage} from 'react-native';
-import base64 from '../components/Util/base64';
-import { isUrl } from '../components/Util/validations';
+// LANÇAR ÍTENS
+// MÉTODO: [POST]
+// http:urlServer/datasnap/rest/TServerFOOD/ItemVenda
+// PARÂMETROS
+
+
+import { AsyncStorage } from 'react-native'
+import base64 from '../components/Util/base64'
+import { isUrl } from '../components/Util/validations'
 
 class VistaAPI {
-
-  constructor(){
-    console.log('VistaAPI está trabalhando...');
+  constructor () {
+    console.log('VistaAPI está trabalhando...')
+  
   }
 
   /*
     *Estado Inicial do Componente
   */
   state = {
-    baseUrl:'',
+    baseUrl: '',
     username: 'vistatec',
     password: 'KalisbaTec08809',
-    method: '',
+    apiMethod: '',
     uri: '',
     response: '',
     isFetching: true,
-    endPoint: ''
+    endPoint: '',
+    usuario: ''
   }
-
 
   /*
     *Recupera URL do servidor das configurações internas do App
   */
-  async setUrlServerAsync(){
-    const urlServer = await AsyncStorage.getItem('urlServer');
-    this.state.baseUrl = urlServer;
-    return urlServer;
+  async setUrlServerAsync () {
+    const urlServer = await AsyncStorage.getItem('urlServer')
+    
+    this.state.baseUrl = urlServer
+    return urlServer
   }
 
-/*
+  async setUsuarioAsync () {
+    const usuario = await AsyncStorage.getItem('usuario');
+    this.state.usuario =  JSON.parse(usuario);
+    return usuario;
+  }
+
+  /*
   * Responsável por controlar o tempo de resposta do servidor;
   * Retorna uma promise race.
 */
   startFetch (ms, promise) {
-
-
     let timeout = new Promise((resolve, reject) => {
       let id = setTimeout(() => {
         clearTimeout(id)
@@ -77,37 +88,32 @@ class VistaAPI {
     * method - "POST", "GET"
   */
   create (obj) {
-    this.state.method = obj.method
-    this.state.uri = obj.uri
+    this.state.method = obj.method;
+    this.state.uri = obj.uri;
+    this.state.apiMethod = obj.apiMethod;
+    if( obj.body != null) this.state.body = obj.body;
   }
 
-  async post() {
+  async post () {
 
-    const json = 
-    [
-      {
-        "id_venda": 1,
-        "item":1,
-        "id_produto":1,
-        "qtde":3.4,
-        "id_empresa":2
-      },
-      {
-        "id_venda": 2,
-        "item":3,
-        "id_produto":3,
-        "qtde":3.4,
-        "id_empresa":2
-      },
-      
-    ]
+   
+    await this.setUrlServerAsync();
+    const baseUrl = await this.state.baseUrl;
 
+    endPoint = baseUrl+ this.state.apiMethod;
+    
+    if (!isUrl(endPoint)) {
+      console.log('Url inválida.')
+      return {
+        ok: false,
+        error: 'Url Inválida'
+      }
+    }
+    
     const credentials = this.state.username + ':' + this.state.password
-    const method = this.state.method
-    const that = this;
 
     let params = {
-      method: method,
+      method: 'POST',
       headers: new Headers({
         Authorization: 'Basic ' + base64.encode(credentials)
       }),
@@ -115,7 +121,8 @@ class VistaAPI {
     }
 
     try {
-      let promiseTimeout = await this.startFetch(5000, fetch(that.state.endPoint, params))
+      let promiseTimeout = await this.startFetch(30000,fetch(endPoint, params)
+      )
       return promiseTimeout
     } catch (e) {
       return {
@@ -123,8 +130,6 @@ class VistaAPI {
         error: typeof e.message !== 'undefined' ? e.message : e.error
       }
     }
-
-
   }
 
   /*
@@ -132,25 +137,28 @@ class VistaAPI {
     * Retorna uma 'promise' baseada nas configurações feitas no método create
   */
 
-  async response () {
-    
-    await this.setUrlServerAsync();
+  async get () {
 
-    const url = this.state.baseUrl + this.state.uri 
+    await this.setUrlServerAsync();
+    await this.setUsuarioAsync();
+
+    const baseUrl = await this.state.baseUrl;
+    const idEmpresa = await this.state.usuario.id_empresa;
+
+    console.dir(await this.state.usuario);
+
+    endPoint = baseUrl+this.state.apiMethod+'/'+idEmpresa+'/'+this.state.uri;
+
     const credentials = this.state.username + ':' + this.state.password
-    const method = this.state.method
-    this.state.endPoint = url;
-    const that = this;
     let params = {
-      method: method,
+      method: 'GET',
       headers: new Headers({
         Authorization: 'Basic ' + base64.encode(credentials)
       })
     }
-    
-    if( ! isUrl(this.state.endPoint)) {
-      console.log("Url inválida.");
 
+    if (!isUrl(endPoint)) {
+      console.log('Url inválida.')
       return {
         ok: false,
         error: 'Url Inválida'
@@ -158,11 +166,45 @@ class VistaAPI {
     }
 
     try {
-      let promiseTimeout = await this.startFetch(30000, fetch(that.state.endPoint, params))
-      console.log(promiseTimeout);
+      let promiseTimeout = await this.startFetch(30000, fetch(endPoint, params))
       return promiseTimeout
     } catch (e) {
-      console.log(e);
+      console.log(e)
+      return {
+        ok: false,
+        error: typeof e.message !== 'undefined' ? e.message : e.error
+      }
+    }
+  }
+
+  async getUsuario() {
+
+    await this.setUrlServerAsync();
+    const credentials = this.state.username + ':' + this.state.password
+    const baseUrl = await this.state.baseUrl;
+    let endPoint = baseUrl + this.state.apiMethod  +'/' + this.state.uri
+
+    let params = {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: 'Basic ' + base64.encode(credentials)
+      })
+    }
+
+    if (!isUrl(endPoint)) {
+      console.log('Url inválida.')
+      return {
+        ok: false,
+        error: 'Url Inválida'
+      }
+    }
+
+    try {
+      let promiseTimeout = await this.startFetch(30000, fetch(endPoint, params))
+      console.log(promiseTimeout)
+      return promiseTimeout
+    } catch (e) {
+      console.log(e)
       return {
         ok: false,
         error: typeof e.message !== 'undefined' ? e.message : e.error
@@ -171,27 +213,24 @@ class VistaAPI {
   }
 
   async getCustomEndPoint () {
-
     let params = {
-      method: 'GET',
+      method: 'GET'
     }
-    
-    await this.setUrlServerAsync();
 
-    const endPoint =  await this.state.baseUrl+this.state.uri;
+    await this.setUrlServerAsync()
 
+    const endPoint = (await this.state.baseUrl) + this.state.uri
 
-    if( ! isUrl(endPoint)) {
-      console.log("Url inválida.");
+    if (!isUrl(endPoint)) {
+      console.log('Url inválida.')
 
       return {
         ok: false,
         error: 'Url Inválida'
       }
     }
-      
 
-    try {       
+    try {
       let promiseTimeout = await this.startFetch(60000, fetch(endPoint, params))
       return promiseTimeout
     } catch (e) {
@@ -205,11 +244,6 @@ class VistaAPI {
   setCustomEndPoint (url) {
     this.state.endPoint = url
   }
-
 }
 
-export default VistaAPI;
-
-
-
-
+export default VistaAPI

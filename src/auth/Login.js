@@ -19,7 +19,6 @@ class Login extends Component {
 
     super(props)
 
-    this.api = new VistaAPI();
 
     this.state = {
       status: false,
@@ -63,15 +62,19 @@ class Login extends Component {
     }
 
     this.setState({ isLoading: true })
-    const auth = this.state.usuarioNome + '/' + this.state.usuarioSenha
     
-
-    this.api.create({
-      uri: 'GETUsuario/' + auth,
-      method: 'GET'
+    let auth = "";
+    if( this.state.usuarioNome.length > 0 && this.state.usuarioSenha.length > 0)
+         auth = this.state.usuarioNome + '/' + this.state.usuarioSenha
+    
+    const api = new VistaAPI;
+    
+    api.create({
+      uri:auth,
+      apiMethod: 'GETUsuario'
     })
 
-    let response = await this.api.response()
+    let response = await api.getUsuario()
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()

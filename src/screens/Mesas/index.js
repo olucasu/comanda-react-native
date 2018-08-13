@@ -6,18 +6,17 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native'
-import {styles, Colors} from '../../components/Styles';
+import {styles} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
-import { Container, Icon } from 'native-base';
+import { Container } from 'native-base';
 import {getIconMesa} from '../../components/Helpers/uiHelper';
-
+import { withNavigationFocus } from 'react-navigation';
 class Mesas extends Component {
-  static navigationOptions = {}
+  
 
   constructor (props) {
     super(props)
-    this.api = new VistaAPI();
     this.state = { 
         routeName: this.props.navigation.state.routeName,
         inputValue: '',
@@ -33,15 +32,14 @@ class Mesas extends Component {
       isLoading: true
     })
 
-    this.api.create({
-      uri: 'GetMesas/2/'+this.state.routeName,
-      method: 'GET'
+    const api = new VistaAPI;
+
+    api.create({
+      uri: this.state.routeName,
+      apiMethod : 'GETMesas'
     })
 
-    let response = await this.api.response()
-
-    console.log(response);
-
+    let response = await api.get()
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
@@ -59,8 +57,8 @@ class Mesas extends Component {
     }
   }
 
-  componentDidMount () {
-    this.fetchData()
+  componentDidMount() {
+      this.fetchData();
   }
 
   _onRefresh () {
@@ -125,12 +123,19 @@ class Mesas extends Component {
               const tipoMesa = item.tipo_mesa_cartao === 'MESA'? 'Mesa' : 'Cartão';   
               let icon = getIconMesa(item.status_descricao);
 
+              const itemParams = {
+                  id: item.id,
+                  status: item.status_descricao,
+                  idVenda: item.id_venda,
+                  dataAbertura: item.ab_data,
+                  screenTitle: tipoMesa + ' ' + item.id,
+
+              }
+
               return (
                 <TouchableOpacity
                   onPress={() =>
-                    this.props.navigation.navigate('Details', {
-                      screenTitle: tipoMesa + ' ' + item.id
-                    })}
+                    this.props.navigation.navigate('Details', itemParams)}
                   style={[styles.tableCard, styles[styleStatus]]}
                 >
                   <Text style={styles.tableCardText}>{icon}{tipoMesa}</Text>
@@ -160,5 +165,4 @@ class Mesas extends Component {
     }
   }
 }
-
-export default Mesas
+export default withNavigationFocus(Mesas);

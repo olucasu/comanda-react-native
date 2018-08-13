@@ -26,8 +26,12 @@ import Login from '../auth/Login'
 */
 
 // Mesas
-import Mesas from '../screens/Mesas'
-import MesaDetails from '../screens/Mesas/MesaDetails'
+import Mesas from '../screens/Mesas';
+import MesaDetails from '../screens/Mesas/MesaDetails';
+
+
+// Pedidos
+import Pedidos from '../screens/Pedidos';
 
 // Configurações
 import Configuracoes from '../screens/Configuracoes'
@@ -41,7 +45,7 @@ const InsideTabMesa = createMaterialTopTabNavigator(
   {
     Todas: {
       screen: Mesas,
-      navigationOptions: navigation => {
+      navigationOptions: () => {
         return {
           title: 'Todas'
         }
@@ -49,7 +53,7 @@ const InsideTabMesa = createMaterialTopTabNavigator(
     },
     LIVRE: {
       screen: Mesas,
-      navigationOptions: navigation => {
+      navigationOptions: () => {
         return {
           title: 'Livre'
         }
@@ -75,6 +79,9 @@ const InsideTabMesa = createMaterialTopTabNavigator(
     }
   },
   {
+    initialRouteName: 'Todas',
+    lazy:true,
+    removeClippedSubviews: true,
     tabBarOptions: {
       scrollEnabled: true,
       activeTintColor: Colors.primaryColor,
@@ -90,9 +97,8 @@ const InsideTabMesa = createMaterialTopTabNavigator(
       height: 30,
       width: 300
     },
-    lazy: true,
-    initialRouteName: 'Todas',
-    optimizationsEnabled: true
+  
+    optimizationsEnabled: true,
   }
 )
 
@@ -121,6 +127,12 @@ const MesasNav = createStackNavigator(
       screen: MesaDetails,
       navigationOptions: ({ navigation }) => ({
         title: navigation.getParam('screenTitle', 'Mesa não identificada')
+      })
+    },
+    Pedidos : {
+      screen: Pedidos,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Realizar Pedido'
       })
     }
   },
