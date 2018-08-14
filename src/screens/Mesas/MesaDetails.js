@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   FlatList,
   Text
-} from 'react-native'
+} from 'react-native';
+import { Container, Content } from 'native-base';
 
 import Extrato from '../../components/Mesas/Extrato';
 import Loader from '../../components/Helpers/loader';
-
 
 export default class MesaDetails extends Component {
   
@@ -24,8 +24,8 @@ export default class MesaDetails extends Component {
       idVenda:this.props.navigation.getParam('idVenda', 'Não informado'),
       dataAbertura: this.props.navigation.getParam('dataAbertura', 'Não informado'),
       extrato: [],
-      usuario: []
-
+      usuario: [],
+      updateMesa: this._updateMesa.bind(this)
     }
  
   }
@@ -63,6 +63,10 @@ export default class MesaDetails extends Component {
     this.fetchData();
   }
 
+  _updateMesa(){
+    this.fetchData();
+  }
+
   render () {
     if(this.state.isLoading) {
         return(
@@ -70,13 +74,11 @@ export default class MesaDetails extends Component {
         )
     } else {
       return(
-        <ScrollView style={{marginBottom:30}}>
-            <Button  onPress={()=> this.props.navigation.navigate('Pedidos', this.state)} title='Adicionar Pedido'/>
+        <Container style={{flex:1,justifyContent: 'space-between'}}>
             <Extrato extrato={this.state.extrato} />
-        </ScrollView>
+            <Button  onPress={()=> this.props.navigation.navigate('Pedidos', this.state)} title='Adicionar Pedido'/>
+        </Container>
       )
     }
-
-  
   }
 }

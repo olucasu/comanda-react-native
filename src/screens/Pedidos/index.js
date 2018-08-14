@@ -1,13 +1,23 @@
 import React, { Component } from 'react'
 import VistaAPI from '../../api/VistaAPI'
 import { ScrollView, Button, View } from 'react-native'
-import Token from '../../auth/Token'
+import Token from '../../auth/Token';
 
-export default class Pedido extends Component {
+import CategoriasProduto from './CategoriasProduto';
+import { Container } from 'native-base';
+import Loader from '../../components/Helpers/loader';
+
+
+
+const _categorias = ['Outside'];
+
+ export default class Pedido extends Component {
+  
   constructor (props) {
     super(props)
     this.Token = new Token()
     this.state = {
+      categoriasProduto: [],
       id: this.props.navigation.getParam('id', 'Não informado'),
       status: this.props.navigation.getParam('status', 'Não informado'),
       screnTitle: this.props.navigation.getParam(
@@ -18,7 +28,8 @@ export default class Pedido extends Component {
       dataAbertura: this.props.navigation.getParam(
         'dataAbertura',
         'Não informado'
-      )
+      ),
+      
     }
   }
 
@@ -37,7 +48,7 @@ export default class Pedido extends Component {
     let response = await api.get()
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
-      console.log(responseJson)
+
       this.setState({
         categoriasProduto: responseJson,
         isLoading: false,
@@ -97,26 +108,18 @@ export default class Pedido extends Component {
   }
 
   async enviarPedido () {
-    
+
     this.setState({
       isLoading: true
     })
-
+    
+    const updateMesa = this.props.navigation.getParam('updateMesa', 'Não informado');
+    
     let usuario = await this.Token.getUsuarioAsync();
+  
     usuario = JSON.parse(usuario);
 
-    
-    console.dir(usuario);
-
     const produto = {
-      id_mesacartao: 9,
-      id_colaborador: 1033,
-      id_empresa: 2,
-      id_cliente: 1,
-      id_fpagto: 1,
-      id_portador: 1,
-      id_usuario: 1,
-      data_caixa: '13/08/2018',
       id_produto: 1389,
       complemento: 'Complemento do Produto',
       pvenda: 5.15,
@@ -136,26 +139,35 @@ export default class Pedido extends Component {
         id_produto: produto.id_produto,
         complemento: produto.complemento,
         vlr_vendido: produto.pvenda,
-        qtde: produto.qtd,
+        qtde: produto.qtde,
       }
     ]
 
-    return console.dir(pedido);
+
 
     const api = new VistaAPI()
 
     api.create({
-      apiMethod: 'ItemVenda'
+      apiMethod: 'ItemVenda',
+      body: JSON.stringify(pedido)
     })
 
     let response = await api.post()
 
     if (typeof response !== 'undefined' && response.ok) {
+
       let responseJson = await response.json()
 
-      if (responseJson) console.dir(responseJson)
+      if(responseJson.vStatusRetorno) {
 
-      alert('Pedido enviado')
+
+        updateMesa();
+        this.props.navigation.goBack();
+
+      } else {
+        alert(responseJson.vMesangemRetorno);
+      }
+
     }
   }
 
@@ -187,7 +199,7 @@ export default class Pedido extends Component {
       )
     }
   }
-
+ 
   inputBuscaPrduto () {
     return (
       <TextInput
@@ -205,13 +217,24 @@ export default class Pedido extends Component {
   }
 
   render () {
-    console.log(this.state)
-    return (
-      <ScrollView style={{ padding: 20 }}>
-        <View style={{ marginBottom: 30 }}>
-          <Button onPress={() => this.enviarPedido()} title='Enviar Pedido' />
-        </View>
-      </ScrollView>
-    )
+
+    if(this.state.isLoading) {
+      return(
+        <Loader />
+      )
+    } else {
+
+      return (
+        <Container style={{justifyContent:'space-between'}}>
+            <CategoriasProduto categorias={this.state.categoriasProduto} />
+            <Button onPress={() => this.enviarPedido()} title='Enviar Pedido' />
+        </Container>
+      )
+    }
+ 
   }
+
 }
+
+
+

@@ -23,12 +23,12 @@ import base64 from '../components/Util/base64'
 import { isUrl } from '../components/Util/validations'
 
 class VistaAPI {
-  constructor () {
+
+  constructor(){
     console.log('VistaAPI está trabalhando...')
-  
   }
 
-  /*
+   /*
     *Estado Inicial do Componente
   */
   state = {
@@ -40,7 +40,8 @@ class VistaAPI {
     response: '',
     isFetching: true,
     endPoint: '',
-    usuario: ''
+    usuario: '',
+    body: ''
   }
 
   /*
@@ -64,7 +65,10 @@ class VistaAPI {
   * Retorna uma promise race.
 */
   startFetch (ms, promise) {
+
     let timeout = new Promise((resolve, reject) => {
+    console.log('Fim');
+
       let id = setTimeout(() => {
         clearTimeout(id)
         reject({
@@ -95,12 +99,12 @@ class VistaAPI {
   }
 
   async post () {
-
    
     await this.setUrlServerAsync();
+
     const baseUrl = await this.state.baseUrl;
 
-    endPoint = baseUrl+ this.state.apiMethod;
+    const endPoint = baseUrl+ this.state.apiMethod;
     
     if (!isUrl(endPoint)) {
       console.log('Url inválida.')
@@ -117,7 +121,7 @@ class VistaAPI {
       headers: new Headers({
         Authorization: 'Basic ' + base64.encode(credentials)
       }),
-      body: JSON.stringify(json)
+      body: this.state.body
     }
 
     try {
@@ -145,7 +149,7 @@ class VistaAPI {
     const baseUrl = await this.state.baseUrl;
     const idEmpresa = await this.state.usuario.id_empresa;
 
-    console.dir(await this.state.usuario);
+    console.dir(await this.state);
 
     endPoint = baseUrl+this.state.apiMethod+'/'+idEmpresa+'/'+this.state.uri;
 
@@ -178,7 +182,6 @@ class VistaAPI {
   }
 
   async getUsuario() {
-
     await this.setUrlServerAsync();
     const credentials = this.state.username + ':' + this.state.password
     const baseUrl = await this.state.baseUrl;
@@ -201,7 +204,6 @@ class VistaAPI {
 
     try {
       let promiseTimeout = await this.startFetch(30000, fetch(endPoint, params))
-      console.log(promiseTimeout)
       return promiseTimeout
     } catch (e) {
       console.log(e)

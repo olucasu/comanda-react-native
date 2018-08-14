@@ -16,16 +16,13 @@ import {
 
 class Login extends Component {
   constructor (props) {
-
     super(props)
-
-
     this.state = {
       status: false,
       isLoading: false,
       urlServer: "",
-      usuarioNome: "",
-      usuarioSenha: "",
+      usuarioNome: "Vistafood",
+      usuarioSenha: "123",
       usuario: {
         vvendas_portador: "",
         vcaixa_id: "",
@@ -74,27 +71,28 @@ class Login extends Component {
       apiMethod: 'GETUsuario'
     })
 
-    let response = await api.getUsuario()
+    const response = await api.getUsuario()
 
     if (typeof response !== 'undefined' && response.ok) {
-      let responseJson = await response.json()
 
+      const responseJson = await response.json();
+      
       if (responseJson.vStatus) {
         this.setState({
           isLoading: false,
           error: false,
           isLoggedIn: true,
           usuario: {
-            vvendas_portador: responseJson.vvendas_portador,
-            vcaixa_id: responseJson.vcaixa_id,
-            vid_colaborador: responseJson.vid_colaborador,
+            id_portador: responseJson.id_portador,
+            caixa_id: responseJson.caixa_id,
+            id_colaborador: responseJson.id_colaborador,
             vStatus: responseJson.vStatus,
-            vcaixa_abertura: responseJson.vcaixa_abertura,
-            vid_empresa: responseJson.vid_empresa,
+            caixa_abertura: responseJson.caixa_abertura,
+            id_empresa: responseJson.id_empresa,
             vMensagem: responseJson.vMensagem,
-            vpdv_formapagto: responseJson.vpdv_formapagto,
-            vid_usuario: responseJson.vid_usuario,
-            vpdv_cliente: responseJson.vpdv_cliente
+            id_fpagto: responseJson.id_fpagto,
+            id_usuario: responseJson.id_usuario,
+            id_cliente: responseJson.id_cliente
           }
         })
 

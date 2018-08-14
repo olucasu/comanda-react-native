@@ -132,7 +132,7 @@ const MesasNav = createStackNavigator(
     Pedidos : {
       screen: Pedidos,
       navigationOptions: ({ navigation }) => ({
-        title: 'Realizar Pedido'
+        title: 'Produtos'
       })
     }
   },

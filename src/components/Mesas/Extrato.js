@@ -2,6 +2,7 @@ import React , {Component} from 'react';
 import {FlatList, Text,View, TouchableOpacity} from 'react-native';
 
 export default class Extrato extends Component{
+
     render(){
         if(this.props.extrato != null) {
             return(
@@ -11,12 +12,11 @@ export default class Extrato extends Component{
                 numColumns={1}
                 renderItem={({ item }) => {
                   return (
-                    <TouchableOpacity
-                      onPress={() =>
-                        this.props.navigation.navigate('Details', itemParams)}>
+                    <TouchableOpacity>
                       <Text>{item.id}</Text>
                       <Text>{item.descricao}</Text>
                       <Text>{item.total_item}</Text>
+                      <Text>{item.qtde_item}</Text>
                     </TouchableOpacity>
                   )
                 }}
