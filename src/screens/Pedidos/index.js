@@ -4,20 +4,19 @@ import { ScrollView, Button, View } from 'react-native'
 import Token from '../../auth/Token';
 
 import CategoriasProduto from './CategoriasProduto';
+import ListaProduto from './ListaProduto';
 import { Container } from 'native-base';
 import Loader from '../../components/Helpers/loader';
-
-
-
-const _categorias = ['Outside'];
 
  export default class Pedido extends Component {
   
   constructor (props) {
     super(props)
     this.Token = new Token()
+ 
     this.state = {
       categoriasProduto: [],
+      navigate: this.props.navigation.getParam('navigate', 'Não informado'),
       id: this.props.navigation.getParam('id', 'Não informado'),
       status: this.props.navigation.getParam('status', 'Não informado'),
       screnTitle: this.props.navigation.getParam(
@@ -28,82 +27,7 @@ const _categorias = ['Outside'];
       dataAbertura: this.props.navigation.getParam(
         'dataAbertura',
         'Não informado'
-      ),
-      
-    }
-  }
-
-  async fetchData () {
-    this.setState({
-      isLoading: true
-    })
-
-    const api = new VistaAPI()
-
-    api.create({
-      apiMethod: 'GetGrupos',
-      uri: ''
-    })
-
-    let response = await api.get()
-    if (typeof response !== 'undefined' && response.ok) {
-      let responseJson = await response.json()
-
-      this.setState({
-        categoriasProduto: responseJson,
-        isLoading: false,
-        error: false
-      })
-    } else {
-      this.setState({
-        isLoading: false,
-        error: response.error
-      })
-    }
-  }
-
-  componentDidMount () {
-    this.fetchData()
-  }
-
-  mudarValorCategoria (itemValue) {
-    this.buscaProdutoCategoria(itemValue)
-  }
-
-  async buscaProdutoCategoria (categoria) {
-    this.setState({
-      categoriaSelecionada: categoria
-    })
-
-    api.create({
-      uri: 'GetProdutos/2/' + categoria
-    })
-
-    let response = await api.response()
-
-    if (typeof response !== 'undefined' && response.ok) {
-      let responseJson = await response.json()
-    }
-  }
-
-  async buscaProdutoPorNome (key) {
-    if (key.nativeEvent.key == 'Backspace') return false
-
-    const string = this.state.nomeProduto
-    let uri = !isNaN(string)
-      ? 'GetProdutos/2/0/' + string
-      : 'GetProdutos/2/0/0/' + string.toUpperCase()
-
-    api.create({ uri: uri })
-
-    if (!isNaN(string) || string.length > 3) {
-      if (string === '') return false
-
-      let response = await api.response()
-
-      if (typeof response !== 'undefined' && response.ok) {
-        let responseJson = await response.json()
-      }
+      )      
     }
   }
 
@@ -226,7 +150,7 @@ const _categorias = ['Outside'];
 
       return (
         <Container style={{justifyContent:'space-between'}}>
-            <CategoriasProduto categorias={this.state.categoriasProduto} />
+            <CategoriasProduto navigate={this.state.navigate} />
             <Button onPress={() => this.enviarPedido()} title='Enviar Pedido' />
         </Container>
       )

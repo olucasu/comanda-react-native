@@ -17,12 +17,14 @@ export default class MesaDetails extends Component {
   
   constructor (props) {
     super(props)
+
     this.state = {
       id: this.props.navigation.getParam('id', 'Não informado') ,
       status: this.props.navigation.getParam('status', 'Não informado'),
       screnTitle : this.props.navigation.getParam('screenTitle', 'Não informado'),
       idVenda:this.props.navigation.getParam('idVenda', 'Não informado'),
       dataAbertura: this.props.navigation.getParam('dataAbertura', 'Não informado'),
+      navigate: this.props.navigation.getParam('navigate', 'Não informado'),
       extrato: [],
       usuario: [],
       updateMesa: this._updateMesa.bind(this)

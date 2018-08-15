@@ -32,10 +32,18 @@ import MesaDetails from '../screens/Mesas/MesaDetails';
 
 // Pedidos
 import Pedidos from '../screens/Pedidos';
+import CategoriasProduto from '../screens/Pedidos/CategoriasProduto';
+import ListaProduto from '../screens/Pedidos/ListaProduto';
+import AdicionaProduto from '../screens/Pedidos/AdicionaProduto';
+
 
 // Configurações
 import Configuracoes from '../screens/Configuracoes'
 import ConfigurarUrlServer from '../screens/Configuracoes/ConfigurarUrlServer'
+
+
+
+
 
 /*
     * Navegação interna
@@ -102,8 +110,7 @@ const InsideTabMesa = createMaterialTopTabNavigator(
   }
 )
 
-const MesasNav = createStackNavigator(
-  {
+const MesasStack = createStackNavigator({
     Mesas: {
       screen: InsideTabMesa,
       navigationOptions: ({ navigation }) => {
@@ -134,18 +141,28 @@ const MesasNav = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         title: 'Produtos'
       })
-    }
-  },
-  {
-    transitionConfig: () => ({
-      transitionSpec: {
-        duration: 200
+    },
+    ListaProduto: {
+      screen: ListaProduto
+    },
+    AdicionaProduto: {
+      screen:AdicionaProduto,
+      navigationOptions:{
+        title: "Adicionar Item"
       }
-    })
-  }
+    }
+  },{
+      transitionConfig: () => ({
+        transitionSpec: {
+          duration: 200
+        }
+      })
+    }
 )
 
-const ConfigNav = createStackNavigator({
+
+
+const ConfigStack = createStackNavigator({
   Configuracoes: {
     screen: Configuracoes,
     navigationOptions: ({ navigation }) => {
@@ -175,7 +192,7 @@ const ConfigNav = createStackNavigator({
 
 const AppNav = createDrawerNavigator( {
     Home: {
-      screen: MesasNav,
+      screen: MesasStack,
       navigationOptions: ({ navigation }) => ({
         drawerIcon: () => {
           return (
@@ -191,7 +208,7 @@ const AppNav = createDrawerNavigator( {
       })
     },
     Configuracoes: {
-      screen: ConfigNav,
+      screen: ConfigStack,
       navigationOptions: ({ navigation }) => ({
         drawerIcon: () => {
           return (

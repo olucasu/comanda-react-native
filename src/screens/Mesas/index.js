@@ -123,14 +123,17 @@ class Mesas extends Component {
               const tipoMesa = item.tipo_mesa_cartao === 'MESA'? 'Mesa' : 'Cartão';   
               let icon = getIconMesa(item.status_descricao);
 
+              const navigate = this.props.navigation.navigate;
+
               const itemParams = {
                   id: item.id,
                   status: item.status_descricao,
                   idVenda: item.id_venda,
                   dataAbertura: item.ab_data,
                   screenTitle: tipoMesa + ' ' + item.id,
-
+                  navigate : navigate
               }
+
 
               return (
                 <TouchableOpacity
