@@ -13,10 +13,12 @@ export default class Extrato extends Component{
                 renderItem={({ item }) => {
                   return (
                     <TouchableOpacity>
-                      <Text>{item.id}</Text>
-                      <Text>{item.descricao}</Text>
-                      <Text>{item.total_item}</Text>
-                      <Text>{item.qtde_item}</Text>
+                      <Text>Código: {item.id}</Text>
+                      <Text>Descrição: {item.descricao}</Text>
+                      <Text>Total: {item.total_item}</Text>
+                      <Text>Quantidade: {item.qtde_item}</Text>
+                      <Text>Complemento: {item.complemento}</Text>
+
                     </TouchableOpacity>
                   )
                 }}

@@ -9,7 +9,6 @@ import { Container, Header, Content, List, ListItem } from 'native-base';
 
 
 
-
 class CategoriasProduto extends Component {
   
   constructor (props) {
@@ -18,7 +17,6 @@ class CategoriasProduto extends Component {
     this.state ={
       isLoading: false,
       categoriasArr:[],
-      categoriasProduto:[],
       buscandoProduto: false
     }
 
@@ -46,7 +44,7 @@ class CategoriasProduto extends Component {
   _renderContent(component, index , isActive) {
     if(isActive) {
       return (
-        <ListaProduto navigate={this.props.navigate} categoria={component}  isActive={isActive} />
+        <ListaProduto categoria={component}  isActive={isActive} />
       );
     }
   }
@@ -78,7 +76,6 @@ class CategoriasProduto extends Component {
         categoriasArr.push(obj);
       });
       this.setState({
-        categoriasProduto: responseJson,
         isLoading: false,
         categoriasArr: categoriasArr,
         error: false

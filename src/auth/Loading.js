@@ -8,7 +8,6 @@ class Loading extends Component {
     
     constructor(props){
         super(props);
-        console.log('Loading...')
 
         this._startLoginAsync();
     }
@@ -35,7 +34,6 @@ class Loading extends Component {
 
           
         } catch(error) {
-            console.error(error);
         }
      
     }

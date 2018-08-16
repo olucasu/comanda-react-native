@@ -1,20 +1,19 @@
 import React, { Component } from 'react'
 import VistaAPI from '../../api/VistaAPI'
-import { ScrollView, Button, View } from 'react-native'
-import Token from '../../auth/Token';
+import { ScrollView, Button, View, Alert } from 'react-native'
+import Token from '../../auth/Token'
 
-import CategoriasProduto from './CategoriasProduto';
-import ListaProduto from './ListaProduto';
-import { Container } from 'native-base';
-import Loader from '../../components/Helpers/loader';
+import CategoriasProduto from './CategoriasProduto'
+import { Container } from 'native-base'
+import Loader from '../../components/Helpers/loader'
 
- export default class Pedido extends Component {
-  
+export default class Pedido extends Component {
   constructor (props) {
     super(props)
     this.Token = new Token()
- 
+
     this.state = {
+      pedido: [],
       categoriasProduto: [],
       navigate: this.props.navigation.getParam('navigate', 'Não informado'),
       id: this.props.navigation.getParam('id', 'Não informado'),
@@ -27,103 +26,81 @@ import Loader from '../../components/Helpers/loader';
       dataAbertura: this.props.navigation.getParam(
         'dataAbertura',
         'Não informado'
-      )      
+      )
     }
+
+    this.addItemComanda = this.addItemComanda.bind(this)
+  }
+
+  async addItemComanda (item) {
+    let usuario = await this.Token.getUsuarioAsync()
+    usuario = JSON.parse(usuario)
+
+    item.id_mesacartao    = this.state.id
+    item.id_colaborador   = usuario.id_colaborador
+    item.id_usuario       = usuario.id_usuario
+    item.id_empresa       = usuario.id_empresa
+    item.id_cliente       = usuario.id_cliente
+    item.id_fpagto        = usuario.id_fpagto
+    item.id_portador      = usuario.id_portador
+    item.data_caixa       = usuario.caixa_abertura
+    item.vlr_vendido      = parseFloat(item.vlr_vendido)
+
+    this.state.pedido.push(item)
+
+    console.log(this.state.pedido)
   }
 
   async enviarPedido () {
-
     this.setState({
       isLoading: true
     })
-    
-    const updateMesa = this.props.navigation.getParam('updateMesa', 'Não informado');
-    
-    let usuario = await this.Token.getUsuarioAsync();
-  
-    usuario = JSON.parse(usuario);
 
-    const produto = {
-      id_produto: 1389,
-      complemento: 'Complemento do Produto',
-      pvenda: 5.15,
-      qtde: 4
-    }
+    const updateMesa = this.props.navigation.getParam(
+      'updateMesa',
+      'Não informado'
+    )
 
-    const pedido = [
-      {
-        id_mesacartao: this.state.id,
-        id_usuario: usuario.id_usuario,
-        id_colaborador: usuario.id_colaborador,
-        id_empresa: usuario.id_empresa,
-        id_cliente: usuario.id_cliente,
-        id_fpagto: usuario.id_fpagto,
-        id_portador: usuario.id_portador,
-        data_caixa: usuario.caixa_abertura,
-        id_produto: produto.id_produto,
-        complemento: produto.complemento,
-        vlr_vendido: produto.pvenda,
-        qtde: produto.qtde,
-      }
-    ]
+    const pedido = this.state.pedido
 
+    if (pedido.length > 0) {
+      const api = new VistaAPI()
 
-
-    const api = new VistaAPI()
-
-    api.create({
-      apiMethod: 'ItemVenda',
-      body: JSON.stringify(pedido)
-    })
-
-    let response = await api.post()
-
-    if (typeof response !== 'undefined' && response.ok) {
-
-      let responseJson = await response.json()
-
-      if(responseJson.vStatusRetorno) {
-
-
-        updateMesa();
-        this.props.navigation.goBack();
-
-      } else {
-        alert(responseJson.vMesangemRetorno);
-      }
-
-    }
-  }
-
-  listaCategorias () {
-    if (
-      typeof this.state.categoriasProduto !== 'undefined' &&
-      this.state.categoriasProduto.length > 0
-    ) {
-      let list = this.state.categoriasProduto.map(item => {
-        return (
-          <Picker.Item
-            key={item.id_grupo}
-            label={item.grupo_descricao}
-            value={item.id_grupo}
-          />
-        )
+      api.create({
+        apiMethod: 'ItemVenda',
+        body: JSON.stringify(pedido)
       })
-      return (
-        <Picker
-          placeholder='Selecione uma categoria'
-          selectedValue={this.state.categoriaSelecionada}
-          onValueChange={(itemValue, itemIndex) =>
-            this.mudarValorCategoria(itemValue)}
-        >
-          <Picker.Item key={0} label={'Selecione uma Categoria'} value={''} />
-          {list}
 
-        </Picker>
-      )
+      let response = await api.post()
+
+      console.log(response)
+
+      try {
+        if (typeof response !== 'undefined' && response.ok) {
+          let responseJson = await response.json()
+          console.log(responseJson)
+          if (responseJson.vStatusRetorno) {
+            updateMesa()
+            this.props.navigation.goBack()
+          } else {
+            alert(responseJson.vMesangemRetorno)
+          }
+        } else {
+          console.log(response.error)
+          this.setState({ isLoading: false })
+        }
+      } catch (e) {
+        console.log(e)
+        this.setState({ isLoading: false })
+      }
+    } else {
+      alert('Pedido Vazio')
+      this.setState({
+        isLoading: false
+      })
     }
   }
- 
+
   inputBuscaPrduto () {
     return (
       <TextInput
@@ -141,24 +118,17 @@ import Loader from '../../components/Helpers/loader';
   }
 
   render () {
-
-    if(this.state.isLoading) {
-      return(
-        <Loader />
-      )
+    if (this.state.isLoading) {
+      return <Loader />
     } else {
+      this.props.screenProps.addItemComanda = this.addItemComanda
 
       return (
-        <Container style={{justifyContent:'space-between'}}>
-            <CategoriasProduto navigate={this.state.navigate} />
-            <Button onPress={() => this.enviarPedido()} title='Enviar Pedido' />
+        <Container style={{ justifyContent: 'space-between' }}>
+          <CategoriasProduto />
+          <Button onPress={() => this.enviarPedido()} title='Enviar Pedido' />
         </Container>
       )
     }
- 
   }
-
 }
-
-
-

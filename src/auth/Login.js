@@ -126,7 +126,6 @@ class Login extends Component {
       await AsyncStorage.setItem('userToken', 'Logado')
       await AsyncStorage.setItem('usuario', JSON.stringify(self.state.usuario))
     } catch (error) {
-      console.error(error)
     }
   }
 

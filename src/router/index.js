@@ -32,8 +32,6 @@ import MesaDetails from '../screens/Mesas/MesaDetails';
 
 // Pedidos
 import Pedidos from '../screens/Pedidos';
-import CategoriasProduto from '../screens/Pedidos/CategoriasProduto';
-import ListaProduto from '../screens/Pedidos/ListaProduto';
 import AdicionaProduto from '../screens/Pedidos/AdicionaProduto';
 
 
@@ -141,9 +139,6 @@ const MesasStack = createStackNavigator({
       navigationOptions: ({ navigation }) => ({
         title: 'Produtos'
       })
-    },
-    ListaProduto: {
-      screen: ListaProduto
     },
     AdicionaProduto: {
       screen:AdicionaProduto,

@@ -33,7 +33,6 @@ class ConfigurarUrlServer extends Component {
       
         this.props.navigation.navigate('AuthLoading');
     } catch (error) {
-      console.log(error)
     }
   }
 
@@ -46,7 +45,6 @@ class ConfigurarUrlServer extends Component {
         this.setState({urlServer: urlServer});
         
     } catch(error) {
-        console.log(error);
     }
  
 }

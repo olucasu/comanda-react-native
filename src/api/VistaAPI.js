@@ -25,7 +25,7 @@ import { isUrl } from '../components/Util/validations'
 class VistaAPI {
 
   constructor(){
-    console.log('VistaAPI está trabalhando...')
+    console.log("API Working");
   }
 
    /*
@@ -67,7 +67,6 @@ class VistaAPI {
   startFetch (ms, promise) {
 
     let timeout = new Promise((resolve, reject) => {
-    console.log('Fim');
 
       let id = setTimeout(() => {
         clearTimeout(id)
@@ -107,7 +106,6 @@ class VistaAPI {
     const endPoint = baseUrl+ this.state.apiMethod;
     
     if (!isUrl(endPoint)) {
-      console.log('Url inválida.')
       return {
         ok: false,
         error: 'Url Inválida'
@@ -124,11 +122,14 @@ class VistaAPI {
       body: this.state.body
     }
 
+    console.log(this.state.body);
+
     try {
       let promiseTimeout = await this.startFetch(30000,fetch(endPoint, params)
       )
       return promiseTimeout
     } catch (e) {
+      console.log(e);
       return {
         ok: false,
         error: typeof e.message !== 'undefined' ? e.message : e.error
@@ -149,7 +150,6 @@ class VistaAPI {
     const baseUrl = await this.state.baseUrl;
     const idEmpresa = await this.state.usuario.id_empresa;
 
-    console.dir(await this.state);
 
     endPoint = baseUrl+this.state.apiMethod+'/'+idEmpresa+'/'+this.state.uri;
 
@@ -162,7 +162,6 @@ class VistaAPI {
     }
 
     if (!isUrl(endPoint)) {
-      console.log('Url inválida.')
       return {
         ok: false,
         error: 'Url Inválida'
@@ -173,7 +172,6 @@ class VistaAPI {
       let promiseTimeout = await this.startFetch(30000, fetch(endPoint, params))
       return promiseTimeout
     } catch (e) {
-      console.log(e)
       return {
         ok: false,
         error: typeof e.message !== 'undefined' ? e.message : e.error
@@ -195,7 +193,6 @@ class VistaAPI {
     }
 
     if (!isUrl(endPoint)) {
-      console.log('Url inválida.')
       return {
         ok: false,
         error: 'Url Inválida'
@@ -206,7 +203,6 @@ class VistaAPI {
       let promiseTimeout = await this.startFetch(30000, fetch(endPoint, params))
       return promiseTimeout
     } catch (e) {
-      console.log(e)
       return {
         ok: false,
         error: typeof e.message !== 'undefined' ? e.message : e.error
@@ -224,7 +220,6 @@ class VistaAPI {
     const endPoint = (await this.state.baseUrl) + this.state.uri
 
     if (!isUrl(endPoint)) {
-      console.log('Url inválida.')
 
       return {
         ok: false,

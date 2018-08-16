@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Icon} from 'native-base';
-import {Text, TouchableOpacity, TextInput, View} from 'react-native'
+import {Text, TouchableOpacity, TextInput, View} from 'react-native';
+import TextInputMask from 'react-native-text-input-mask';
 import {Colors,styles} from '../../components/Styles';
 
 const getIconMesa = (tipoMesa) => {
@@ -35,31 +36,40 @@ const getIconMesa = (tipoMesa) => {
 class NumberPicker extends Component {
     constructor(props){
         super(props);
-
         this.state = {
             value: "1",
-            maxLength: 2
+            maxLength: props.maxLength ? props.maxLength : 10
         }
     }
 
     add(){
-        this.setState({value: String(parseInt(this.state.value) + 1)})
+        const newValue = String(parseFloat(this.state.value) + parseFloat("1,000"));
+        this.setParams(newValue);
     }
     
     decrease(){
-        const intValue = parseFloat
-        if(parseInt(this.state.value) >= 1) 
-            this.setState({value: String(parseInt(this.state.value) - 1)})
+        const value = parseFloat(this.state.value);
+        const newValue = String( value - parseFloat("1,000"));
+        if(value > 1) 
+            this.setParams(newValue);
+        
+    }
+
+    setParams(value) {
+        this.setState({value});
+        this.props.onChangeText(value);
     }
 
     render(){
         return(
             <View>
                 <TouchableOpacity onPress={ () => this.decrease()}><Icon name="minus" type="EvilIcons"></Icon></TouchableOpacity>
-                <TextInput defaultValue={this.state.value} maxLength={this.state.maxLength}  keyboardType={'numeric'}  value={this.state.value} onChangeText={(value) => this.setState({value}) } />
+                <TextInputMask defaultValue={this.state.value} maxLength={this.state.maxLength}  keyboardType={'numeric'} mask={"[000]{,}[000]"} value={this.state.value} onChangeText={(formatted, value) => { this.setParams(value); } } />
+                <Text>{this.props.unity}</Text>
                 <TouchableOpacity onPress={ () =>this.add()} ><Icon name="plus" type="EvilIcons"></Icon></TouchableOpacity>
             </View>
         )
     }
 }
+
 export {getIconMesa, NumberPicker}
