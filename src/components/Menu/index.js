@@ -6,7 +6,8 @@ export default class Menu extends Component {
     
     const navigation = this.props.navigation;
     return (
-        <Header androidStatusBarColor={Colors.primaryColor} style={styles.header} hasTabs={true}>
+          <Header style={styles.header} hasTabs={true}>
+          
           <Left>
             <Button onPress={()=>navigation.openDrawer()} transparent>
               <Icon style={styles.headerIcon} name='menu' />
@@ -20,7 +21,9 @@ export default class Menu extends Component {
               <Icon style={styles.headerIcon} name='more' />
             </Button>
           </Right>
+        
         </Header>
+      
       
     );
   }

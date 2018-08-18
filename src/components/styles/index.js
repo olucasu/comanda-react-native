@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         color:Colors.defaultDarkColor,
-        fontFamily: 'sans-serif',
+        fontFamily: 'sans-serif-light',
         fontWeight: '900',
     },
 // Tabs
@@ -73,14 +73,41 @@ const styles = StyleSheet.create({
         fontSize:16,
     },
     container :{
-        paddingBottom: 60,
-        paddingTop: 60,
+     
         flex: 1,
         flexDirection: 'column',
         backgroundColor: Colors.defaultBgColor
     },
+    content:{
+        marginTop:15,
+        paddingLeft:5,
+        paddingRight: 5,
+        paddingBottom: 10,
+    },
+    contentTitle: {
+        color:Colors.defaultDarkColor,
+        fontFamily: 'sans-serif-light',
+    },
+    list :{
+        marginBottom:15,
+        marginTop:15
+    },
+    listItem:{
+        elevation: 1,
+        backgroundColor: "#fff",
+        margin: 9,
+        padding:10,
+        borderRadius: 7
+    },
+    listItemTitle: {
+        fontSize: 15,
+        color:Colors.defaultDarkColor,
+        fontFamily: 'sans-serif-light',
+        fontWeight: '600'
+    },
     alignItemsCenter : {
-        alignItems: 'center'
+        alignItems: 'center',
+        flex:1
     },
     horizontal: {
         flexDirection: 'row',
@@ -97,11 +124,25 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     text: {
-        color: "#333333"
+        color: Colors.defaultDarkColor,
+        fontFamily: 'notoserif'
     },
     icon: {
         color: '#888',
         fontSize: 20
+    },
+
+    //Buttons
+    button: {
+        alignItems:'center' ,
+        paddingHorizontal:15,
+        paddingVertical:15
+    },
+    buttonPrimary: {
+        backgroundColor:Colors.primaryColor,
+    },
+    buttonLightText :{
+        color: Colors.defaultLightTextColor
     }
 
 });

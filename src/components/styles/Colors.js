@@ -7,9 +7,10 @@ class Colors {
 	constructor() {
         this.defaultBgColor = '#fff'; 
         this.containerColor = '#f6f6f6';
-    	this.defaultDarkColor = '#546E7A';
-    	this.primaryColor = '#546E7A';	
-    	this.secondaryColor = '#78909C';	
+    	this.defaultDarkColor = '#455A64';
+    	this.primaryColor = '#455A64';	
+		this.secondaryColor = '#78909C';
+		this.defaultLightTextColor = '#fff'	;
 	}
 }
 

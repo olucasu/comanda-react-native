@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, FlatList, Image, ScrollView,SafeAreaView, View, AsyncStorage } from 'react-native';
+import { Text, FlatList, Image, ScrollView,SafeAreaView, View, AsyncStorage, StatusBar } from 'react-native';
 import {
   Header,
   Content,
@@ -46,10 +46,11 @@ const CustomDrawer = props => {
   
   return (
     <ScrollView>
-      <Header
-        androidStatusBarColor={Colors.secondaryColor}
-        style={{ marginBottom: 15, backgroundColor: '#ECEFF1', height: 170 }}
-      >
+      <Header  style={{ marginBottom: 15, height: 170}}>
+       <StatusBar
+            backgroundColor="transparent"
+            barStyle="dark-content"
+        />
         <SafeAreaView style={{  justifyContent: 'center',alignItems: 'center',}}>
         <Image
             style={{ height: 120, width: 120 }}

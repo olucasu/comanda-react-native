@@ -40,9 +40,6 @@ import Configuracoes from '../screens/Configuracoes'
 import ConfigurarUrlServer from '../screens/Configuracoes/ConfigurarUrlServer'
 
 
-
-
-
 /*
     * Navegação interna
 */
@@ -115,35 +112,41 @@ const MesasStack = createStackNavigator({
         return {
           title: 'Mesas',
           header: <Menu navigation={navigation} />,
-          headerMode: 'screen',
-          headerTintColor: '#fff',
-          headerStyle: {
-            backgroundColor: '#2196F3',
-            shadowRadius: 0,
-            elevation: 0
-          },
-          headerTitleStyle: {
-            fontWeight: '300'
-          }
+          headerTitleStyle: styles.headerText
         }
       }
     },
     Details: {
       screen: MesaDetails,
       navigationOptions: ({ navigation }) => ({
-        title: navigation.getParam('screenTitle', 'Mesa não identificada')
+        title: navigation.getParam('screenTitle', 'Mesa não identificada'),
+        headerStyle: {
+          backgroundColor: Colors.defaultBgColor,
+        },
+        headerTintColor: Colors.primaryColor,
+        headerTitleStyle: styles.headerText
       })
     },
     Pedidos : {
       screen: Pedidos,
       navigationOptions: ({ navigation }) => ({
-        title: 'Produtos'
+        title: 'Produtos',
+        headerStyle: {
+          backgroundColor: Colors.defaultBgColor,
+        },
+        headerTintColor: Colors.primaryColor,
+        headerTitleStyle: styles.headerText
       })
     },
     AdicionaProduto: {
       screen:AdicionaProduto,
       navigationOptions:{
-        title: "Adicionar Item"
+        title: "Adicionar Item",
+        headerStyle: {
+          backgroundColor: Colors.defaultBgColor,
+        },
+        headerTintColor: Colors.primaryColor,
+        headerTitleStyle: styles.headerText
       }
     }
   },{
@@ -165,22 +168,23 @@ const ConfigStack = createStackNavigator({
         title: 'Configurações',
         header: <Menu navigation={navigation} />,
         headerMode: 'screen',
-        headerTintColor: '#fff',
         headerStyle: {
-          backgroundColor: '#2196F3',
-          shadowRadius: 0,
-          elevation: 0
+          backgroundColor: Colors.defaultBgColor,
         },
-        headerTitleStyle: {
-          fontWeight: '300'
-        }
+        headerTintColor: Colors.primaryColor,
+        headerTitleStyle: styles.headerText
       }
     }
   },
   ConfigurarUrlServer: {
     screen: ConfigurarUrlServer,
     navigationOptions: {
-      title: 'Configurar Servidor '
+      title: 'Configurar Servidor ',
+      headerStyle: {
+        backgroundColor: Colors.defaultBgColor,
+      },
+      headerTintColor: Colors.primaryColor,
+      headerTitleStyle: styles.headerText
     }
   }
 })
@@ -241,13 +245,23 @@ const loginStack = createStackNavigator({
   Configuracoes: {
     screen: Configuracoes,
     navigationOptions: {
-      title: 'Configurações'
+      title: 'Configurações',
+      headerStyle: {
+        backgroundColor: Colors.defaultBgColor,
+      },
+      headerTintColor: Colors.primaryColor,
+      headerTitleStyle: styles.headerText
     }
   },
   ConfigurarUrlServer: {
     screen: ConfigurarUrlServer,
     navigationOptions: {
-      title: 'Configurar Servidor '
+      title: 'Configurar Servidor ',
+      headerStyle: {
+        backgroundColor: Colors.defaultBgColor,
+      },
+      headerTintColor: Colors.primaryColor,
+      headerTitleStyle: styles.headerText
     }
   }
 })

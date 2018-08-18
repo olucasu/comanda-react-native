@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, ScrollView } from 'react-native'
-import { createMaterialTopTabNavigator } from 'react-navigation'
+import { View, Text ,SafeAreaView, ScrollView, FlatList, TouchableOpacity} from 'react-native'
 import Loader from '../../components/Helpers/loader';
 import ListaProduto from './ListaProduto';
+import ModalListaProduto from './ModalListaProduto';
 import VistaAPI from '../../api/VistaAPI';
-import Accordion from 'react-native-collapsible/Accordion';
-import { Container, Header, Content, List, ListItem } from 'native-base';
-
-
 
 class CategoriasProduto extends Component {
   
@@ -17,11 +13,16 @@ class CategoriasProduto extends Component {
     this.state ={
       isLoading: false,
       categoriasArr:[],
-      buscandoProduto: false
+      categoriasProduto:[],
+      categoriaSelecionada: "",
+      buscandoProduto: false,
+      listarProdutosIsVisible: false
     }
 
     this.triggerBuscarProduto = this.triggerBuscarProduto.bind(this);
     this._renderContent = this._renderContent.bind(this);
+
+    this._closeModal = this._closeModal.bind(this);
   } 
 
 
@@ -44,7 +45,10 @@ class CategoriasProduto extends Component {
   _renderContent(component, index , isActive) {
     if(isActive) {
       return (
-        <ListaProduto categoria={component}  isActive={isActive} />
+        <ScrollView  nestedScrollEnabled={true} style={{backgroundColor:"#F44336"}}>
+          <ListaProduto  categoria={component}  isActive={isActive} />
+
+        </ScrollView>
       );
     }
   }
@@ -78,6 +82,7 @@ class CategoriasProduto extends Component {
       this.setState({
         isLoading: false,
         categoriasArr: categoriasArr,
+        categoriasProduto:  responseJson,
         error: false
       })
     } else {
@@ -121,10 +126,20 @@ class CategoriasProduto extends Component {
     this.setState({buscandoProduto: true})
   }
 
+  _toggleModal(){
+    this.setState({listarProdutosIsVisible: true})
+  }
+
+  _closeModal() {
+    this.setState({listarProdutosIsVisible:false});
+  }
+
+  selecionarCategoria(categoria){
+    this.setState({categoriaSelecionada:categoria})
+    this._toggleModal();
+  }
+
   render () {
-
-
-   
 
     if( this.state.isLoading) {
      return(
@@ -145,14 +160,23 @@ class CategoriasProduto extends Component {
       const sections = this.state.categoriasArr;
 
       return (
+        
         <ScrollView>
-        <Accordion 
-        onAnimationEnd={()=>{this.triggerBuscarProduto()}}
-        sections={sections}
-        renderHeader={this._renderHeader}
-        renderContent={this._renderContent}
-      />
-      </ScrollView>
+
+          <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            data={this.state.categoriasProduto}
+            renderItem={({item}) => {
+                return(
+                    <TouchableOpacity onPress={()=>this.selecionarCategoria(item)}><Text style={{padding:20, backgroundColor:"#eee",fontSize:18 }}>{item.grupo_descricao}</Text></TouchableOpacity>
+                )
+            }}
+          />
+          
+          <ModalListaProduto categoriaSelecionada={this.state.categoriaSelecionada} modalIsVisible={this.state.listarProdutosIsVisible} _closeModal={this._closeModal}    />
+    
+        </ScrollView>
+   
       )
     }
   }

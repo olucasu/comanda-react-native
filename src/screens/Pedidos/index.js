@@ -1,11 +1,13 @@
-import React, { Component } from 'react'
-import VistaAPI from '../../api/VistaAPI'
-import { ScrollView, Button, View, Alert } from 'react-native'
-import Token from '../../auth/Token'
+import React, { Component } from 'react';
+import VistaAPI from '../../api/VistaAPI';
+import { ScrollView, Button, View, Alert, ToastAndroid } from 'react-native';
+import Token from '../../auth/Token';
 
-import CategoriasProduto from './CategoriasProduto'
-import { Container } from 'native-base'
-import Loader from '../../components/Helpers/loader'
+import CategoriasProduto from './CategoriasProduto';
+import { Container } from 'native-base';
+import Loader from '../../components/Helpers/loader';
+import ModalConfirmaPedido from './ModalConfirmaPedido';
+
 
 export default class Pedido extends Component {
   constructor (props) {
@@ -26,8 +28,13 @@ export default class Pedido extends Component {
       dataAbertura: this.props.navigation.getParam(
         'dataAbertura',
         'Não informado'
-      )
+      ),
+      enviarPedidoIsVisible: false
     }
+
+    this._toggleModal = this._toggleModal.bind(this);
+    this._closeModal = this._closeModal.bind(this);
+    this.enviarPedido = this.enviarPedido.bind(this);
 
     this.addItemComanda = this.addItemComanda.bind(this)
   }
@@ -49,6 +56,13 @@ export default class Pedido extends Component {
     this.state.pedido.push(item)
 
     console.log(this.state.pedido)
+  }
+
+
+  checarPedido(){
+    console.log("Checar Pedido");
+
+  
   }
 
   async enviarPedido () {
@@ -81,6 +95,11 @@ export default class Pedido extends Component {
           console.log(responseJson)
           if (responseJson.vStatusRetorno) {
             updateMesa()
+           
+            ToastAndroid.show('Pedido Enviado!', ToastAndroid.SHORT);
+           
+            this.props.navigation.navigate("Pedidos");
+
             this.props.navigation.goBack()
           } else {
             alert(responseJson.vMesangemRetorno)
@@ -99,6 +118,20 @@ export default class Pedido extends Component {
         isLoading: false
       })
     }
+ 
+ 
+  
+  
+  
+    
+  }
+
+  _toggleModal(){
+    this.setState({enviarPedidoIsVisible: true})
+  }
+
+  _closeModal(){
+    this.setState({enviarPedidoIsVisible:false})
   }
 
   inputBuscaPrduto () {
@@ -117,16 +150,19 @@ export default class Pedido extends Component {
     )
   }
 
+
+
   render () {
     if (this.state.isLoading) {
       return <Loader />
     } else {
       this.props.screenProps.addItemComanda = this.addItemComanda
-
       return (
-        <Container style={{ justifyContent: 'space-between' }}>
+        <Container style={{ flex:1, justifyContent: 'space-between' }}>
           <CategoriasProduto />
-          <Button onPress={() => this.enviarPedido()} title='Enviar Pedido' />
+          <Button onPress={() => this._toggleModal()} title='Enviar Pedido' />
+          <Button  color="#f50057" onPress={() => this._toggleModal()} title='Checar Pedido' />
+          <ModalConfirmaPedido pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
         </Container>
       )
     }

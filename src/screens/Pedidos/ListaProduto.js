@@ -23,7 +23,8 @@ class ListaProduto extends Component {
         isLoading: true
     })
 
-    let categoriaId = this.props.categoria.id;
+
+    let categoriaId = this.props.categoria.id_grupo;
 
     const api = new VistaAPI()
     if(categoriaId == 1) 
@@ -40,6 +41,7 @@ class ListaProduto extends Component {
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
         
+        console.log(responseJson);
         this.setState({
             produtos: responseJson,
             isLoading: false
@@ -54,26 +56,42 @@ class ListaProduto extends Component {
   }
 
   componentDidMount() {
-    if(this.state.isActive) {
-        this.fetchData()
-    }
+    this.fetchData()
+
   }
+
+  navigate(params){
+    console.dir(this.props);
+    this.props._closeModal();
+    this.props.navigation.navigate('AdicionaProduto', params);
+  }
+
   
   render(){
+
         if(this.state.isLoading){
             return(<Loader />)
         } else {
             return(
                 <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                data={this.state.produtos}
-                renderItem={({item}) => {
+                   
+                    keyExtractor={(item, index) => index.toString()}
+                    data={this.state.produtos}
+                    renderItem={({item}) => {
                     const params = {
                         produto: item
                     }
 
                     return(
-                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('AdicionaProduto', params)}  style={{marginBottom:12,backgroundColor:'#90CAF9'}}><Text>{item.produto_descricao}</Text></TouchableOpacity>
+                        <TouchableOpacity 
+                        style={
+                            {padding:10, 
+                            marginBottom: 5,
+                            marginTop: 5, 
+                            alignItems:"center" ,
+                            elevation:1, 
+                            backgroundColor: "#B0BEC5"
+                           }} onPress={ () => this.navigate(params)}  ><Text style={{color: "#263238"}}>{item.produto_descricao}</Text></TouchableOpacity>
                     )
                 }}
               />

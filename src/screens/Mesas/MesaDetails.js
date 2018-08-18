@@ -2,14 +2,13 @@ import React, { Component } from 'react'
 import VistaAPI from '../../api/VistaAPI'
 import {
   ScrollView,
-  Button,
   View,
   TouchableOpacity,
   FlatList,
   Text
 } from 'react-native';
-import { Container, Content } from 'native-base';
-
+import { Container, Content, H2, H3 , Button} from 'native-base';
+import {styles} from '../../components/Styles';
 import Extrato from '../../components/Mesas/Extrato';
 import Loader from '../../components/Helpers/loader';
 
@@ -76,9 +75,16 @@ export default class MesaDetails extends Component {
         )
     } else {
       return(
-        <Container style={{flex:1,justifyContent: 'space-between'}}>
-            <Extrato extrato={this.state.extrato} />
-            <Button  onPress={()=> this.props.navigation.navigate('Pedidos', this.state)} title='Adicionar Pedido'/>
+        <Container style={styles.container}>
+            <Content style={styles.content}>
+              <H3 style={styles.contentTitle}>Consumo</H3>
+              <Extrato extrato={this.state.extrato} />
+            </Content>
+
+            <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={()=> this.props.navigation.navigate('Pedidos', this.state)}>
+                <Text style={styles.buttonLightText}>Adicionar Pedido</Text>
+            </TouchableOpacity>
+          
         </Container>
       )
     }
