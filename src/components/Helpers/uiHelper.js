@@ -62,11 +62,18 @@ class NumberPicker extends Component {
 
     render(){
         return(
-            <View>
-                <TouchableOpacity onPress={ () => this.decrease()}><Icon name="minus" type="EvilIcons"></Icon></TouchableOpacity>
-                <TextInputMask defaultValue={this.state.value} maxLength={this.state.maxLength}  keyboardType={'numeric'} mask={"[000]{,}[000]"} value={this.state.value} onChangeText={(formatted, value) => { this.setParams(value); } } />
-                <Text>{this.props.unity}</Text>
-                <TouchableOpacity onPress={ () =>this.add()} ><Icon name="plus" type="EvilIcons"></Icon></TouchableOpacity>
+            <View style={styles.numberPickerContainer} >
+                <View style={styles.numberPickerItem}>
+                <TouchableOpacity activeOpacity={0.8} style={[styles.button, styles.buttonPrimary]} onPress={ () => this.decrease()}><Icon style={styles.buttonLightText}  name="minus" type="EvilIcons"></Icon></TouchableOpacity>
+
+                </View>
+                <View style={styles.numberPickerItem}>
+                    <TextInputMask defaultValue={this.state.value} maxLength={this.state.maxLength}  keyboardType={'numeric'} mask={"[000]{,}[000]"} value={this.state.value} onChangeText={(formatted, value) => { this.setParams(value); } } />
+                    {/* <Text>{this.props.unity}</Text> */}
+                </View>
+                <View style={styles.numberPickerItem}>
+                <TouchableOpacity activeOpacity={0.8} style={[styles.button, styles.buttonPrimary]} onPress={ () =>this.add()} ><Icon style={styles.buttonLightText} name="plus" type="EvilIcons"></Icon></TouchableOpacity>
+                </View>
             </View>
         )
     }

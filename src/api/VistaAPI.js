@@ -6,6 +6,9 @@
 // LISTAR GRUPOS
 // http:urlServer/datasnap/rest/TServerFOOD/GETGrupos/idEmpresa
 
+// Lista Complemento de Grupos
+// http:urlServer/datasnap/rest/TServerFOOD/GETGruposComplementos/idGrupo
+
 // LISTAR PRODUTOS
 // http:urlServer/datasnap/rest/TServerFOOD/GETProdutos/IdEmpresa/IdGrupo/IdProduto/(STRING)DescricaoProduto
 
@@ -15,7 +18,11 @@
 // LANÇAR ÍTENS
 // MÉTODO: [POST]
 // http:urlServer/datasnap/rest/TServerFOOD/ItemVenda
-// PARÂMETROS
+
+// Caso específico de PIZZA
+// Recupera complementos de pizza
+// Popular Complemento;
+// http:urlServer/datasnap/rest/TServerFOOD/GETProdutosPizza/idEmpresa
 
 
 import { AsyncStorage } from 'react-native'

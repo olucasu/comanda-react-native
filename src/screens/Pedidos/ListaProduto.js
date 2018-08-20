@@ -3,7 +3,7 @@ import {Text,View, FlatList, TouchableOpacity} from 'react-native';
 import VistaAPI from '../../api/VistaAPI';
 import Loader from '../../components/Helpers/loader';
 import { withNavigation } from 'react-navigation';
-
+import {styles} from "../../components/Styles";
 class ListaProduto extends Component {
 
     constructor(props){
@@ -40,9 +40,8 @@ class ListaProduto extends Component {
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
-        
-        console.log(responseJson);
-        this.setState({
+
+      this.setState({
             produtos: responseJson,
             isLoading: false
         })
@@ -61,7 +60,6 @@ class ListaProduto extends Component {
   }
 
   navigate(params){
-    console.dir(this.props);
     this.props._closeModal();
     this.props.navigation.navigate('AdicionaProduto', params);
   }
@@ -74,9 +72,10 @@ class ListaProduto extends Component {
         } else {
             return(
                 <FlatList
-                   
+                    styles={styles.list}
                     keyExtractor={(item, index) => index.toString()}
                     data={this.state.produtos}
+                    activeOpacity={0.9}
                     renderItem={({item}) => {
                     const params = {
                         produto: item
@@ -84,14 +83,7 @@ class ListaProduto extends Component {
 
                     return(
                         <TouchableOpacity 
-                        style={
-                            {padding:10, 
-                            marginBottom: 5,
-                            marginTop: 5, 
-                            alignItems:"center" ,
-                            elevation:1, 
-                            backgroundColor: "#B0BEC5"
-                           }} onPress={ () => this.navigate(params)}  ><Text style={{color: "#263238"}}>{item.produto_descricao}</Text></TouchableOpacity>
+                        style={styles.listItem} onPress={ () => this.navigate(params)}  ><Text style={styles.text}>{item.produto_descricao}</Text></TouchableOpacity>
                     )
                 }}
               />

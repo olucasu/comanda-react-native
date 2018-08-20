@@ -60,6 +60,9 @@ export default class MesaDetails extends Component {
     }
   }
   
+
+
+
   componentDidMount () {
     this.fetchData();
   }
@@ -67,6 +70,8 @@ export default class MesaDetails extends Component {
   _updateMesa(){
     this.fetchData();
   }
+
+
 
   render () {
     if(this.state.isLoading) {
@@ -76,15 +81,12 @@ export default class MesaDetails extends Component {
     } else {
       return(
         <Container style={styles.container}>
-            <Content style={styles.content}>
-              <H3 style={styles.contentTitle}>Consumo</H3>
-              <Extrato extrato={this.state.extrato} />
-            </Content>
-
-            <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={()=> this.props.navigation.navigate('Pedidos', this.state)}>
-                <Text style={styles.buttonLightText}>Adicionar Pedido</Text>
-            </TouchableOpacity>
-          
+            <Extrato extrato={this.state.extrato} />
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={()=> this.props.navigation.navigate('Pedidos', this.state)}>
+                    <Text style={styles.buttonLightText}>Adicionar Item</Text>
+                </TouchableOpacity>
+            </View>
         </Container>
       )
     }

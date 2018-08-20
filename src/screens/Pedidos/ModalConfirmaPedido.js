@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Text,View,TouchableOpacity, StatusBar, FlatList, Button} from 'react-native';
+import {Text,View,TouchableOpacity, StatusBar, FlatList} from 'react-native';
 import Modal from 'react-native-modal';
+import {styles} from '../../components/Styles';
+import Pedido from './Pedido';
 
 export default class ModalConfirmaPedido extends Component {
 
@@ -11,8 +13,23 @@ export default class ModalConfirmaPedido extends Component {
     _closeModal = () =>
         this.props.modalIsVisible =  false
 
+
+    _enviarPedidoButton = () =>{
+        if(this.props.pedido.length > 0) {
+            return(
+                <TouchableOpacity  activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]}onPress={ () => { this.props._closeModal() ;this.props._enviarPedido() } }>
+                <Text style={styles.buttonLightText}>
+                    Enviar Pedido
+                </Text>
+             </TouchableOpacity>
+            )
+        }
+   
+    }
+
     render(){
         this.state.isVisible = this.props.modalIsVisible;
+
         return(
             <View style={{ flex: 1 }}>
         
@@ -22,23 +39,17 @@ export default class ModalConfirmaPedido extends Component {
                         barStyle="dark-content"
                     />
                     <View style={{ flex: 1 }}>
-                        <Text>Pedido</Text>
 
-                          <FlatList
-                            keyExtractor={(item, index) => index.toString()}
-                            data={this.props.pedido}
-                            renderItem={({item}) => {
-                                
-                                console.log(item);
-                                return(
-                                    <TouchableOpacity><Text style={{padding:20, backgroundColor:"#eee",fontSize:18 }}>{item.descricao}</Text></TouchableOpacity>
-                                )
-                            }}
-                        />
+                        <Pedido pedido={this.props.pedido} />
 
-                        <Button title="Voltar para a Lista"  style={{backgroundColor:'#eee'}} onPress={this.props._closeModal} />
-                        <Button title="Enviar Pedido"  onPress={ () => { this.props._closeModal() ;this.props._enviarPedido() } } />
-
+                        <View style={[styles.buttonContainer, styles.buttonContainerRow]}>
+                            <TouchableOpacity  activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={this.props._closeModal}>
+                                <Text style={styles.buttonLightText}>
+                                    Voltar
+                                </Text>
+                            </TouchableOpacity>
+                            {this._enviarPedidoButton()}
+                        </View>
                              
                     </View>
                 </Modal>

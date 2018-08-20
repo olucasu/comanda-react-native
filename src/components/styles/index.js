@@ -2,50 +2,50 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import Colors from './Colors'
 
+
+const regularFont = "Montserrat-Regular";
 const styles = StyleSheet.create({
 
 // Header
     header:{
-        backgroundColor:Colors.defaultBgColor,
+        backgroundColor:Colors.primary.containerColor,
         margin: 0        
     },
     headerIcon: {
-        color:Colors.defaultDarkColor
+        color:Colors.primary.textDark
     },
     headerText: {
-        color:Colors.defaultDarkColor,
-        fontFamily: 'sans-serif-light',
-        fontWeight: '900',
+        color:Colors.primary.textDark,
+        fontFamily: regularFont,
+        fontSize: 18,
+        fontWeight: '400'
     },
 // Tabs
     
     tabBar:{
-        backgroundColor:Colors.defaultBgColor,
+        backgroundColor:Colors.primary.containerColor,
         elevation: 3,
     },
     tab:{
         alignContent:'stretch',
     },
     tabLabel:{
-        fontFamily: 'sans-serif',
-        fontWeight: '900',
-        fontSize: 12,
+        fontFamily: regularFont,
     },
     tabIndicator:{
-        backgroundColor: Colors.primaryColor,
-    
+        backgroundColor: Colors.primary.lightColor
     },
     tabIndicatorLabel:{
-        color: Colors.primaryColor
+        color: Colors.primary.defaultColor,
+        fontFamily: regularFont,
     },
     tableCard:{
-        elevation: 1,
+        elevation: 1.3,
         backgroundColor: "#fff",
         margin: 9,
         paddingVertical:20,
         paddingHorizontal:15,
         borderRadius: 7,
-        borderLeftWidth: 7,
         flexDirection: 'row',
         justifyContent: 'space-between',
         flexBasis: 0,
@@ -64,36 +64,34 @@ const styles = StyleSheet.create({
         borderColor:"#212121"
     },
     tableCardText:{
-        color: Colors.defaultDarkColor ,
-        fontWeight:'400'
+        color: Colors.primary.defaultDarkColor ,
+        fontFamily: regularFont,
     },
     tableCardNumber:{
-        fontWeight:'900',
         color: '#616161',
         fontSize:16,
+        fontFamily: regularFont
     },
     container :{
-     
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: Colors.defaultBgColor
+        justifyContent: 'space-between',
+        backgroundColor: Colors.primary.containerColor,
     },
     content:{
         marginTop:15,
-        paddingLeft:5,
-        paddingRight: 5,
-        paddingBottom: 10,
+        padding:10
     },
     contentTitle: {
-        color:Colors.defaultDarkColor,
-        fontFamily: 'sans-serif-light',
+        color:Colors.primary.defaultDarkColor,
+        fontFamily: regularFont,
     },
     list :{
         marginBottom:15,
         marginTop:15
     },
     listItem:{
-        elevation: 1,
+        elevation: 0.6,
         backgroundColor: "#fff",
         margin: 9,
         padding:10,
@@ -101,9 +99,8 @@ const styles = StyleSheet.create({
     },
     listItemTitle: {
         fontSize: 15,
-        color:Colors.defaultDarkColor,
-        fontFamily: 'sans-serif-light',
-        fontWeight: '600'
+        color:Colors.primary.defaultDarkColor,
+        fontFamily: regularFont,
     },
     alignItemsCenter : {
         alignItems: 'center',
@@ -123,9 +120,24 @@ const styles = StyleSheet.create({
         flexBasis: 0,
         borderRadius: 5
     },
+    categoriaItem :{
+        elevation: 1,
+        marginBottom: 5,
+        marginHorizontal: 15,
+        paddingVertical: 15,
+        paddingHorizontal: 15,
+        backgroundColor: Colors.primary.containerColor
+    },
+    categoriaText :{
+        fontSize: 18
+    },
     text: {
-        color: Colors.defaultDarkColor,
-        fontFamily: 'notoserif'
+        color: Colors.primary.defaultDarkColor,
+        fontFamily: regularFont
+    },
+    lightText:{
+        color: Colors.primary.textOnPrimary,
+        fontFamily: regularFont
     },
     icon: {
         color: '#888',
@@ -136,13 +148,76 @@ const styles = StyleSheet.create({
     button: {
         alignItems:'center' ,
         paddingHorizontal:15,
-        paddingVertical:15
+        paddingVertical:15,
+        borderRadius: 60,
+        marginRight: 15,
+        elevation: 4
     },
     buttonPrimary: {
-        backgroundColor:Colors.primaryColor,
+        backgroundColor:Colors.primary.defaultColor,
     },
     buttonLightText :{
-        color: Colors.defaultLightTextColor
+        color: Colors.primary.textOnPrimary,
+        fontFamily: regularFont
+    },
+
+    viewHeader: {
+        backgroundColor: Colors.primary.lightColor,
+        padding: 15
+    },
+    viewHeaderSearch: {
+        backgroundColor: Colors.primary.containerColor,
+        padding: 15
+    },
+    viewHeaderText:{
+        color: Colors.primary.textOnPrimary,
+        fontFamily: regularFont
+    },
+
+    //Adicionar Produto
+
+    headerAddItem:{
+        backgroundColor: Colors.primary.containerColor,
+    },
+    headerAddItemProduct:{
+        fontSize:24,
+        textAlign: 'center',
+    },  
+    headerAddItemContent : {
+        padding: 15
+    },
+    headerAddItemValue:{
+        textAlign: 'center',
+        fontSize: 24,
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderRadius: 50,
+        marginVertical: 15
+    },
+    buttonContainer: {
+        paddingHorizontal: 60,
+        paddingVertical: 10,
+        backgroundColor: 'rgba(255,255,255,.6)',
+    },
+    buttonContainerRow :{
+        flexDirection: 'row'
+    },
+    containerButtonBottom :{
+        paddingBottom: 60
+    },
+
+
+    // Number Picker Component
+
+    numberPickerContainer:{
+        justifyContent: 'center',
+        flexDirection: 'row'
+    },
+
+    numberPickerItem:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '35%'
     }
 
 });

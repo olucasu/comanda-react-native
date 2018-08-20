@@ -84,16 +84,16 @@ const InsideTabMesa = createMaterialTopTabNavigator(
   {
     initialRouteName: 'Todas',
     lazy:true,
-    removeClippedSubviews: true,
+    animationEnabled: false,
     tabBarOptions: {
       scrollEnabled: true,
-      activeTintColor: Colors.primaryColor,
-      inactiveTintColor: Colors.secondaryColor,
-      style: styles.tabBar,
       pressOpacity: 0.3,
+      activeTintColor: Colors.primary.defaultColor,
+      inactiveTintColor: Colors.primary.textDark,
+      style: styles.tabBar,
       labelStyle: styles.tabLabel,
       indicatorStyle: styles.tabIndicator,
-      pressColor: Colors.primaryColor,
+      pressColor: Colors.primary.defaultColor,
       tabStyle: styles.tab
     },
     initialLayout: {
@@ -101,7 +101,6 @@ const InsideTabMesa = createMaterialTopTabNavigator(
       width: 300
     },
   
-    optimizationsEnabled: true,
   }
 )
 
@@ -121,9 +120,9 @@ const MesasStack = createStackNavigator({
       navigationOptions: ({ navigation }) => ({
         title: navigation.getParam('screenTitle', 'Mesa não identificada'),
         headerStyle: {
-          backgroundColor: Colors.defaultBgColor,
+          backgroundColor: Colors.primary.containerColor,
         },
-        headerTintColor: Colors.primaryColor,
+        headerTintColor: Colors.primary.textDark,
         headerTitleStyle: styles.headerText
       })
     },
@@ -132,9 +131,9 @@ const MesasStack = createStackNavigator({
       navigationOptions: ({ navigation }) => ({
         title: 'Produtos',
         headerStyle: {
-          backgroundColor: Colors.defaultBgColor,
+          backgroundColor: Colors.primary.containerColor,
         },
-        headerTintColor: Colors.primaryColor,
+        headerTintColor: Colors.primary.textDark,
         headerTitleStyle: styles.headerText
       })
     },
@@ -143,9 +142,9 @@ const MesasStack = createStackNavigator({
       navigationOptions:{
         title: "Adicionar Item",
         headerStyle: {
-          backgroundColor: Colors.defaultBgColor,
+          backgroundColor: Colors.primary.containerColor,
         },
-        headerTintColor: Colors.primaryColor,
+        headerTintColor: Colors.primary.textDark,
         headerTitleStyle: styles.headerText
       }
     }

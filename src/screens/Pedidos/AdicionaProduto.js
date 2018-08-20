@@ -1,7 +1,7 @@
 import React, {Component} from  'react';
-import {Text,View, TextInput, Button, ToastAndroid} from 'react-native';
-import {styles} from '../../components/Styles'
-import {Container} from 'native-base'
+import {Text,View, TextInput, Button, ToastAndroid, TouchableOpacity} from 'react-native';
+import {styles, Colors} from '../../components/Styles'
+import {Container, Content} from 'native-base'
 import {NumberPicker} from '../../components/Helpers/uiHelper';
 export default class AdicionaProduto extends Component{
 
@@ -22,7 +22,6 @@ export default class AdicionaProduto extends Component{
 
 
     
-        console.log(produto);
 
         this.adicionaItemPedido = this.adicionaItemPedido.bind(this);
 
@@ -35,24 +34,19 @@ export default class AdicionaProduto extends Component{
         spliStr.map(str=>{
             if(typeof str != 'undefined') {
                 console.log(str);
-                res += str + "/\n" ;
+                res += str.toUpperCase() + "\r\n" ;
             }
          
         })
-
-        console.log(spliStr);
-        console.log(res)
-
         
-        this.setState({complemento: res.toUpperCase()})
+        this.setState({complemento: res})
 
         this.state.complemento = res; 
-
-        console.dir(this.state.complemento);
 
         this.props.screenProps.addItemComanda(this.state);
 
         ToastAndroid.show('Adicionado à lista para envio', ToastAndroid.SHORT);
+
         this.props.navigation.navigate("Pedidos");
 
     }   
@@ -63,20 +57,23 @@ export default class AdicionaProduto extends Component{
 
         return(
             <Container style={styles.container}>
-                <View>
-                    <Text>{this.state.desricao}</Text>
+                <View style={styles.headerAddItem}>
+                    <View style={styles.headerAddItemContent}>
+                        <Text style={[styles.text, styles.headerAddItemProduct]}>{this.state.descricao}</Text>
+                        <Text style={[styles.text, styles.headerAddItemValue]}>R${this.state.vlr_vendido}</Text>
+                    </View>
+                    <NumberPicker onChangeText={text => this.setState({qtde:text})} unity={this.state.unidade}  />
                 </View>
-                <View>
-                    <Text>Preço:R${this.state.pvenda}</Text>
-                    <Text>Em estoque:{this.state.estoque}</Text>
-                    <Text>Código: {this.state.id}</Text>
-                </View>
-                <NumberPicker onChangeText={text => this.setState({qtde:text})} unity={this.state.unidade}  />
-                <View>
-                    <Text>Complemento</Text>
-                    <TextInput placeholder="Complemento" onChangeText={ text => this.setState({complemento:text})} value={this.state.complemento} />
+                <View style={styles.content}>
+                    <TextInput underlineColorAndroid ={Colors.primary.lightColor} placeholder="Complemento" onChangeText={ text => this.setState({complemento:text})} value={this.state.complemento} />
                 </View> 
-                <Button onPress={() => this.adicionaItemPedido()} title="Adicionar item"/>          
+                <View style={[styles.buttonContainer]}>
+                        <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={() => this.adicionaItemPedido()}>
+                            <Text style={styles.buttonLightText}>
+                            Adicionar Item
+                            </Text>
+                        </TouchableOpacity>
+                 </View>
             </Container>
         )
     }

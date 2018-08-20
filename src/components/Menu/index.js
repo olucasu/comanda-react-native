@@ -7,11 +7,10 @@ export default class Menu extends Component {
     const navigation = this.props.navigation;
     return (
           <Header style={styles.header} hasTabs={true}>
-          
-          <Left>
-            <Button onPress={()=>navigation.openDrawer()} transparent>
-              <Icon style={styles.headerIcon} name='menu' />
-            </Button>
+            <Left>
+              <Button onPress={()=>navigation.openDrawer()} transparent>
+                <Icon style={styles.headerIcon} name='menu' />
+              </Button>
           </Left>
           <Body>
             <Title style={styles.headerText}>{navigation.state.routeName}</Title>

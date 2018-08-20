@@ -9,7 +9,7 @@ import {
 import {styles} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
-import { Container } from 'native-base';
+import { Container, Content } from 'native-base';
 import {getIconMesa} from '../../components/Helpers/uiHelper';
 import { withNavigationFocus } from 'react-navigation';
 class Mesas extends Component {
@@ -107,7 +107,7 @@ class Mesas extends Component {
         return (
           <Container>
           <FlatList 
-            style={styles.container}
+            style={styles.content}
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
@@ -137,9 +137,10 @@ class Mesas extends Component {
 
               return (
                 <TouchableOpacity
+                  activeOpacity={0.9}
                   onPress={() =>
                     this.props.navigation.navigate('Details', itemParams)}
-                  style={[styles.tableCard, styles[styleStatus]]}
+                  style={[styles.tableCard]}
                 >
                   <Text style={styles.tableCardText}>{icon}{tipoMesa}</Text>
                   <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.id}</Text>

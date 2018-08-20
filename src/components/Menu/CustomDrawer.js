@@ -6,7 +6,7 @@ import {
   ListItem,
   Icon,
 } from 'native-base'
-import { Colors } from '../../components/Styles'
+import { Colors, styles } from '../../components/Styles'
 
 const items = [
   {
@@ -26,7 +26,7 @@ const items = [
     title: 'Configurações',
     icon: (
       <Icon
-        name='cogs'
+        name='cog'
         type='FontAwesome'
         style={{ fontSize: 18 }}
         color={Colors.secondaryColor}
@@ -46,15 +46,15 @@ const CustomDrawer = props => {
   
   return (
     <ScrollView>
-      <Header  style={{ marginBottom: 15, height: 170}}>
+      <Header style={{ marginBottom: 15, height: 170, backgroundColor:"#fff"}}>
        <StatusBar
-            backgroundColor="transparent"
-            barStyle="dark-content"
+            backgroundColor={Colors.primary.containerColor}
+            barStyle={Colors.primary.barStyle}
         />
         <SafeAreaView style={{  justifyContent: 'center',alignItems: 'center',}}>
         <Image
             style={{ height: 120, width: 120 }}
-            source={require('../../assets/img/vista.png')}
+            source={require('../../../assets/img/vista.png')}
           />
         </SafeAreaView>
        
@@ -87,7 +87,7 @@ const CustomDrawer = props => {
               name='sign-out'
               type='FontAwesome'
               style={{ fontSize: 18 }}
-              color={Colors.secondaryColor}
+              color={Colors.primaryColor}
             />
           </Text>
           <Text style={{ marginLeft: 30 }}>Sair</Text>

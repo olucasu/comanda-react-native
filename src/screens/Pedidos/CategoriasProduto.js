@@ -4,6 +4,7 @@ import Loader from '../../components/Helpers/loader';
 import ListaProduto from './ListaProduto';
 import ModalListaProduto from './ModalListaProduto';
 import VistaAPI from '../../api/VistaAPI';
+import { styles } from '../../components/Styles';
 
 class CategoriasProduto extends Component {
   
@@ -161,14 +162,15 @@ class CategoriasProduto extends Component {
 
       return (
         
-        <ScrollView>
+        <ScrollView >
 
-          <FlatList
+          <FlatList 
+          
             keyExtractor={(item, index) => index.toString()}
             data={this.state.categoriasProduto}
             renderItem={({item}) => {
                 return(
-                    <TouchableOpacity onPress={()=>this.selecionarCategoria(item)}><Text style={{padding:20, backgroundColor:"#eee",fontSize:18 }}>{item.grupo_descricao}</Text></TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.9} style={styles.categoriaItem} onPress={()=>this.selecionarCategoria(item)}><Text style={[styles.text, styles.categoriaText]}>{item.grupo_descricao}</Text></TouchableOpacity>
                 )
             }}
           />

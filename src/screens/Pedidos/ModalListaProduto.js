@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Text,View,TouchableOpacity, StatusBar, FlatList, Button} from 'react-native';
 import Modal from 'react-native-modal';
 import ListaProduto from './ListaProduto';
+import {styles} from '../../components/Styles'
 export default class ModalListaProduto extends Component {
 
     state = {
@@ -19,10 +20,15 @@ export default class ModalListaProduto extends Component {
                         backgroundColor="#000"
                         barStyle="dark-content"
                     />
-                    <View style={{ flex: 1 }}>
-                        <Text>Produtos</Text>
+                    <View style={[styles.container,{borderRadius:50}]}>
                         <ListaProduto _closeModal={this.props._closeModal} modalIsVisible={this.state.isVisible} categoria={this.props.categoriaSelecionada} />
-                        <Button title="Voltar para a Lista"  style={{backgroundColor:'#eee'}} onPress={this.props._closeModal} />
+                        <View style={[styles.buttonContainer]}>
+                            <TouchableOpacity  activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]}  onPress={this.props._closeModal}>
+                                <Text style={styles.buttonLightText}>
+                                    Voltar
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </Modal>
             </View>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import VistaAPI from '../../api/VistaAPI';
-import { ScrollView, Button, View, Alert, ToastAndroid } from 'react-native';
+import { View, Alert, ToastAndroid, TextInput , TouchableOpacity, Text} from 'react-native';
 import Token from '../../auth/Token';
-
+import {styles, Colors} from '../../components/Styles'
 import CategoriasProduto from './CategoriasProduto';
 import { Container } from 'native-base';
 import Loader from '../../components/Helpers/loader';
@@ -15,6 +15,7 @@ export default class Pedido extends Component {
     this.Token = new Token()
 
     this.state = {
+      inputBuscaPorNome:"",
       pedido: [],
       categoriasProduto: [],
       navigate: this.props.navigation.getParam('navigate', 'Não informado'),
@@ -58,13 +59,6 @@ export default class Pedido extends Component {
     console.log(this.state.pedido)
   }
 
-
-  checarPedido(){
-    console.log("Checar Pedido");
-
-  
-  }
-
   async enviarPedido () {
     this.setState({
       isLoading: true
@@ -87,33 +81,37 @@ export default class Pedido extends Component {
 
       let response = await api.post()
 
-      console.log(response)
-
       try {
         if (typeof response !== 'undefined' && response.ok) {
           let responseJson = await response.json()
-          console.log(responseJson)
+
           if (responseJson.vStatusRetorno) {
+            
             updateMesa()
-           
+
             ToastAndroid.show('Pedido Enviado!', ToastAndroid.SHORT);
            
             this.props.navigation.navigate("Pedidos");
 
             this.props.navigation.goBack()
+
           } else {
+
             alert(responseJson.vMesangemRetorno)
+
           }
+
         } else {
-          console.log(response.error)
-          this.setState({ isLoading: false })
+
+          this.setState({ isLoading: false , error: response.error })
+
         }
       } catch (e) {
         console.log(e)
         this.setState({ isLoading: false })
       }
     } else {
-      alert('Pedido Vazio')
+      Alert.alert('Opa', 'O pedido está vazio!');
       this.setState({
         isLoading: false
       })
@@ -134,22 +132,74 @@ export default class Pedido extends Component {
     this.setState({enviarPedidoIsVisible:false})
   }
 
-  inputBuscaPrduto () {
+
+  async buscaProdutoPorNome (key) {
+
+
+    if (key.nativeEvent.key == 'Backspace') return false
+
+
+    const string = this.state.inputBuscaPorNome
+    const api = new VistaAPI()
+
+    // Id Grupo/Id Produto/string Nome do produto  -- :)
+
+    let uri = !isNaN(string) ? '0/' + string : '0/0/' + string.toUpperCase()
+    
+    api.create({ 
+        uri: uri,
+        apiMethod: 'GetProdutos' 
+    })
+
+    if (!isNaN(string) || string.length > 3) {
+     
+      if (string === '') return false
+
+      let response = await api.get()
+
+      if (typeof response !== 'undefined' && response.ok) {
+        let responseJson = await response.json()
+
+        this.setState({isLoading:false})
+        console.log(responseJson);
+      }
+    }
+  }
+
+
+  inputBuscaProduto () {
+    
+   
+
     return (
       <TextInput
-        placeholder='Buscar produto por nome'
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-        onChangeText={nomeProduto => {
-          this.setState({ nomeProduto: nomeProduto })
+        placeholder='Buscar produto por nome ou código'
+        underlineColorAndroid ={Colors.primary.lightColor}
+        onChangeText={inputBuscaPorNome => {
+          this.setState({ inputBuscaPorNome: inputBuscaPorNome })
         }}
         onKeyPress={key => {
           this.buscaProdutoPorNome(key)
         }}
-        value={this.state.nomeProduto}
+        value={this.state.inputBuscaPorNome}
       />
     )
   }
 
+
+  _checarPedidoButton(){
+
+      return(
+        <View style={[styles.buttonContainer]}>
+            <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={() => this._toggleModal()}>
+                <Text style={styles.buttonLightText}>
+                  {this.state.pedido.length > 0 ? "Enviar Pedido" : "Checar Pedido"}
+                </Text>
+            </TouchableOpacity>
+      </View>
+      )
+  
+  }
 
 
   render () {
@@ -159,9 +209,11 @@ export default class Pedido extends Component {
       this.props.screenProps.addItemComanda = this.addItemComanda
       return (
         <Container style={{ flex:1, justifyContent: 'space-between' }}>
+          <View style={styles.viewHeaderSearch}>
+              {this.inputBuscaProduto()}
+          </View>
           <CategoriasProduto />
-          <Button onPress={() => this._toggleModal()} title='Enviar Pedido' />
-          <Button  color="#f50057" onPress={() => this._toggleModal()} title='Checar Pedido' />
+          { this._checarPedidoButton()}
           <ModalConfirmaPedido pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
         </Container>
       )
