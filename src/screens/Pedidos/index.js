@@ -7,6 +7,7 @@ import CategoriasProduto from './CategoriasProduto';
 import { Container } from 'native-base';
 import Loader from '../../components/Helpers/loader';
 import ModalConfirmaPedido from './ModalConfirmaPedido';
+import ListaProduto from './ListaProduto';
 
 
 export default class Pedido extends Component {
@@ -15,7 +16,6 @@ export default class Pedido extends Component {
     this.Token = new Token()
 
     this.state = {
-      inputBuscaPorNome:"",
       pedido: [],
       categoriasProduto: [],
       navigate: this.props.navigation.getParam('navigate', 'Não informado'),
@@ -30,7 +30,10 @@ export default class Pedido extends Component {
         'dataAbertura',
         'Não informado'
       ),
-      enviarPedidoIsVisible: false
+      enviarPedidoIsVisible: false,
+
+      inputBuscaPorNome:false,
+      isFetchingByInputBusca: false,
     }
 
     this._toggleModal = this._toggleModal.bind(this);
@@ -133,54 +136,47 @@ export default class Pedido extends Component {
   }
 
 
-  async buscaProdutoPorNome (key) {
+  buscaProdutoPorNome (key) {
 
+    let string = this.state.inputBuscaPorNome;
 
-    if (key.nativeEvent.key == 'Backspace') return false
+    alert(string);
+    console.dir(this.state);
+  
 
-
-    const string = this.state.inputBuscaPorNome
-    const api = new VistaAPI()
-
-    // Id Grupo/Id Produto/string Nome do produto  -- :)
-
-    let uri = !isNaN(string) ? '0/' + string : '0/0/' + string.toUpperCase()
-    
-    api.create({ 
-        uri: uri,
-        apiMethod: 'GetProdutos' 
-    })
-
-    if (!isNaN(string) || string.length > 3) {
-     
-      if (string === '') return false
-
-      let response = await api.get()
-
-      if (typeof response !== 'undefined' && response.ok) {
-        let responseJson = await response.json()
-
-        this.setState({isLoading:false})
-        console.log(responseJson);
-      }
+    if(string == '' || string.length <= 0) {
+      this.setState({ isFetchingByInputBusca: false })
+      console.log('STRING VAZIA!!!!')
     }
+
+    // if (key.nativeEvent.key == 'Backspace') return false
+   
+
+                // Id Grupo/Id Produto/string Nome do produto  -- :)
+    // let uri = !isNaN(string) ? '0/' + string : '0/0/' + string.toUpperCase()
+    
+    // if (!isNaN(string) || string.length >= 3) {
+
+    //   this.setState({ isFetchingByInputBusca: true })
+    //   this.setState({uriInputBusca: uri})
+
+    // }
   }
 
 
   inputBuscaProduto () {
-    
-   
 
     return (
       <TextInput
         placeholder='Buscar produto por nome ou código'
         underlineColorAndroid ={Colors.primary.lightColor}
-        onChangeText={inputBuscaPorNome => {
-          this.setState({ inputBuscaPorNome: inputBuscaPorNome })
-        }}
-        onKeyPress={key => {
+        onKeyPress={ (key) => {
           this.buscaProdutoPorNome(key)
         }}
+        onChangeText={(inputBuscaPorNome) => {
+          this.setState({ inputBuscaPorNome: inputBuscaPorNome ? inputBuscaPorNome : false })
+        }}
+      
         value={this.state.inputBuscaPorNome}
       />
     )
@@ -190,7 +186,7 @@ export default class Pedido extends Component {
   _checarPedidoButton(){
 
       return(
-        <View style={[styles.buttonContainer]}>
+        <View style={styles.buttonContainer}>
             <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={() => this._toggleModal()}>
                 <Text style={styles.buttonLightText}>
                   {this.state.pedido.length > 0 ? "Enviar Pedido" : "Checar Pedido"}
@@ -207,16 +203,28 @@ export default class Pedido extends Component {
       return <Loader />
     } else {
       this.props.screenProps.addItemComanda = this.addItemComanda
-      return (
-        <Container style={{ flex:1, justifyContent: 'space-between' }}>
-          <View style={styles.viewHeaderSearch}>
-              {this.inputBuscaProduto()}
-          </View>
-          <CategoriasProduto />
-          { this._checarPedidoButton()}
-          <ModalConfirmaPedido pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
-        </Container>
-      )
+      if( ! this.state.isFetchingByInputBusca)  {
+        return (
+          <Container style={styles.container}>
+            <View style={styles.viewHeaderSearch}>
+                {this.inputBuscaProduto()}
+            </View>
+            <CategoriasProduto />
+            { this._checarPedidoButton()}
+            <ModalConfirmaPedido pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
+          </Container>
+        )
+      } else {
+        return(
+          <Container style={styles.container}>
+            <View style={styles.viewHeaderSearch}>
+                {this.inputBuscaProduto()}
+            </View>
+            <ListaProduto />
+          </Container>
+        )
+      }
+     
     }
   }
 }

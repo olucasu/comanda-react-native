@@ -69,7 +69,7 @@ const CustomDrawer = props => {
               onPress={() => props.navigation.navigate(item.routeName)}
             >
               <Text> {item.icon}</Text>
-              <Text style={{ marginLeft: 30 }}>{item.title}</Text>
+              <Text style={[{ marginLeft: 30 }, styles.text]}>{item.title}</Text>
             </ListItem>
           )}
           keyExtractor={item => item.title}
@@ -90,7 +90,7 @@ const CustomDrawer = props => {
               color={Colors.primaryColor}
             />
           </Text>
-          <Text style={{ marginLeft: 30 }}>Sair</Text>
+          <Text style={[{ marginLeft: 30 },styles.text]}>Sair</Text>
         </ListItem>
       </Content>
     </ScrollView>

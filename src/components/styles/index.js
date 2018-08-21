@@ -4,6 +4,12 @@ import Colors from './Colors'
 
 
 const regularFont = "Montserrat-Regular";
+const semiBoldFont = "Montserrat-SemiBold";
+
+const boldFont = "Montserrat-Bold";
+const blackFont = "Montserrat-Black";
+
+
 const styles = StyleSheet.create({
 
 // Header
@@ -11,9 +17,11 @@ const styles = StyleSheet.create({
         backgroundColor:Colors.primary.containerColor,
         margin: 0        
     },
+   
     headerIcon: {
         color:Colors.primary.textDark
     },
+   
     headerText: {
         color:Colors.primary.textDark,
         fontFamily: regularFont,
@@ -26,91 +34,115 @@ const styles = StyleSheet.create({
         backgroundColor:Colors.primary.containerColor,
         elevation: 3,
     },
+    
     tab:{
         alignContent:'stretch',
     },
+   
     tabLabel:{
         fontFamily: regularFont,
     },
+   
     tabIndicator:{
         backgroundColor: Colors.primary.lightColor
     },
+    
     tabIndicatorLabel:{
         color: Colors.primary.defaultColor,
         fontFamily: regularFont,
     },
+   
     tableCard:{
         elevation: 1.3,
         backgroundColor: "#fff",
-        margin: 9,
+        marginVertical: 10,
         paddingVertical:20,
         paddingHorizontal:15,
         borderRadius: 7,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        flexBasis: 0,
-        flexGrow: 1,
+        flex:1,
+        margin: 10
     },
+   
     tableCardLivre:{
         borderColor: '#4CAF50'
     },
+   
     tableCardOcupado:{
        borderColor: '#FF9800'
     },
+   
     tableCardConta:{
        borderColor: '#03A9F4'
     },
+    
     tableCardReservado:{
         borderColor:"#212121"
     },
+   
     tableCardText:{
         color: Colors.primary.defaultDarkColor ,
         fontFamily: regularFont,
     },
+    
     tableCardNumber:{
         color: '#616161',
         fontSize:16,
         fontFamily: regularFont
     },
+    
     container :{
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: Colors.primary.containerColor,
+        margin:0,
+        padding:0
     },
+    
     content:{
         marginTop:15,
         padding:10
     },
+    
     contentTitle: {
         color:Colors.primary.defaultDarkColor,
         fontFamily: regularFont,
     },
+   
     list :{
         marginBottom:15,
         marginTop:15
     },
+    
     listItem:{
         elevation: 0.6,
         backgroundColor: "#fff",
         margin: 9,
         padding:10,
-        borderRadius: 7
+        borderRadius: 7,
+        flex:1,
     },
+   
     listItemTitle: {
         fontSize: 15,
         color:Colors.primary.defaultDarkColor,
         fontFamily: regularFont,
     },
+   
     alignItemsCenter : {
         alignItems: 'center',
+        justifyContent: 'center',
         flex:1
     },
+   
     horizontal: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         padding: 10
     },
+    
     item: {
         alignItems: "center",
         backgroundColor: "#fff",
@@ -120,6 +152,7 @@ const styles = StyleSheet.create({
         flexBasis: 0,
         borderRadius: 5
     },
+    
     categoriaItem :{
         elevation: 1,
         marginBottom: 5,
@@ -128,13 +161,24 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         backgroundColor: Colors.primary.containerColor
     },
+    
     categoriaText :{
         fontSize: 18
     },
+    
     text: {
         color: Colors.primary.defaultDarkColor,
         fontFamily: regularFont
     },
+    
+    fontBold : {
+        fontFamily: boldFont
+    },
+
+    fontSemiBold: {
+        fontFamily: semiBoldFont
+    },
+    
     lightText:{
         color: Colors.primary.textOnPrimary,
         fontFamily: regularFont
@@ -143,6 +187,11 @@ const styles = StyleSheet.create({
         color: '#888',
         fontSize: 20
     },
+    iconHeroMessage:{
+        color: Colors.primary.defaultColor,
+        fontSize: 84,
+        marginBottom: 15
+    },
 
     //Buttons
     button: {
@@ -150,14 +199,23 @@ const styles = StyleSheet.create({
         paddingHorizontal:15,
         paddingVertical:15,
         borderRadius: 60,
-        marginRight: 15,
-        elevation: 4
+        elevation: 4,
+        flex: 1,
     },
     buttonPrimary: {
         backgroundColor:Colors.primary.defaultColor,
     },
+
+    buttonSecondary: {
+        backgroundColor:Colors.secondary.defaultColor,
+    },
+
     buttonLightText :{
         color: Colors.primary.textOnPrimary,
+        fontFamily: regularFont
+    },
+    buttonDarkText :{
+        color: Colors.primary.textDark,
         fontFamily: regularFont
     },
 
@@ -182,6 +240,7 @@ const styles = StyleSheet.create({
     headerAddItemProduct:{
         fontSize:24,
         textAlign: 'center',
+        fontFamily: semiBoldFont
     },  
     headerAddItemContent : {
         padding: 15
@@ -191,16 +250,15 @@ const styles = StyleSheet.create({
         fontSize: 24,
         paddingHorizontal: 15,
         paddingVertical: 10,
-        borderRadius: 50,
+        borderRadius: 100,
         marginVertical: 15
     },
     buttonContainer: {
-        paddingHorizontal: 60,
+        paddingHorizontal: 30,
         paddingVertical: 10,
         backgroundColor: 'rgba(255,255,255,.6)',
-    },
-    buttonContainerRow :{
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     containerButtonBottom :{
         paddingBottom: 60
@@ -210,14 +268,43 @@ const styles = StyleSheet.create({
     // Number Picker Component
 
     numberPickerContainer:{
-        justifyContent: 'center',
         flexDirection: 'row'
     },
 
     numberPickerItem:{
         justifyContent: 'center',
         alignItems: 'center',
-        width: '35%'
+        flex:1,
+    },
+
+    numberPickerButton:{
+        borderRadius: 50,
+        alignItems:'center',
+        justifyContent:'center',
+        width:60,
+        height:60,
+        borderColor: '#fefefe',
+        borderWidth: 1,
+        elevation: 1,
+        padding: 0
+    },
+
+    numberPickerIcon:{
+        margin: 0,
+        padding:0,
+        fontSize: 32
+    },
+    numberPickerInput : {
+        alignItems:'center',
+        justifyContent:'center',
+        flex:1,
+        fontSize: 32,
+        width: 100,
+        textAlign:'center',
+        color: Colors.primary.defaultColor,
+        fontFamily: regularFont,
+        padding:0,
+        margin: 0
     }
 
 });

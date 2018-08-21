@@ -9,12 +9,12 @@ class ListaProduto extends Component {
     constructor(props){
         super(props)
 
+
         this.state = {
             isLoading: false,
-            isActive: props.isActive,
-            produtos: []
+            produtos: [],
+            uri:'',
         }
-
     
     }
     
@@ -24,15 +24,21 @@ class ListaProduto extends Component {
     })
 
 
-    let categoriaId = this.props.categoria.id_grupo;
-
     const api = new VistaAPI()
-    if(categoriaId == 1) 
-        categoriaId = "";
+
+    if(this.props.categoria) {
+        let categoriaId = this.props.categoria.id_grupo;
+
+        if(categoriaId == 1) 
+            categoriaId = "";
+        
+         this.setState({uri:categoriaId})
+    
+    }
 
     api.create({
-      apiMethod: 'GetProdutos',
-      uri: categoriaId
+        apiMethod: 'GetProdutos',
+        uri: this.state.uri
     })
 
     let response = await api.get()
@@ -56,7 +62,7 @@ class ListaProduto extends Component {
 
   componentDidMount() {
     this.fetchData()
-
+   
   }
 
   navigate(params){
@@ -64,8 +70,8 @@ class ListaProduto extends Component {
     this.props.navigation.navigate('AdicionaProduto', params);
   }
 
-  
   render(){
+
 
         if(this.state.isLoading){
             return(<Loader />)

@@ -27,6 +27,8 @@ export default class ModalConfirmaPedido extends Component {
    
     }
 
+  
+
     render(){
         this.state.isVisible = this.props.modalIsVisible;
 
@@ -38,19 +40,14 @@ export default class ModalConfirmaPedido extends Component {
                         backgroundColor="#000"
                         barStyle="dark-content"
                     />
-                    <View style={{ flex: 1 }}>
-
-                        <Pedido pedido={this.props.pedido} />
-
-                        <View style={[styles.buttonContainer, styles.buttonContainerRow]}>
-                            <TouchableOpacity  activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={this.props._closeModal}>
-                                <Text style={styles.buttonLightText}>
-                                    Voltar
-                                </Text>
-                            </TouchableOpacity>
-                            {this._enviarPedidoButton()}
-                        </View>
-                             
+                    <Pedido pedido={this.props.pedido} />
+                    <View style={[styles.buttonContainer, styles.buttonContainerRow]}>
+                        <TouchableOpacity  activeOpacity={0.9} style={[styles.button,styles.buttonSecondary]} onPress={this.props._closeModal}>
+                            <Text style={styles.buttonDarkText}>
+                                Voltar
+                            </Text>
+                        </TouchableOpacity>
+                        {this._enviarPedidoButton()}
                     </View>
                 </Modal>
             </View>

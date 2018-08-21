@@ -28,20 +28,23 @@ export default class AdicionaProduto extends Component{
     }
 
     adicionaItemPedido(){
-        const spliStr = this.state.complemento.split(" ");
 
-        let res ="";
-        spliStr.map(str=>{
-            if(typeof str != 'undefined') {
-                console.log(str);
-                res += str.toUpperCase() + "\r\n" ;
-            }
-         
-        })
-        
-        this.setState({complemento: res})
+        if(this.state.complemento != "") {
+            const spliStr = this.state.complemento.split(" ");
 
-        this.state.complemento = res; 
+            let res ="";
+            spliStr.map(str=>{
+                if(typeof str != 'undefined') {
+                    console.log(str);
+                    res += str.toUpperCase() + "\r\n" ;
+                }
+             
+            })
+            
+            this.setState({complemento: res})
+    
+            this.state.complemento = res; 
+        }
 
         this.props.screenProps.addItemComanda(this.state);
 
@@ -52,21 +55,19 @@ export default class AdicionaProduto extends Component{
     }   
 
     render(){
-        
-  
-
         return(
             <Container style={styles.container}>
                 <View style={styles.headerAddItem}>
                     <View style={styles.headerAddItemContent}>
-                        <Text style={[styles.text, styles.headerAddItemProduct]}>{this.state.descricao}</Text>
+                        <Text style={ styles.headerAddItemProduct}>{this.state.descricao}</Text>
                         <Text style={[styles.text, styles.headerAddItemValue]}>R${this.state.vlr_vendido}</Text>
                     </View>
                     <NumberPicker onChangeText={text => this.setState({qtde:text})} unity={this.state.unidade}  />
+                    <View style={styles.content}>
+                        <TextInput underlineColorAndroid ={Colors.primary.lightColor} placeholder="Complemento" onChangeText={ text => this.setState({complemento:text})} value={this.state.complemento} />
+                    </View> 
                 </View>
-                <View style={styles.content}>
-                    <TextInput underlineColorAndroid ={Colors.primary.lightColor} placeholder="Complemento" onChangeText={ text => this.setState({complemento:text})} value={this.state.complemento} />
-                </View> 
+            
                 <View style={[styles.buttonContainer]}>
                         <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={() => this.adicionaItemPedido()}>
                             <Text style={styles.buttonLightText}>

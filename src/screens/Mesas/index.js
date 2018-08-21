@@ -11,7 +11,7 @@ import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
 import { Container, Content } from 'native-base';
 import {getIconMesa} from '../../components/Helpers/uiHelper';
-import { withNavigationFocus } from 'react-navigation';
+
 class Mesas extends Component {
   
 
@@ -102,52 +102,49 @@ class Mesas extends Component {
       )
     } else {
       if (!this.state.error) {
-
-        
         return (
-          <Container>
-          <FlatList 
-            style={styles.content}
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh.bind(this)}
+          <Container style={styles.container}>
+              <FlatList 
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh.bind(this)}
+                  />
+                }
+                keyExtractor={(item, index) => index}
+                data={tables}
+                numColumns={2}
+                renderItem={({ item }) => {
+
+                  const styleStatus = this.getStatusStyle(item.status_descricao)
+                  const tipoMesa = item.tipo_mesa_cartao === 'MESA'? 'Mesa' : 'Cartão';   
+                  let icon = getIconMesa(item.status_descricao);
+
+                  const navigate = this.props.navigation.navigate;
+
+                  const itemParams = {
+                      id: item.id,
+                      status: item.status_descricao,
+                      idVenda: item.id_venda,
+                      dataAbertura: item.ab_data,
+                      screenTitle: tipoMesa + ' ' + item.id,
+                      navigate : navigate
+                  }
+
+
+                  return (
+                    <TouchableOpacity
+                      activeOpacity={0.9}
+                      onPress={() =>
+                        this.props.navigation.navigate('Details', itemParams)}
+                      style={[styles.tableCard]}
+                    >
+                      <Text style={styles.tableCardText}>{icon}{tipoMesa}</Text>
+                      <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.id}</Text>
+                    </TouchableOpacity>
+                  )
+                }}
               />
-            }
-            keyExtractor={(item, index) => index}
-            data={tables}
-            numColumns={2}
-            renderItem={({ item }) => {
-
-              const styleStatus = this.getStatusStyle(item.status_descricao)
-              const tipoMesa = item.tipo_mesa_cartao === 'MESA'? 'Mesa' : 'Cartão';   
-              let icon = getIconMesa(item.status_descricao);
-
-              const navigate = this.props.navigation.navigate;
-
-              const itemParams = {
-                  id: item.id,
-                  status: item.status_descricao,
-                  idVenda: item.id_venda,
-                  dataAbertura: item.ab_data,
-                  screenTitle: tipoMesa + ' ' + item.id,
-                  navigate : navigate
-              }
-
-
-              return (
-                <TouchableOpacity
-                  activeOpacity={0.9}
-                  onPress={() =>
-                    this.props.navigation.navigate('Details', itemParams)}
-                  style={[styles.tableCard]}
-                >
-                  <Text style={styles.tableCardText}>{icon}{tipoMesa}</Text>
-                  <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.id}</Text>
-                </TouchableOpacity>
-              )
-            }}
-          />
 
           </Container>
         )
@@ -169,4 +166,4 @@ class Mesas extends Component {
     }
   }
 }
-export default withNavigationFocus(Mesas);
+export default Mesas;

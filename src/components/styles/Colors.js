@@ -22,7 +22,6 @@ class Colors {
 		this.secondary = {
 			textOnSecondary:  "#000000",
 			defaultColor: '#ffab00'
-
 		}
 	}
 }

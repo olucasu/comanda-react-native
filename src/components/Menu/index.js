@@ -16,9 +16,7 @@ export default class Menu extends Component {
             <Title style={styles.headerText}>{navigation.state.routeName}</Title>
           </Body>
           <Right>
-            <Button transparent>
-              <Icon style={styles.headerIcon} name='more' />
-            </Button>
+          
           </Right>
         
         </Header>

@@ -1,25 +1,34 @@
 import React , {Component} from 'react';
-import {FlatList, Text,View, TouchableOpacity} from 'react-native';
+import {FlatList, Text,View, ScrollView, RefreshControl} from 'react-native';
 import { styles } from '../Styles';
-import { ListItem } from 'native-base';
+import EmptyResult from '../../components/Helpers/EmptyResult';
 
 export default class Extrato extends Component{
-    
-    _getValorExtrato(){
-        let valor = 0
-        this.props.extrato.map(item =>  valor += item.total_item )
-        return parseFloat(Math.round( valor * 100) / 100).toFixed(2)
-       
+   
+   
+    state={
+        refreshing:false
     }
 
+    _onRefresh () {
+        this.setState({
+          refreshing: true
+        })
+        this.forceUpdate()
+    }
+   
     render(){
         if(this.props.extrato != null) {
             return(
-                <View style={styles.container}>
-                    <View style={styles.viewHeader}>
-                        <Text style={styles.viewHeaderText} > Comanda | Total: R$ {this._getValorExtrato()}</Text>
-                    </View>
+                <ScrollView>
+                
                     <FlatList 
+                       refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />
+                        }
                     style={styles.list}
                     keyExtractor={(item, index) => index.toString()}
                     data={this.props.extrato}
@@ -28,22 +37,24 @@ export default class Extrato extends Component{
 
                     return (
                         <View style={styles.listItem}>
-                            <Text style={[styles.listItemTitle, styles.text]}>{item.descricao}</Text>
-                            {/* <Text style={styles.text}>Código: {item.id}</Text> */}
-                            <Text style={styles.text}>Qtd: {item.qtde_item}</Text>
-                            <Text style={styles.text}>Valor: R${item.total_item}</Text>
+                            <View style={{flex:1 }}>
+                                <Text style={[styles.listItemTitle, styles.fontSemiBold]}>{item.id_produto} - {item.descricao}</Text>
+                                {/* <Text style={styles.text}>Código: </Text> */}
+                                <Text style={styles.text}>Qtd: {item.qtde_item}</Text>
+                            </View>
+                            <View style={{flex:1,justifyContent:'flex-end', flexDirection: 'row' }}>
+                                 <Text style={styles.text}>Subtotal: R${item.total_item}</Text>
+                            </View>
                         </View>
                     )
                     }}
                     />
-                </View>
+                </ScrollView>
             
             )
         } else {
             return(
-                <View style={[styles.container, styles.horizontal]}>
-                    <Text>Nenhum Consumo</Text>
-                </View>
+                <EmptyResult message="Não há consumo." />
             )
         }
     }

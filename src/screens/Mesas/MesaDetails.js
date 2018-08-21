@@ -71,6 +71,19 @@ export default class MesaDetails extends Component {
     this.fetchData();
   }
 
+  _getHeaderExtrato(){
+    let valor = 0
+    if(this.state.extrato != null) {
+      this.state.extrato.map(item =>  valor += (item.total_item * item.qtde_item) )
+
+      const subTotal = parseFloat(Math.round( valor * 100) / 100).toFixed(2)
+      return(
+        <View style={styles.viewHeader}>
+            <Text style={styles.viewHeaderText} > Comanda | Total: R$ {subTotal}</Text>
+         </View>
+      )
+    }
+  }
 
 
   render () {
@@ -81,6 +94,7 @@ export default class MesaDetails extends Component {
     } else {
       return(
         <Container style={styles.container}>
+            {this._getHeaderExtrato()}
             <Extrato extrato={this.state.extrato} />
             <View style={styles.buttonContainer}>
                 <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={()=> this.props.navigation.navigate('Pedidos', this.state)}>
