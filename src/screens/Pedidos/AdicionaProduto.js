@@ -35,7 +35,6 @@ export default class AdicionaProduto extends Component{
             let res ="";
             spliStr.map(str=>{
                 if(typeof str != 'undefined') {
-                    console.log(str);
                     res += str.toUpperCase() + "\r\n" ;
                 }
              

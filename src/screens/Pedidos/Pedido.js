@@ -4,7 +4,6 @@ import { styles } from '../../components/Styles'
 import EmptyResult from '../../components/Helpers/EmptyResult'
 
 const hasComplemento = complemento => {
-    console.log(complemento)
   if (complemento != ""  &&  complemento != null) {
       
     return <Text style={styles.text}> Complemento: {complemento}</Text>

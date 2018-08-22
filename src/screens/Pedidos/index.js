@@ -32,14 +32,14 @@ export default class Pedido extends Component {
       ),
       enviarPedidoIsVisible: false,
 
-      inputBuscaPorNome:false,
+      inputBuscaPorNome:"",
       isFetchingByInputBusca: false,
     }
 
     this._toggleModal = this._toggleModal.bind(this);
     this._closeModal = this._closeModal.bind(this);
     this.enviarPedido = this.enviarPedido.bind(this);
-
+    this.buscaProdutoPorNome  = this.buscaProdutoPorNome.bind(this)
     this.addItemComanda = this.addItemComanda.bind(this)
   }
 
@@ -58,8 +58,6 @@ export default class Pedido extends Component {
     item.vlr_vendido      = parseFloat(item.vlr_vendido)
 
     this.state.pedido.push(item)
-
-    console.log(this.state.pedido)
   }
 
   async enviarPedido () {
@@ -87,7 +85,6 @@ export default class Pedido extends Component {
       try {
         if (typeof response !== 'undefined' && response.ok) {
           let responseJson = await response.json()
-
           if (responseJson.vStatusRetorno) {
             
             updateMesa()
@@ -119,12 +116,6 @@ export default class Pedido extends Component {
         isLoading: false
       })
     }
- 
- 
-  
-  
-  
-    
   }
 
   _toggleModal(){
@@ -136,47 +127,28 @@ export default class Pedido extends Component {
   }
 
 
-  buscaProdutoPorNome (key) {
+  buscaProdutoPorNome (string) {
 
-    let string = this.state.inputBuscaPorNome;
+    const myString = this.state.inputBuscaPorNome; 
 
-    alert(string);
-    console.dir(this.state);
-  
-
-    if(string == '' || string.length <= 0) {
-      this.setState({ isFetchingByInputBusca: false })
-      console.log('STRING VAZIA!!!!')
+    if(myString == "" || myString.length <= 0) {
+      return this.setState({  isFetchingByInputBusca: false})
     }
 
-    // if (key.nativeEvent.key == 'Backspace') return false
-   
+    this.setState({ isFetchingByInputBusca: true })
 
-                // Id Grupo/Id Produto/string Nome do produto  -- :)
-    // let uri = !isNaN(string) ? '0/' + string : '0/0/' + string.toUpperCase()
-    
-    // if (!isNaN(string) || string.length >= 3) {
-
-    //   this.setState({ isFetchingByInputBusca: true })
-    //   this.setState({uriInputBusca: uri})
-
-    // }
   }
 
 
-  inputBuscaProduto () {
 
+  inputBuscaProduto () {
     return (
       <TextInput
         placeholder='Buscar produto por nome ou código'
         underlineColorAndroid ={Colors.primary.lightColor}
-        onKeyPress={ (key) => {
-          this.buscaProdutoPorNome(key)
-        }}
         onChangeText={(inputBuscaPorNome) => {
-          this.setState({ inputBuscaPorNome: inputBuscaPorNome ? inputBuscaPorNome : false })
+          this.setState({inputBuscaPorNome:inputBuscaPorNome}, this.buscaProdutoPorNome)
         }}
-      
         value={this.state.inputBuscaPorNome}
       />
     )
@@ -199,6 +171,7 @@ export default class Pedido extends Component {
 
 
   render () {
+
     if (this.state.isLoading) {
       return <Loader />
     } else {
@@ -220,7 +193,7 @@ export default class Pedido extends Component {
             <View style={styles.viewHeaderSearch}>
                 {this.inputBuscaProduto()}
             </View>
-            <ListaProduto />
+            <ListaProduto uriInputBusca={this.state.inputBuscaPorNome} />
           </Container>
         )
       }

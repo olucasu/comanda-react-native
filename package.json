@@ -7,8 +7,10 @@
     "test": "jest"
   },
   "rnpm": {
-    "assets": ["./assets/fonts/"]
- },
+    "assets": [
+      "./assets/fonts/"
+    ]
+  },
   "dependencies": {
     "native-base": "^2.7.2",
     "pg": "^7.4.3",
