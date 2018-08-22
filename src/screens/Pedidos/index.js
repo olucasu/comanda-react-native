@@ -34,6 +34,7 @@ export default class Pedido extends Component {
 
       inputBuscaPorNome:"",
       isFetchingByInputBusca: false,
+      queryForSearch:""
     }
 
     this._toggleModal = this._toggleModal.bind(this);
@@ -127,27 +128,42 @@ export default class Pedido extends Component {
   }
 
 
-  buscaProdutoPorNome (string) {
-
-    const myString = this.state.inputBuscaPorNome; 
-
-    if(myString == "" || myString.length <= 0) {
-      return this.setState({  isFetchingByInputBusca: false})
+  buscaProdutoPorNome (stringEmpty, string) {
+    
+    if(stringEmpty) {
+      return this.setState({ inputBuscaPorNome: "",isFetchingByInputBusca: false})
     }
 
-    this.setState({ isFetchingByInputBusca: true })
+    if( this.state.key == "Backspace") {
+       return this.setState({inputBuscaPorNome:string})
+    }
 
+    this.setState( () => {
+      return { inputBuscaPorNome:string}
+    }, this.startSearch);
   }
 
+  startSearch(){
 
+    const thenSearch = () => {
+      this.setState({isFetchingByInputBusca:true});
+    }
+
+    console.log(this.state.inputBuscaPorNome);
+    
+    return this.setState({queryForSearch:this.state.inputBuscaPorNome}, thenSearch ) 
+  }
 
   inputBuscaProduto () {
     return (
       <TextInput
         placeholder='Buscar produto por nome ou código'
         underlineColorAndroid ={Colors.primary.lightColor}
+        onKeyPress={(e)=> {  this.state.key = e.nativeEvent.key }}
         onChangeText={(inputBuscaPorNome) => {
-          this.setState({inputBuscaPorNome:inputBuscaPorNome}, this.buscaProdutoPorNome)
+          if( inputBuscaPorNome.length <= 0) return this.buscaProdutoPorNome(true)
+            
+            this.buscaProdutoPorNome(false,inputBuscaPorNome)
         }}
         value={this.state.inputBuscaPorNome}
       />
@@ -193,7 +209,7 @@ export default class Pedido extends Component {
             <View style={styles.viewHeaderSearch}>
                 {this.inputBuscaProduto()}
             </View>
-            <ListaProduto uriInputBusca={this.state.inputBuscaPorNome} />
+            <ListaProduto uriInputBusca={this.state.queryForSearch} />
           </Container>
         )
       }

@@ -23,7 +23,6 @@ class ListaProduto extends Component {
   isNotLoading(){
     this.setState({isLoading:false})
     this.forceUpdate();
-
   }
 
   async fetchData () {
@@ -60,7 +59,6 @@ class ListaProduto extends Component {
     })
 
     let response = await api.get()
-
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()

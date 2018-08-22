@@ -13,16 +13,12 @@ class CategoriasProduto extends Component {
 
     this.state ={
       isLoading: false,
-      categoriasArr:[],
       categoriasProduto:[],
       categoriaSelecionada: "",
-      buscandoProduto: false,
       listarProdutosIsVisible: false
     }
 
-    this.triggerBuscarProduto = this.triggerBuscarProduto.bind(this);
     this._renderContent = this._renderContent.bind(this);
-
     this._closeModal = this._closeModal.bind(this);
   } 
 
@@ -69,20 +65,8 @@ class CategoriasProduto extends Component {
     let response = await api.get()
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
-
-      let categoriasArr = [];
-
-      responseJson.map(function(categoria){
-        let obj = {};
-
-        obj["title"] = categoria.grupo_descricao;
-        obj["id"] = categoria.id_grupo;
-
-        categoriasArr.push(obj);
-      });
       this.setState({
         isLoading: false,
-        categoriasArr: categoriasArr,
         categoriasProduto:  responseJson,
         error: false
       })
@@ -123,10 +107,6 @@ class CategoriasProduto extends Component {
     }
   }
 
-  triggerBuscarProduto(){
-    this.setState({buscandoProduto: true})
-  }
-
   _toggleModal(){
     this.setState({listarProdutosIsVisible: true})
   }
@@ -147,18 +127,6 @@ class CategoriasProduto extends Component {
       <Loader />
      ) 
     } else {
-      let SECTIONS = [
-        {
-          title: 'Categoria1',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at condimentum enim. Fusce vitae tellus at nisi posuere consequat. Suspendisse euismod hendrerit mi vitae rutrum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Mauris commodo diam vel tellus dictum ornare. Morbi at velit ex. Mauris nibh ante, pharetra non mauris a, volutpat mattis ante. Suspendisse dignissim ex diam, quis feugiat lacus tincidunt eget. Nunc mattis sagittis orci vitae cursus. Vivamus mollis, ligula ut sollicitudin lacinia, ipsum ante eleifend sapien, et placerat ligula risus at sapien. Donec vitae tempor dui, vel eleifend diam. Morbi eu lobortis dui. Phasellus posuere diam in tempus aliquam. '
-        },
-        {
-          title: 'Categoria2',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at condimentum enim. Fusce vitae tellus at nisi posuere consequat. Suspendisse euismod hendrerit mi vitae rutrum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Mauris commodo diam vel tellus dictum ornare. Morbi at velit ex. Mauris nibh ante, pharetra non mauris a, volutpat mattis ante. Suspendisse dignissim ex diam, quis feugiat lacus tincidunt eget. Nunc mattis sagittis orci vitae cursus. Vivamus mollis, ligula ut sollicitudin lacinia, ipsum ante eleifend sapien, et placerat ligula risus at sapien. Donec vitae tempor dui, vel eleifend diam. Morbi eu lobortis dui. Phasellus posuere diam in tempus aliquam.'
-        }
-      ];
-
-      const sections = this.state.categoriasArr;
 
       return (
         
