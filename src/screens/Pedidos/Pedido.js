@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, Text, View, TouchableOpacity } from 'react-native'
+import { FlatList, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import { styles } from '../../components/Styles'
 import EmptyResult from '../../components/Helpers/EmptyResult'
 
@@ -14,13 +14,7 @@ const hasComplemento = complemento => {
 
 
 const Pedido = props => {
-  const _getValorPedido = () => {
-    let valor = 0
-    if (props.pedido != null) {
-      props.pedido.map(item => (valor += item.vlr_vendido * item.qtde))
-    }
-    return parseFloat(Math.round(valor * 100) / 100).toFixed(2)
-  }
+ 
 
   if (props.pedido.length > 0) {
 
@@ -31,17 +25,12 @@ const Pedido = props => {
               pedido.splice(index, 1);
             }
         })
-        console.log(props);
         props.update()
     }
 
     return (
-      <View>
-        <View style={styles.viewHeader}>
-          <Text style={[styles.viewHeaderText, styles.fontSemiBold]}>
-            Pedido | Total: R$ {_getValorPedido()}
-          </Text>
-        </View>
+      <ScrollView>
+   
         <FlatList
           keyExtractor={(item, index) => index.toString()}
           data={props.pedido}
@@ -77,7 +66,7 @@ const Pedido = props => {
             )
           }}
         />
-      </View>
+      </ScrollView>
     )
   } else {
     return <EmptyResult  icon={{iconName: "tag-faces", iconType:"MaterialIcons" }}  smile-wink message='Insira alguns itens no pedido.' />

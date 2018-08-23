@@ -48,7 +48,8 @@ class VistaAPI {
     isFetching: true,
     endPoint: '',
     usuario: '',
-    body: ''
+    body: '', 
+    timesExecuted: 0
   }
 
   /*
@@ -148,6 +149,14 @@ class VistaAPI {
   */
 
   async get () {
+
+    console.log("CONSULTANDO NA API");
+
+    this.state.timesExecuted ++;
+
+
+    console.log(this.state.timesExecuted);
+
 
     await this.setUrlServerAsync();
     await this.setUsuarioAsync();

@@ -24,6 +24,7 @@ class ListaProduto extends Component {
 
   async fetchData () {
 
+
     this.setState({
         isLoading: true
     })
@@ -80,10 +81,9 @@ class ListaProduto extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-      if(nextProps.uriInputBusca && ! nextProps.keyPressed == "Backspace") {
-        this.setState({uri:nextProps.uriInputBusca})
-        return this.fetchData();
-    }
+      if( nextProps.uriInputBusca && nextProps.keyPressed !== "Backspace") {
+        return this.setState({uri:nextProps.uriInputBusca},this.fetchData);
+      }
   }
 
   componentWillUnmount(){
@@ -97,8 +97,25 @@ class ListaProduto extends Component {
     this.props.navigation.navigate('AdicionaProduto', params);
   }
 
-  render(){
+  addOne(produto){
+     const addItemComanda = this.props.navigation.getScreenProps().addItemComanda;
 
+     const produtoEnviado = {
+        qtde: 1,
+        id_produto: produto.id_produto,
+        complemento:"",
+        vlr_vendido: String(produto.pvenda),
+        estoque: String(produto.saldo_geral),
+        descricao: produto.produto_descricao,
+        unidade: produto.unidade,
+    }
+
+    addItemComanda(produtoEnviado);
+        
+  }
+
+  render(){
+        
         if(this.state.isLoading){
             return(<Loader />)
         } else {
@@ -121,8 +138,19 @@ class ListaProduto extends Component {
                         }
 
                         return(
-                            <TouchableOpacity 
-                            style={[styles.listItem, styles.listItemBig]} onPress={ () => this.navigate(params)}  ><Text style={styles.text}>{item.produto_descricao}</Text></TouchableOpacity>
+                            <View style={styles.sideBySide}>
+                               
+                                <TouchableOpacity 
+                                    style={[styles.listItem, styles.listItemBig]} onPress={ () => this.navigate(params)}  >
+                                    <Text style={styles.text}>{item.produto_descricao}</Text>
+                                </TouchableOpacity>
+                            
+                                <TouchableOpacity onPress={( )=>this.addOne(item)} style={[styles.buttonSmLeft, styles.buttonPrimary]}>
+                                    <Text style={styles.buttonLightText}>+1</Text>
+                                </TouchableOpacity>
+
+                            </View>
+                           
                         )
                     }}
                 />

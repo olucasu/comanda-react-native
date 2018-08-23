@@ -113,6 +113,19 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
 
+    sideBySide : {
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+   
+    horizontal: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10
+    },
+
     containerBorder:{
         borderRadius:15,
     },
@@ -155,12 +168,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-   
-    horizontal: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 10
-    },
+
     
     item: {
         alignItems: "center",
@@ -226,6 +234,20 @@ const styles = StyleSheet.create({
 
     buttonSecondary: {
         backgroundColor:Colors.secondary.defaultColor,
+    },
+
+    buttonSmLeft:{
+        alignItems:'center' ,
+        justifyContent: 'center',
+        borderRadius: 50,
+        elevation: 2,
+        marginRight: 15,
+        width:40,
+        height:40,
+    },
+
+    buttonWhite:{
+        backgroundColor: '#fff'
     },
 
     buttonLightText :{

@@ -52,7 +52,27 @@ export default class ModalConfirmaPedido extends Component {
         this.forceUpdate();
     }
 
+    _getValorPedido = () => {
+        if (this.props.pedido != null && this.props.pedido.length > 0) {
+
+            let valor = 0
+            
+            this.props.pedido.map(item => (valor += item.vlr_vendido * item.qtde))
+       
+            valor = parseFloat(Math.round(valor * 100) / 100).toFixed(2)
+       
+            return(
+                <View style={styles.viewHeader}>
+                    <Text style={[styles.viewHeaderText, styles.fontSemiBold]}>
+                        Pedido - {this.props.mesa} | Total: R$ {valor}
+                    </Text>
+                </View>
+            )
+        }
+    }
+
     render(){
+
         this.state.isVisible = this.props.modalIsVisible;
 
         return(
@@ -62,11 +82,12 @@ export default class ModalConfirmaPedido extends Component {
                         backgroundColor="#000"
                         barStyle="dark-content"
                     />
+              
                     <View style={[styles.container, styles.containerBorder]}>
+                        {this._getValorPedido()}
                         <Pedido update={this.updateModal} pedido={this.props.pedido} />
                         <View style={styles.buttonGroup}>
                             {this._enviarPedidoButton()}
-
                             <View style={[styles.buttonContainer]}>
                                 <TouchableOpacity  activeOpacity={0.9} style={[styles.button, styles.buttonSecondary]} onPress={this.props._closeModal}>
                                     <Text style={styles.buttonDarkText}>

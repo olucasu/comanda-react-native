@@ -21,7 +21,7 @@ export default class Pedido extends Component {
       navigate: this.props.navigation.getParam('navigate', 'Não informado'),
       id: this.props.navigation.getParam('id', 'Não informado'),
       status: this.props.navigation.getParam('status', 'Não informado'),
-      screnTitle: this.props.navigation.getParam(
+      screenTitle: this.props.navigation.getParam(
         'screenTitle',
         'Não informado'
       ),
@@ -43,10 +43,14 @@ export default class Pedido extends Component {
     this.handleSearch  = this.handleSearch.bind(this)
     this.startSearch = this.startSearch.bind(this);
     this.addItemComanda = this.addItemComanda.bind(this);
+    this.props.screenProps.addItemComanda = this.addItemComanda;
+
   }
 
   async addItemComanda (item) {
+    
     let usuario = await this.Token.getUsuarioAsync()
+    
     usuario = JSON.parse(usuario)
 
     item.id_mesacartao    = this.state.id
@@ -60,11 +64,15 @@ export default class Pedido extends Component {
     item.vlr_vendido      = parseFloat(item.vlr_vendido)
 
     this.state.pedido.push(item)
+    ToastAndroid.show('Adicionado à lista para envio', ToastAndroid.SHORT);
+    
   }
-
+  
+  /**
+   * Método que dispara o envio de pedido
+  */
+ 
   async enviarPedido () {
-
-
 
     this.setState({
       isLoading: true
@@ -102,13 +110,21 @@ export default class Pedido extends Component {
 
           } else {
 
-            alert(responseJson.vMesangemRetorno)
+            Alert.alert('Opa', 'Não foi possível enviar o pedido! \n'+ response.vStatusRetorno);
+            this.setState({
+              isLoading: false,
+              error: response.vStatusRetorno
+            })
 
           }  
 
         } else {
-
-          this.setState({ isLoading: false , error: response.error })
+          typeof response.error == 'undefined' || ! response.error ? response.error = "Ocorreu um erro inesperado." : "";  
+          Alert.alert('Opa', 'Não foi possível enviar o pedido! \n'+ response.error);
+          this.setState({
+            isLoading: false,
+            error: response.error
+          })
 
         }
       } catch (e) {
@@ -131,34 +147,75 @@ export default class Pedido extends Component {
     this.setState({enviarPedidoIsVisible:false})
   }
 
-  handleSearch (stringEmpty, string) {
-    
+  /**
+   * Método Callback para lidar com o onChange do campo
+  */
+
+  handleSearch (stringEmpty, string) { 
+
     if(stringEmpty) {
       return this.setState({ inputBuscaPorNome: "",isFetchingByInputBusca: false})
     }
 
     this.setState( () => {
-      return { inputBuscaPorNome:string}
+      return { inputBuscaPorNome:string, isFetchingByInputBusca: false}
     });
-    
- 
-
   }
+
+  /**
+   * Método que dispara a busca
+   */
 
   startSearch(){
 
+    /**
+     * Valor atual do input 
+    */  
+    const inputValue = this.state.inputBuscaPorNome.trim();
+   
+    /**
+     * Irá armazenar o estado anterior do componente
+     */
+    let firstPrevState = {};
   
-
+    /**
+     * Verifica se a string submetida é diferente da anterior.
+     * 
+     * Evita busca pela mesma string.
+     */
+    const isSameSearch = (prevString, nextString) => {
+      return (prevString.length > 0 && prevString == nextString) 
+    }
+    
+    /**
+     * Callback para ser executado somente após "setState".
+     * 
+     * (setState não é sincrono)
+    */
     const thenSearch = () => {
-      this.setState({isFetchingByInputBusca:true});
+       if(isSameSearch(firstPrevState.queryForSearch,inputValue)) return null
+
+      this.setState( {isFetchingByInputBusca:true});
     }
 
+    if(inputValue.length > 0) {
+      return this.setState( (prevState) => {
+        
+        //Mantendo o estado anterior para usar em "thenSearch"
+        firstPrevState = prevState;
+        
+        if(isSameSearch(prevState.queryForSearch,inputValue)) return null;
 
-    if(this.state.inputBuscaPorNome.trim().length > 0) {
-      return this.setState({queryForSearch:this.state.inputBuscaPorNome}, thenSearch ) 
+        //Alterando estado do componente
+        return{queryForSearch:this.state.inputBuscaPorNome}
+      }, thenSearch) 
     }
 
   }
+
+   /**
+   * Retorna o componente de busca
+   */
 
   inputBuscaProduto () {
     return (
@@ -190,6 +247,11 @@ export default class Pedido extends Component {
     )
   }
 
+   /**
+   * Retorna o Botão para checar os pedido 
+   * 
+   * Dispara Modal
+   */
 
   _checarPedidoButton(){
 
@@ -211,7 +273,8 @@ export default class Pedido extends Component {
     if (this.state.isLoading) {
       return <Loader />
     } else {
-      this.props.screenProps.addItemComanda = this.addItemComanda
+
+      
       if( ! this.state.isFetchingByInputBusca)  {
         return (
           <Container style={styles.container}>
@@ -220,7 +283,7 @@ export default class Pedido extends Component {
             </View>
             <CategoriasProduto />
             { this._checarPedidoButton()}
-            <ModalConfirmaPedido pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
+            <ModalConfirmaPedido mesa={this.state.screenTitle} pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
           </Container>
         )
       } else {
@@ -231,11 +294,10 @@ export default class Pedido extends Component {
             </View>
             <ListaProduto keyPressed={this.state.key} uriInputBusca={this.state.queryForSearch} />
             { this._checarPedidoButton()}
-            <ModalConfirmaPedido pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
+            <ModalConfirmaPedido mesa={this.state.screenTitle} pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
           </Container>
         )
       }
-     
     }
   }
 }

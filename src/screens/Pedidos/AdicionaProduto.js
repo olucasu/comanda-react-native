@@ -47,7 +47,7 @@ export default class AdicionaProduto extends Component{
 
         this.props.screenProps.addItemComanda(this.state);
 
-        ToastAndroid.show('Adicionado à lista para envio', ToastAndroid.SHORT);
+      
 
         this.props.navigation.navigate("Pedidos");
 

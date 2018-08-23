@@ -15,7 +15,7 @@ export default class ModalListaProduto extends Component {
         return(
             <View style={{ flex: 1 }}>
         
-                <Modal   useNativeDriver={true} onRequestClose={ () => this.props._closeModal()}  isVisible={this.props.modalIsVisible}>
+                <Modal useNativeDriver={true} onRequestClose={ () => this.props._closeModal()}  isVisible={this.props.modalIsVisible}>
                     <StatusBar
                         backgroundColor="#000"
                         barStyle="dark-content"
