@@ -36,7 +36,7 @@ const Pedido = props => {
     }
 
     return (
-      <View style={styles.container}>
+      <View>
         <View style={styles.viewHeader}>
           <Text style={[styles.viewHeaderText, styles.fontSemiBold]}>
             Pedido | Total: R$ {_getValorPedido()}

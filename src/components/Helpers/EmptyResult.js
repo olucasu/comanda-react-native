@@ -14,7 +14,7 @@ class emptyResult extends Component {
 
   render () {
     return (
-      <View style={[styles.container, styles.alignItemsCenter]}>
+      <View style={[styles.container, styles.alignItemsCenter, styles.containerBorder]}>
           <Icon style={styles.iconHeroMessage} type={this.state.iconType} name={this.state.iconName} size={54} />
           <Text style={styles.text}> {this.props.message} </Text>
       </View>

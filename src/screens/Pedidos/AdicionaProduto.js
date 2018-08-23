@@ -20,9 +20,6 @@ export default class AdicionaProduto extends Component{
             unidade: produto.unidade,
         }
 
-
-    
-
         this.adicionaItemPedido = this.adicionaItemPedido.bind(this);
 
     }
@@ -44,6 +41,9 @@ export default class AdicionaProduto extends Component{
     
             this.state.complemento = res; 
         }
+
+        if(this.state.qtde <= 0)
+            return ToastAndroid.show('Quantidade Inválida', ToastAndroid.SHORT);
 
         this.props.screenProps.addItemComanda(this.state);
 

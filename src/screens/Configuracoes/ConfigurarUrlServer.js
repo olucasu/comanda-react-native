@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, StatusBar, View, TouchableOpacity, ToastAndroid, TextInput } from 'react-native';
 import {
   Container,
-  Button,
   Content,
   Text,
   Form,
   Item,
-  Input,
   Label
 } from 'native-base'
 
+import {styles, Colors} from '../../components/Styles';
 class ConfigurarUrlServer extends Component {
 
 
@@ -30,8 +29,9 @@ class ConfigurarUrlServer extends Component {
 
       if(self.state.urlServer != "" || self.state.urlServer != null)
         await AsyncStorage.setItem('urlServer', self.state.urlServer.trim())
-      
         this.props.navigation.navigate('AuthLoading');
+
+        return ToastAndroid.show('Salvo com sucesso!', ToastAndroid.SHORT);
     } catch (error) {
     }
   }
@@ -52,21 +52,30 @@ class ConfigurarUrlServer extends Component {
 
   render () {
     return (
-      <Container>
-        <Content>
-          <Form>
-            <Item stackedLabel>
-              <Label>URL</Label>
-              <Input
+      <Container style={styles.container}>
+           <StatusBar
+            backgroundColor={Colors.primary.containerColor}
+            barStyle={Colors.primary.barStyle}
+        />
+        <Content style={styles.content}>
+              <TextInput
+                 underlineColorAndroid ={Colors.primary.lightColor}
+                  placeholder="URL do servidor"
+                style={styles.text}
                 onChangeText={urlServer =>
                   this.setState({ urlServer: urlServer })}
                 value={this.state.urlServer}
               />
-            </Item>
-            <Button onPress={()=> this._storeDataAsync()} style={{ marginTop: 20 }} primary full>
-              <Text>Salvar Alterações</Text>
-            </Button>
-          </Form>
+            <View style={[styles.buttonGroup]}>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={[styles.button, styles.buttonPrimary]}
+                      onPress={()=> this._storeDataAsync()}
+                    >
+                      <Text style={styles.buttonLightText}>Salvar Alterções</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         </Content>
       </Container>
     )

@@ -5,8 +5,6 @@
 
 class Colors {
 	constructor() {
-
-
 		this.primary = {
 			defaultColor : '#b71c1c',
 			lightColor:	'#f05545',
@@ -14,8 +12,9 @@ class Colors {
 			textOnPrimary: '#ffffff',
 			textInactiveOnPrimary:  "#fafafa",
 			containerColor:'#fff',
+			containerColorInverse:'#f1f1f1',
 			barStyle: "dark-content",
-			textDark: "rgba(0,0,0,0.87)",
+			textDark: "rgba(0,0,0,0.6)",
 		
 		}
 

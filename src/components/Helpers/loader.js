@@ -6,7 +6,7 @@ class Loader extends Component {
   render () {
     return (
       <View style={[styles.container, styles.horizontal]}>
-        <ActivityIndicator size='large' color={Colors.secondaryColor} />
+        <ActivityIndicator size='large' color={Colors.primary.lightColor} />
       </View>
     )
   }

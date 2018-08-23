@@ -168,7 +168,7 @@ const ConfigStack = createStackNavigator({
         header: <Menu navigation={navigation} />,
         headerMode: 'screen',
         headerStyle: {
-          backgroundColor: Colors.defaultBgColor,
+          backgroundColor: Colors.primary.containerColor,
         },
         headerTintColor: Colors.primaryColor,
         headerTitleStyle: styles.headerText
@@ -180,7 +180,7 @@ const ConfigStack = createStackNavigator({
     navigationOptions: {
       title: 'Configurar Servidor ',
       headerStyle: {
-        backgroundColor: Colors.defaultBgColor,
+        backgroundColor: Colors.primary.containerColor,
       },
       headerTintColor: Colors.primaryColor,
       headerTitleStyle: styles.headerText

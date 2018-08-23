@@ -60,36 +60,47 @@ const styles = StyleSheet.create({
         paddingHorizontal:15,
         borderRadius: 7,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        alignItems: 'center',
         flex:1,
         margin: 10
     },
    
     tableCardLivre:{
-        borderColor: '#4CAF50'
+        color: '#4CAF50'
     },
    
     tableCardOcupado:{
-       borderColor: '#FF9800'
+       color: '#FF9800'
     },
    
     tableCardConta:{
-       borderColor: '#03A9F4'
+       color: '#03A9F4'
     },
     
     tableCardReservado:{
-        borderColor:"#212121"
+        color:"#111E6C"
     },
    
     tableCardText:{
         color: Colors.primary.defaultDarkColor ,
         fontFamily: regularFont,
+        fontSize: 15,
+        marginRight: 15
+    },
+
+    
+    tableCardIcon:{
+        height: 30,
+        width:30,
+        marginRight: 15,
+        fontSize: 30,
+        alignSelf: 'center'
     },
     
     tableCardNumber:{
-        color: '#616161',
+        color: Colors.primary.textDark,
         fontSize:16,
-        fontFamily: regularFont
+        fontFamily: boldFont
     },
     
     container :{
@@ -98,9 +109,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: Colors.primary.containerColor,
         margin:0,
-        padding:0
+        padding:0,
+        overflow: 'hidden'
     },
-    
+
+    containerBorder:{
+        borderRadius:15,
+    },
+
     content:{
         marginTop:15,
         padding:10
@@ -187,7 +203,7 @@ const styles = StyleSheet.create({
         fontFamily: regularFont
     },
     icon: {
-        color: '#888',
+        color: Colors.primary.textDark,
         fontSize: 20
     },
     iconHeroMessage:{
@@ -220,14 +236,23 @@ const styles = StyleSheet.create({
         color: Colors.primary.textDark,
         fontFamily: regularFont
     },
-
+    buttonInputGroup:{
+        borderTopLeftRadius:0,
+        borderBottomLeftRadius:0,
+        alignItems:'center' ,
+        paddingHorizontal:15,
+        paddingVertical:14,
+        borderRadius: 60,
+        elevation: 2
+       
+    },
     viewHeader: {
         backgroundColor: Colors.primary.lightColor,
         padding: 15
     },
     viewHeaderSearch: {
-        backgroundColor: Colors.primary.containerColor,
-        padding: 15
+        backgroundColor: Colors.primary.lightColor,
+        margin:0,
     },
     viewHeaderText:{
         color: Colors.primary.textOnPrimary,
@@ -259,7 +284,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
     buttonContainer: {
-        paddingHorizontal: 15,
         paddingVertical: 10,
         margin: 5,
         alignItems: 'center',
@@ -268,12 +292,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-
     },
     containerButtonBottom :{
         paddingBottom: 60
     },
 
+    inputShadow : {
+        elevation: 2,
+        borderTopLeftRadius: 50,
+        borderBottomLeftRadius: 50,
+        paddingHorizontal: 10,
+        borderColor: 'transparent',
+        backgroundColor: Colors.primary.containerColorInverse,
+        color: Colors.primary.textDark,
+        fontFamily: regularFont
+    },
 
     // Number Picker Component
 
@@ -296,7 +329,8 @@ const styles = StyleSheet.create({
         borderColor: '#fefefe',
         borderWidth: 1,
         elevation: 1,
-        padding: 0
+        padding: 0,
+        overflow:'hidden'
     },
 
     numberPickerIcon:{

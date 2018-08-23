@@ -1,36 +1,41 @@
 import React, {Component} from 'react';
 import {Icon} from 'native-base';
-import {Text, TouchableOpacity, TextInput, View} from 'react-native';
+import {Text, TouchableOpacity, TextInput, View , TouchableNativeFeedback} from 'react-native';
 import TextInputMask from 'react-native-text-input-mask';
 import {Colors,styles} from '../../components/Styles';
 
 const getIconMesa = (tipoMesa) => {
     
-    let type, name;
+    let type, name, style;
 
     switch(tipoMesa) {
         case 'OCUPADA(O)':
             type = 'MaterialIcons';
-            name = 'block'
+            name = 'people'
+            style=  styles.tableCardOcupado
             break;
         case 'CONTA':
-            type = 'EvilIcons';
-            name = 'like';
+            type = 'Ionicons';
+            name = 'md-thumbs-up';
+            style=  styles.tableCardConta
+
             break;
         case 'RESERVADA(O)':
             type = 'MaterialCommunityIcons';
             name = 'pencil';
+            style=  styles.tableCardReservado
             break;
         case 'LIVRE':
             type = 'MaterialIcons';
             name = 'check';
+            style=  styles.tableCardLivre
             break;
         default:
             type = 'MaterialIcons';
             name = 'credit-card';
       }
 
-    return <Icon name={name} type={type} style={styles.tableCardText} /> 
+    return <Icon name={name} type={type} style={[styles.tableCardIcon, style]} /> 
 } 
 
 class NumberPicker extends Component {
@@ -64,14 +69,22 @@ class NumberPicker extends Component {
         return(
             <View style={styles.numberPickerContainer} >
                 <View style={styles.numberPickerItem}>
-                    <TouchableOpacity activeOpacity={0.8} style={[styles.numberPickerButton]} onPress={ () => this.decrease()}><Icon style={[styles.buttonDarkText, styles.numberPickerIcon]}  name="remove" type="MaterialIcons"></Icon></TouchableOpacity>
+                    <TouchableNativeFeedback  onPress={ () => this.decrease()}>
+                        <View style={[styles.numberPickerButton]}>
+                            <Icon style={[styles.buttonDarkText, styles.numberPickerIcon]}  name="remove" type="MaterialIcons"></Icon>
+                        </View>
+                    </TouchableNativeFeedback>
                 </View>
                 <View style={styles.numberPickerItem}>
                     <TextInputMask style={styles.numberPickerInput} underlineColorAndroid='rgba(0,0,0,0)' defaultValue={this.state.value} maxLength={this.state.maxLength}  keyboardType={'numeric'} mask={"[000]{,}[000]"} value={this.state.value} onChangeText={(formatted, value) => { this.setParams(value); } } />
                     <Text>{this.props.unity}</Text>
                 </View>
                 <View style={styles.numberPickerItem}>
-                <TouchableOpacity activeOpacity={0.8} style={[ styles.numberPickerButton]} onPress={ () =>this.add()} ><Icon style={[styles.buttonDarkText, styles.numberPickerIcon]} name="add"  type="MaterialIcons"></Icon></TouchableOpacity>
+                <TouchableNativeFeedback   onPress={ () =>this.add()} >
+                    <View style={[styles.numberPickerButton]}>
+                        <Icon style={[styles.buttonDarkText, styles.numberPickerIcon]} name="add"  type="MaterialIcons"></Icon>
+                    </View>
+                    </TouchableNativeFeedback>
                 </View>
             </View>
         )

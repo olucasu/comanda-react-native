@@ -56,14 +56,13 @@ export default class ModalConfirmaPedido extends Component {
         this.state.isVisible = this.props.modalIsVisible;
 
         return(
-            <View style={{ flex: 1 }}>
         
-                <Modal useNativeDriver={true} onRequestClose={ () => this.props._closeModal()}  isVisible={this.props.modalIsVisible}>
+                <Modal   useNativeDriver={true} onRequestClose={ () => this.props._closeModal()}  isVisible={this.props.modalIsVisible}>
                     <StatusBar
                         backgroundColor="#000"
                         barStyle="dark-content"
                     />
-                    <Container  style={styles.container}>
+                    <View style={[styles.container, styles.containerBorder]}>
                         <Pedido update={this.updateModal} pedido={this.props.pedido} />
                         <View style={styles.buttonGroup}>
                             {this._enviarPedidoButton()}
@@ -76,10 +75,9 @@ export default class ModalConfirmaPedido extends Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                    </Container>
+                    </View>
 
                 </Modal>
-            </View>
            
         )
     }

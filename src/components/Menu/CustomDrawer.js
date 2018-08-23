@@ -15,9 +15,8 @@ const items = [
     icon: (
       <Icon
         name='home'
-        type='Feather'
-        style={{ fontSize: 18 }}
-        color={Colors.secondaryColor}
+        type='MaterialIcons'
+        style={{ fontSize: 24, color: Colors.primary.textDark}}
       />
     )
   },
@@ -28,8 +27,7 @@ const items = [
       <Icon
         name='cog'
         type='FontAwesome'
-        style={{ fontSize: 18 }}
-        color={Colors.secondaryColor}
+        style={{ fontSize: 24, color:Colors.primary.textDark}}
       />
     )
   }
@@ -68,8 +66,11 @@ const CustomDrawer = props => {
               Icon
               onPress={() => props.navigation.navigate(item.routeName)}
             >
-              <Text> {item.icon}</Text>
-              <Text style={[{ marginLeft: 30 }, styles.text]}>{item.title}</Text>
+              <View style={{width:30,  marginRight:30, justifyContent:'center', alignItems:'center'}}>
+                 {item.icon}
+
+              </View>
+              <Text style={[ styles.text]}>{item.title}</Text>
             </ListItem>
           )}
           keyExtractor={item => item.title}
@@ -77,20 +78,22 @@ const CustomDrawer = props => {
       </Content>
       <Content>
         <ListItem
-        style={{ marginLeft: 24 }}
+        style={{ marginLeft: 19 }}
           noBorder
           Icon
           onPress={() => logout() }
         >
-          <Text>
-            <Icon
-              name='sign-out'
-              type='FontAwesome'
-              style={{ fontSize: 18 }}
-              color={Colors.primaryColor}
-            />
-          </Text>
-          <Text style={[{ marginLeft: 30 },styles.text]}>Sair</Text>
+            <View style={{width:30, marginRight:30, justifyContent:'center', alignItems:'center'}}>
+              <Icon
+                name='sign-out'
+                type='FontAwesome'
+                style={{ fontSize: 24 ,color: Colors.primary.textDark}}
+                color={Colors.primaryColor}
+              />
+            </View>
+         
+          
+          <Text style={[styles.text]}>Sair</Text>
         </ListItem>
       </Content>
     </ScrollView>

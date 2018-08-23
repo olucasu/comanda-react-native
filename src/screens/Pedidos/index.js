@@ -4,7 +4,7 @@ import { View, Alert, ToastAndroid, TextInput , TouchableOpacity, Text} from 're
 import Token from '../../auth/Token';
 import {styles, Colors} from '../../components/Styles'
 import CategoriasProduto from './CategoriasProduto';
-import { Container } from 'native-base';
+import { Container, Icon } from 'native-base';
 import Loader from '../../components/Helpers/loader';
 import ModalConfirmaPedido from './ModalConfirmaPedido';
 import ListaProduto from './ListaProduto';
@@ -162,17 +162,31 @@ export default class Pedido extends Component {
 
   inputBuscaProduto () {
     return (
-      <TextInput
-        placeholder='Buscar produto por nome ou código'
-        underlineColorAndroid ={Colors.primary.lightColor}
-        onSubmitEditing = { this.startSearch }
-        onKeyPress={(e)=> {  this.state.key = e.nativeEvent.key }}
-        onChangeText={(inputBuscaPorNome) => {
-          if( inputBuscaPorNome.length <= 0) return this.handleSearch(true)
-            this.handleSearch(false,inputBuscaPorNome)
-        }}
-        value={this.state.inputBuscaPorNome}
-      />
+      <View style={[styles.buttonContainer, {flexDirection:'row'}]}>
+          <TextInput
+            style={[styles.inputShadow, {flex:1}]}
+            
+            placeholder='Buscar por código ou nome'
+            underlineColorAndroid = "transparent"
+            placeholderTextColor={Colors.primary.textDark}
+            onSubmitEditing = { this.startSearch }
+            onKeyPress={(e)=> {  this.state.key = e.nativeEvent.key }}
+            onChangeText={(inputBuscaPorNome) => {
+              if( inputBuscaPorNome.length <= 0) return this.handleSearch(true)
+                this.handleSearch(false,inputBuscaPorNome)
+            }}
+            value={this.state.inputBuscaPorNome}
+          />
+            <TouchableOpacity activeOpacity={0.9} style={[styles.buttonSecondary, styles.buttonInputGroup]} onPress = { this.startSearch }>
+                <Icon
+                    name='search'
+                    type='MaterialIcons'
+                    style={{ fontSize: 20 ,color: Colors.primary.textOnPrimary}}
+                    color={Colors.primary.lightColor}
+                  />
+            </TouchableOpacity>
+          </View>
+          
     )
   }
 
@@ -186,7 +200,7 @@ export default class Pedido extends Component {
                   Checar Pedido
                 </Text>
             </TouchableOpacity>
-      </View>
+       </View>
       )
   
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AsyncStorage, Alert , TouchableOpacity, View, TextInput} from 'react-native'
+import { AsyncStorage, Alert , TouchableOpacity, View, TextInput, Image, StatusBar} from 'react-native'
 import VistaAPI from '../api/VistaAPI';
 import Loader from '../components/Helpers/loader'
 
@@ -149,25 +149,43 @@ class Login extends Component {
       return <Loader />
     } else {
       return (
-        <Container style={styles.container}>
-          <Content style={styles.content}>
-                <TextInput
-                underlineColorAndroid ={Colors.primary.lightColor}
-                placeholder="Usuário"
-                  onChangeText={usuarioNome =>
-                    this.setState({ usuarioNome: usuarioNome })}
-                  value={this.state.usuarioNome}
+        <Container style={styles.container} >
+                <StatusBar
+                backgroundColor={Colors.primary.containerColor}
+                barStyle={Colors.primary.barStyle}
                 />
-               
-                <TextInput
+                <View style={{padding:20, width:'100%' }}>
+                  <View style={{ 
+                    width: '100%',
+                    flexDirection: 'column',
+                    height: '20%',
+                    justifyContent: 'center',
+                    marginVertical: 80,
+                    alignItems: 'center',}}>
+                    <Image
+                      style={{ height: 180, width: 180 }}
+                      source={require('../../assets/img/vista.png')}
+                    />
+                  </View>
+                  <TextInput
                   underlineColorAndroid ={Colors.primary.lightColor}
-                placeholder="Senha"
-                  secureTextEntry
-                  onChangeText={usuarioSenha =>
-                    this.setState({ usuarioSenha: usuarioSenha })}
-                  value={this.state.usuarioSenha}
-                />
-              <View style={styles.buttonGroup}>
+                  placeholder="Usuário"
+                    onChangeText={usuarioNome =>
+                      this.setState({ usuarioNome: usuarioNome })}
+                    value={this.state.usuarioNome}
+                  />
+                
+                  <TextInput
+                    underlineColorAndroid ={Colors.primary.lightColor}
+                  placeholder="Senha"
+                    secureTextEntry
+                    onChangeText={usuarioSenha =>
+                      this.setState({ usuarioSenha: usuarioSenha })}
+                    value={this.state.usuarioSenha}
+                  />
+                </View>
+            
+              <View style={[styles.buttonGroup, {marginBottom:100}]}>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
                           style={[styles.button, styles.buttonPrimary]}
@@ -186,8 +204,7 @@ class Login extends Component {
                     </View>
               </View>
         
-          </Content>
-        </Container>
+          </Container>
       )
     }
   }

@@ -15,12 +15,12 @@ export default class ModalListaProduto extends Component {
         return(
             <View style={{ flex: 1 }}>
         
-                <Modal useNativeDriver={true} onRequestClose={ () => this.props._closeModal()} style={{backgroundColor:"#fff", height:200, justifyContent: 'center'}} isVisible={this.props.modalIsVisible}>
+                <Modal   useNativeDriver={true} onRequestClose={ () => this.props._closeModal()}  isVisible={this.props.modalIsVisible}>
                     <StatusBar
                         backgroundColor="#000"
                         barStyle="dark-content"
                     />
-                    <View style={[styles.container,{borderRadius:50}]}>
+                    <View style={[styles.container, styles.containerBorder]}>
                         <View style={styles.viewHeader}>
                             <Text style={[styles.viewHeaderText, styles.fontSemiBold]} > {this.props.categoriaSelecionada.grupo_descricao}  </Text>
                         </View>

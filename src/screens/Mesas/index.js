@@ -131,15 +131,15 @@ class Mesas extends Component {
                       navigate : navigate
                   }
 
-
                   return (
                     <TouchableOpacity
                       activeOpacity={0.9}
                       onPress={() =>
                         this.props.navigation.navigate('Details', itemParams)}
-                      style={[styles.tableCard]}
+                        style={[styles.tableCard]}
                     >
-                      <Text style={styles.tableCardText}>{icon}{tipoMesa}</Text>
+                      {icon}
+                      <Text style={styles.tableCardText}>{tipoMesa}</Text>
                       <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.id}</Text>
                     </TouchableOpacity>
                   )
