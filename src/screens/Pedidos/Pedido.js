@@ -12,6 +12,7 @@ const hasComplemento = complemento => {
   }
 }
 
+
 const Pedido = props => {
   const _getValorPedido = () => {
     let valor = 0
@@ -22,6 +23,18 @@ const Pedido = props => {
   }
 
   if (props.pedido.length > 0) {
+
+    const removeItem = (pedido, item) => {
+        pedido.filter((value)=>{
+            if( value.id_produto == item.id_produto ) {
+              let index = pedido.indexOf(item);
+              pedido.splice(index, 1);
+            }
+        })
+        console.log(props);
+        props.update()
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.viewHeader}>
@@ -54,6 +67,12 @@ const Pedido = props => {
                     Subtotal: R${item.vlr_vendido}
                   </Text>
                 </View>
+                <View>
+                 
+                    <TouchableOpacity onPress={ () => { removeItem(props.pedido, item) } }>
+                        <Text> Remover Item</Text>
+                    </TouchableOpacity>
+                </View>
               </View>
             )
           }}
@@ -61,7 +80,7 @@ const Pedido = props => {
       </View>
     )
   } else {
-    return <EmptyResult message='Insira alguns itens no pedido.' />
+    return <EmptyResult  icon={{iconName: "tag-faces", iconType:"MaterialIcons" }}  smile-wink message='Insira alguns itens no pedido.' />
   }
 }
 

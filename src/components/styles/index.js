@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
    
     list :{
         marginBottom:15,
-        marginTop:15
+        marginTop:15,
     },
     
     listItem:{
@@ -123,6 +123,10 @@ const styles = StyleSheet.create({
         padding:10,
         borderRadius: 7,
         flex:1,
+    },
+
+    listItemBig :{
+        paddingVertical: 30
     },
    
     listItemTitle: {
@@ -134,7 +138,6 @@ const styles = StyleSheet.create({
     alignItemsCenter : {
         alignItems: 'center',
         justifyContent: 'center',
-        flex:1
     },
    
     horizontal: {
@@ -196,11 +199,10 @@ const styles = StyleSheet.create({
     //Buttons
     button: {
         alignItems:'center' ,
-        paddingHorizontal:15,
+        paddingHorizontal:30,
         paddingVertical:15,
         borderRadius: 60,
         elevation: 4,
-        flex: 1,
     },
     buttonPrimary: {
         backgroundColor:Colors.primary.defaultColor,
@@ -253,12 +255,20 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         marginVertical: 15
     },
+    buttonFlex:{
+        flex: 1
+    },
     buttonContainer: {
-        paddingHorizontal: 30,
+        paddingHorizontal: 15,
         paddingVertical: 10,
-        backgroundColor: 'rgba(255,255,255,.6)',
+        margin: 5,
+        alignItems: 'center',
+    },
+    buttonGroup :{
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        alignItems: 'center',
+        justifyContent: 'center',
+
     },
     containerButtonBottom :{
         paddingBottom: 60

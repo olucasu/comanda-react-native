@@ -40,8 +40,9 @@ export default class Pedido extends Component {
     this._toggleModal = this._toggleModal.bind(this);
     this._closeModal = this._closeModal.bind(this);
     this.enviarPedido = this.enviarPedido.bind(this);
-    this.buscaProdutoPorNome  = this.buscaProdutoPorNome.bind(this)
-    this.addItemComanda = this.addItemComanda.bind(this)
+    this.handleSearch  = this.handleSearch.bind(this)
+    this.startSearch = this.startSearch.bind(this);
+    this.addItemComanda = this.addItemComanda.bind(this);
   }
 
   async addItemComanda (item) {
@@ -62,6 +63,9 @@ export default class Pedido extends Component {
   }
 
   async enviarPedido () {
+
+
+
     this.setState({
       isLoading: true
     })
@@ -100,7 +104,7 @@ export default class Pedido extends Component {
 
             alert(responseJson.vMesangemRetorno)
 
-          }
+          }  
 
         } else {
 
@@ -127,31 +131,33 @@ export default class Pedido extends Component {
     this.setState({enviarPedidoIsVisible:false})
   }
 
-
-  buscaProdutoPorNome (stringEmpty, string) {
+  handleSearch (stringEmpty, string) {
     
     if(stringEmpty) {
       return this.setState({ inputBuscaPorNome: "",isFetchingByInputBusca: false})
     }
 
-    if( this.state.key == "Backspace") {
-       return this.setState({inputBuscaPorNome:string})
-    }
-
     this.setState( () => {
       return { inputBuscaPorNome:string}
-    }, this.startSearch);
+    });
+    
+ 
+
   }
 
   startSearch(){
+
+  
 
     const thenSearch = () => {
       this.setState({isFetchingByInputBusca:true});
     }
 
-    console.log(this.state.inputBuscaPorNome);
-    
-    return this.setState({queryForSearch:this.state.inputBuscaPorNome}, thenSearch ) 
+
+    if(this.state.inputBuscaPorNome.trim().length > 0) {
+      return this.setState({queryForSearch:this.state.inputBuscaPorNome}, thenSearch ) 
+    }
+
   }
 
   inputBuscaProduto () {
@@ -159,11 +165,11 @@ export default class Pedido extends Component {
       <TextInput
         placeholder='Buscar produto por nome ou código'
         underlineColorAndroid ={Colors.primary.lightColor}
+        onSubmitEditing = { this.startSearch }
         onKeyPress={(e)=> {  this.state.key = e.nativeEvent.key }}
         onChangeText={(inputBuscaPorNome) => {
-          if( inputBuscaPorNome.length <= 0) return this.buscaProdutoPorNome(true)
-            
-            this.buscaProdutoPorNome(false,inputBuscaPorNome)
+          if( inputBuscaPorNome.length <= 0) return this.handleSearch(true)
+            this.handleSearch(false,inputBuscaPorNome)
         }}
         value={this.state.inputBuscaPorNome}
       />
@@ -177,7 +183,7 @@ export default class Pedido extends Component {
         <View style={styles.buttonContainer}>
             <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={() => this._toggleModal()}>
                 <Text style={styles.buttonLightText}>
-                  {this.state.pedido.length > 0 ? "Enviar Pedido" : "Checar Pedido"}
+                  Checar Pedido
                 </Text>
             </TouchableOpacity>
       </View>
@@ -209,7 +215,9 @@ export default class Pedido extends Component {
             <View style={styles.viewHeaderSearch}>
                 {this.inputBuscaProduto()}
             </View>
-            <ListaProduto uriInputBusca={this.state.queryForSearch} />
+            <ListaProduto keyPressed={this.state.key} uriInputBusca={this.state.queryForSearch} />
+            { this._checarPedidoButton()}
+            <ModalConfirmaPedido pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
           </Container>
         )
       }

@@ -9,9 +9,9 @@ import {
 import {styles} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
-import { Container, Content } from 'native-base';
+import { Container, Content, View } from 'native-base';
 import {getIconMesa} from '../../components/Helpers/uiHelper';
-
+import EmptyResult from '../../components/Helpers/EmptyResult';
 class Mesas extends Component {
   
 
@@ -150,7 +150,8 @@ class Mesas extends Component {
         )
       } else {
         return (
-          <ScrollView
+          <ScrollView 
+            contentContainerStyle={{flexGrow: 1}}
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
@@ -158,8 +159,10 @@ class Mesas extends Component {
               />
             }
           >
-            <Text>Não foi possível carregar os dados, motivo:</Text>
-            <Text> {this.state.error} </Text>
+
+          
+            <EmptyResult icon={{iconName: "warning", iconType:"MaterialIcons" }} onRefresh message={this.state.error} />
+
           </ScrollView>
         )
       }

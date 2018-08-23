@@ -9,21 +9,18 @@ class ListaProduto extends Component {
 
     constructor(props){
         super(props)
-
-
         this.state = {
             isLoading: false,
-            produtos: [],
+            produtos: null,
             uri:"",
         }
-    
     }
 
     
   isNotLoading(){
     this.setState({isLoading:false})
     this.forceUpdate();
-  }
+ }
 
   async fetchData () {
 
@@ -47,7 +44,7 @@ class ListaProduto extends Component {
 
     } else if(this.props.uriInputBusca) {
 
-        const myString = this.props.uriInputBusca;
+        const myString = this.props.uriInputBusca.trim();
     
         // Id Grupo/Id Produto/myString Nome do produto  -- :)
         uri = !isNaN(myString) ? '0/' + myString : '0/0/' + myString.toUpperCase()
@@ -58,11 +55,17 @@ class ListaProduto extends Component {
         uri: uri
     })
 
+    
     let response = await api.get()
 
     if (typeof response !== 'undefined' && response.ok) {
       let responseJson = await response.json()
-      this.setState({produtos: responseJson}, this.isNotLoading)
+      
+      if(responseJson != null) {
+        return this.setState({produtos: responseJson}, this.isNotLoading)
+      } else {
+        return this.setState({isLoading:false})
+      }
 
     } else {
       this.setState({
@@ -77,14 +80,14 @@ class ListaProduto extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-      if(nextProps.uriInputBusca) {
+      if(nextProps.uriInputBusca && ! nextProps.keyPressed == "Backspace") {
         this.setState({uri:nextProps.uriInputBusca})
         return this.fetchData();
     }
   }
 
   componentWillUnmount(){
-      return false
+      console.log("Lista Produto desmontou");
   }
 
   navigate(params){
@@ -108,7 +111,7 @@ class ListaProduto extends Component {
                     
                 return(
                     <FlatList
-                        styles={styles.list}
+                        styles={[styles.list]}
                         keyExtractor={(item, index) => index.toString()}
                         data={this.state.produtos}
                         activeOpacity={0.9}
@@ -119,7 +122,7 @@ class ListaProduto extends Component {
 
                         return(
                             <TouchableOpacity 
-                            style={styles.listItem} onPress={ () => this.navigate(params)}  ><Text style={styles.text}>{item.produto_descricao}</Text></TouchableOpacity>
+                            style={[styles.listItem, styles.listItemBig]} onPress={ () => this.navigate(params)}  ><Text style={styles.text}>{item.produto_descricao}</Text></TouchableOpacity>
                         )
                     }}
                 />

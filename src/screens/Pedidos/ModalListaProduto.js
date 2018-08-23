@@ -25,7 +25,7 @@ export default class ModalListaProduto extends Component {
                             <Text style={[styles.viewHeaderText, styles.fontSemiBold]} > {this.props.categoriaSelecionada.grupo_descricao}  </Text>
                         </View>
                         <ListaProduto _closeModal={this.props._closeModal} modalIsVisible={this.state.isVisible} categoria={this.props.categoriaSelecionada} />
-                        <View style={[styles.buttonContainer]}>
+                        <View style={styles.buttonContainer}>
                             <TouchableOpacity  activeOpacity={0.9} style={[styles.button,styles.buttonSecondary]}  onPress={this.props._closeModal}>
                                 <Text style={styles.buttonDarkText}>
                                     Voltar

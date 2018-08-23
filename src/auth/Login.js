@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AsyncStorage, Alert } from 'react-native'
+import { AsyncStorage, Alert , TouchableOpacity, View, TextInput} from 'react-native'
 import VistaAPI from '../api/VistaAPI';
 import Loader from '../components/Helpers/loader'
 
@@ -14,7 +14,10 @@ import {
   Label,
 } from 'native-base'
 
+import {styles, Colors} from '../components/Styles'
+
 class Login extends Component {
+ 
   constructor (props) {
     super(props)
     this.state = {
@@ -146,47 +149,43 @@ class Login extends Component {
       return <Loader />
     } else {
       return (
-        <Container>
-          <Content>
-            <Form>
-              <Item stackedLabel>
-                <Label>Usuário</Label>
-                <Input
+        <Container style={styles.container}>
+          <Content style={styles.content}>
+                <TextInput
+                underlineColorAndroid ={Colors.primary.lightColor}
+                placeholder="Usuário"
                   onChangeText={usuarioNome =>
                     this.setState({ usuarioNome: usuarioNome })}
                   value={this.state.usuarioNome}
                 />
-              </Item>
-              <Item stackedLabel last>
-                <Label>Senha</Label>
-                <Input
+               
+                <TextInput
+                  underlineColorAndroid ={Colors.primary.lightColor}
+                placeholder="Senha"
                   secureTextEntry
                   onChangeText={usuarioSenha =>
                     this.setState({ usuarioSenha: usuarioSenha })}
                   value={this.state.usuarioSenha}
                 />
-              </Item>
-              <Button
-                style={{ marginTop: 20 }}
-                onPress={() => this.login()}
-                primary
-                full
-              >
-                <Text>Entrar</Text>
-              </Button>
-              <Button
-                style={{ marginTop: 20 }}
-                onPress={() => this.props.navigation.navigate('Configuracoes')}
-                primary
-                full
-              >
-                <Text>Configurações</Text>
-              </Button>
-              <Button  warning
-                full onPress={ () => this.props.navigation.navigate('tests')}>
-              <Text>tests</Text>
-              </Button>
-            </Form>
+              <View style={styles.buttonGroup}>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                          style={[styles.button, styles.buttonPrimary]}
+                          onPress={() => this.login()}
+                        >
+                          <Text style={styles.buttonLightText}>Entrar</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                          style={[styles.button, styles.buttonSecondary]}
+                          onPress={() => this.props.navigation.navigate('Configuracoes')}
+                        >
+                          <Text style={styles.buttonLightText}>Configurar</Text>
+                        </TouchableOpacity>
+                    </View>
+              </View>
+        
           </Content>
         </Container>
       )
