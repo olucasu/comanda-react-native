@@ -44,7 +44,7 @@ export default class Pedido extends Component {
     this.startSearch = this.startSearch.bind(this);
     this.addItemComanda = this.addItemComanda.bind(this);
     this.props.screenProps.addItemComanda = this.addItemComanda;
-
+    this.props.screenProps.pedido = this.state.pedido;
   }
 
   async addItemComanda (item) {
@@ -62,9 +62,30 @@ export default class Pedido extends Component {
     item.id_portador      = usuario.id_portador
     item.data_caixa       = usuario.caixa_abertura
     item.vlr_vendido      = parseFloat(item.vlr_vendido)
+          
+    let pedido = this.state.pedido; 
 
-    this.state.pedido.push(item)
-    ToastAndroid.show('Adicionado à lista para envio', ToastAndroid.SHORT);
+    if(pedido.length > 0) {
+        
+      let estaNoPedido = false;
+        
+      pedido.map((itemNoPedido)=>{
+        if( itemNoPedido.id_produto === item.id_produto ){
+            estaNoPedido = true;
+            return itemNoPedido.qtde += item.qtde;
+          } 
+      });
+
+      if(! estaNoPedido) {
+        pedido.push(item);
+      }
+
+    } else {
+      this.state.pedido.push(item)
+    }
+  
+
+    ToastAndroid.show(`Adicionado ${item.qtde} ${item.descricao} ao pedido para envio`, ToastAndroid.SHORT);
     
   }
   
@@ -194,8 +215,7 @@ export default class Pedido extends Component {
     */
     const thenSearch = () => {
        if(isSameSearch(firstPrevState.queryForSearch,inputValue)) return null
-
-      this.setState( {isFetchingByInputBusca:true});
+        this.setState( {isFetchingByInputBusca:true});
     }
 
     if(inputValue.length > 0) {
@@ -207,8 +227,7 @@ export default class Pedido extends Component {
         if(isSameSearch(prevState.queryForSearch,inputValue)) return null;
 
         //Alterando estado do componente
-        return{queryForSearch:this.state.inputBuscaPorNome}
-      }, thenSearch) 
+        return{queryForSearch:this.state.inputBuscaPorNome}}, thenSearch) 
     }
 
   }

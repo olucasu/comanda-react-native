@@ -47,8 +47,6 @@ export default class AdicionaProduto extends Component{
 
         this.props.screenProps.addItemComanda(this.state);
 
-      
-
         this.props.navigation.navigate("Pedidos");
 
     }   
