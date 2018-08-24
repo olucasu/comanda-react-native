@@ -72,7 +72,7 @@ export default class Pedido extends Component {
       pedido.map((itemNoPedido)=>{
         if( itemNoPedido.id_produto === item.id_produto ){
             estaNoPedido = true;
-            return itemNoPedido.qtde += item.qtde;
+            itemNoPedido.qtde = parseFloat(item.qtde) + parseFloat(itemNoPedido.qtde) ;
           } 
       });
 
@@ -84,7 +84,6 @@ export default class Pedido extends Component {
       this.state.pedido.push(item)
     }
   
-
     ToastAndroid.show(`Adicionado ${item.qtde} ${item.descricao} ao pedido para envio`, ToastAndroid.SHORT);
     
   }
