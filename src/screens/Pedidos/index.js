@@ -43,8 +43,10 @@ export default class Pedido extends Component {
     this.handleSearch  = this.handleSearch.bind(this)
     this.startSearch = this.startSearch.bind(this);
     this.addItemComanda = this.addItemComanda.bind(this);
+    this._checarPedidoButton = this._checarPedidoButton.bind(this);
     this.props.screenProps.addItemComanda = this.addItemComanda;
     this.props.screenProps.pedido = this.state.pedido;
+  
   }
 
   async addItemComanda (item) {
@@ -139,6 +141,9 @@ export default class Pedido extends Component {
           }  
 
         } else {
+
+          responseJson = await response.json();
+
           typeof response.error == 'undefined' || ! response.error ? response.error = "Ocorreu um erro inesperado." : "";  
           Alert.alert('Opa', 'Não foi possível enviar o pedido! \n'+ response.error);
           this.setState({
@@ -148,7 +153,6 @@ export default class Pedido extends Component {
 
         }
       } catch (e) {
-        console.log(e)
         this.setState({ isLoading: false })
       }
     } else {
@@ -272,7 +276,6 @@ export default class Pedido extends Component {
    */
 
   _checarPedidoButton(){
-
       return(
         <View style={styles.buttonContainer}>
             <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={() => this._toggleModal()}>
@@ -281,25 +284,21 @@ export default class Pedido extends Component {
                 </Text>
             </TouchableOpacity>
        </View>
-      )
-  
+    )
   }
-
 
   render () {
 
     if (this.state.isLoading) {
       return <Loader />
     } else {
-
-      
       if( ! this.state.isFetchingByInputBusca)  {
         return (
           <Container style={styles.container}>
             <View style={styles.viewHeaderSearch}>
                 {this.inputBuscaProduto()}
             </View>
-            <CategoriasProduto />
+            <CategoriasProduto _checarPedidoButton={this._checarPedidoButton} />
             { this._checarPedidoButton()}
             <ModalConfirmaPedido mesa={this.state.screenTitle} pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
           </Container>

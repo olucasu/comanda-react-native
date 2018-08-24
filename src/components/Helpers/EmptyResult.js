@@ -1,7 +1,20 @@
 import React, { Component } from 'react'
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {Icon} from 'native-base'
 import { styles } from '../Styles'
+
+
+/**
+ * Componente de UI EmptyResult
+ * 
+ * props
+ * 
+ * icon(Object) = iconName and IconType
+ * 
+ * message - string
+ * 
+ * showUpdate - recebe uma função para atualizar o componente
+ */
 class emptyResult extends Component {
 
   constructor(props){
@@ -12,12 +25,23 @@ class emptyResult extends Component {
     }
   }
 
+  buttonUpdate(){
+    if(this.props.showUpdate) {
+      return(
+        <TouchableOpacity onPress={()=> {this.props.showUpdate()}} style={[styles.button, styles.buttonSecondary, {marginTop: 15}]}>
+          <Text style={styles.buttonDarkText}>Atualizar</Text>
+        </TouchableOpacity>
+      )
+    }
+  }
+  
   render () {
     return (
       <View style={[styles.container, styles.alignItemsCenter, styles.containerBorder]}>
           <Icon style={styles.iconHeroMessage} type={this.state.iconType} name={this.state.iconName} size={54} />
           <Text style={styles.text}> {this.props.message} </Text>
-      </View>
+          {this.buttonUpdate()}
+      </View> 
     )
   }
 }

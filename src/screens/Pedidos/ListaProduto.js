@@ -2,6 +2,7 @@ import React , {Component} from 'react';
 import {Text,View, FlatList, TouchableOpacity} from 'react-native';
 import VistaAPI from '../../api/VistaAPI';
 import Loader from '../../components/Helpers/loader';
+import {_formatMoney} from '../../components/Helpers/uiHelper';
 import { withNavigation } from 'react-navigation';
 import {styles} from "../../components/Styles";
 import EmptyResult from "../../components/Helpers/EmptyResult";
@@ -86,10 +87,6 @@ class ListaProduto extends Component {
       }
   }
 
-  componentWillUnmount(){
-      console.log("Lista Produto desmontou");
-  }
-
   navigate(params){
     if(this.props._closeModal)
         this.props._closeModal();
@@ -104,8 +101,8 @@ class ListaProduto extends Component {
         qtde: 1,
         id_produto: produto.id_produto,
         complemento:"",
-        vlr_vendido: String(produto.pvenda),
-        estoque: String(produto.saldo_geral),
+        vlr_vendido: produto.pvenda,
+        estoque: produto.saldo_geral,
         descricao: produto.produto_descricao,
         unidade: produto.unidade,
     }
@@ -136,13 +133,12 @@ class ListaProduto extends Component {
                         const params = {
                             produto: item
                         }
-
                         return(
                             <View style={styles.sideBySide}>
                                
                                 <TouchableOpacity 
                                     style={[styles.listItem, styles.listItemBig]} onPress={ () => this.navigate(params)}  >
-                                    <Text style={styles.text}>{item.produto_descricao}</Text>
+                                    <Text style={styles.text}>{`${item.produto_descricao} - R$${_formatMoney(item.pvenda)}`}</Text>
                                 </TouchableOpacity>
                             
                                 <TouchableOpacity onPress={( )=>this.addOne(item)} style={[styles.buttonSmLeft, styles.buttonPrimary]}>

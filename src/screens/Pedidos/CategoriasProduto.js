@@ -142,11 +142,9 @@ class CategoriasProduto extends Component {
                 )
             }}
           />
-          
-          <ModalListaProduto categoriaSelecionada={this.state.categoriaSelecionada} modalIsVisible={this.state.listarProdutosIsVisible} _closeModal={this._closeModal}    />
-    
+       
+          <ModalListaProduto _checarPedidoButton={this.props._checarPedidoButton} categoriaSelecionada={this.state.categoriaSelecionada} modalIsVisible={this.state.listarProdutosIsVisible} _closeModal={this._closeModal}    />
         </ScrollView>
-   
       )
     }
   }

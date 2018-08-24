@@ -31,9 +31,6 @@ import { isUrl } from '../components/Util/validations'
 
 class VistaAPI {
 
-  constructor(){
-    console.log("API Working");
-  }
 
    /*
     *Estado Inicial do Componente
@@ -49,7 +46,7 @@ class VistaAPI {
     endPoint: '',
     usuario: '',
     body: '', 
-    timesExecuted: 0
+    defaultMsg: "Ocorreu um erro no servidor o IP está correto? Verifique se há necessidade de informar a porta.\n Exemplo: 192.168.0.1:8080.",
   }
 
   /*
@@ -58,7 +55,8 @@ class VistaAPI {
   async setUrlServerAsync () {
     const urlServer = await AsyncStorage.getItem('urlServer')
     
-    this.state.baseUrl = urlServer + '/datasnap/rest/TServerFOOD/'
+    this.state.baseUrl =  `http://${urlServer}/datasnap/rest/TServerFOOD/`;
+
     return urlServer
   }
 
@@ -72,9 +70,9 @@ class VistaAPI {
   * Responsável por controlar o tempo de resposta do servidor;
   * Retorna uma promise race.
 */
-  startFetch (ms, promise) {
+ async startFetch (ms, promise) {
 
-    let timeout = new Promise((resolve, reject) => {
+  let timeout = new Promise((resolve, reject) => {
 
       let id = setTimeout(() => {
         clearTimeout(id)
@@ -92,14 +90,12 @@ class VistaAPI {
     }
   }
 
-  /*
+  /** 
     * Create request
     * Recebe objeto
     * uri - treicho da url que representa o métodos
-    * method - "POST", "GET"
   */
   create (obj) {
-    this.state.method = obj.method;
     this.state.uri = obj.uri;
     this.state.apiMethod = obj.apiMethod;
     if( obj.body != null) this.state.body = obj.body;
@@ -135,7 +131,6 @@ class VistaAPI {
       )
       return promiseTimeout
     } catch (e) {
-      console.log(e);
       return {
         ok: false,
         error: typeof e.message !== 'undefined' ? e.message : e.error
@@ -149,14 +144,6 @@ class VistaAPI {
   */
 
   async get () {
-
-    console.log("CONSULTANDO NA API");
-
-    this.state.timesExecuted ++;
-
-
-    console.log(this.state.timesExecuted);
-
 
     await this.setUrlServerAsync();
     await this.setUsuarioAsync();
@@ -184,6 +171,14 @@ class VistaAPI {
 
     try {
       let promiseTimeout = await this.startFetch(30000, fetch(endPoint, params))
+      if( ! promiseTimeout.ok) {
+
+        return {
+          ok: false,
+          error:  promiseTimeout.status == 500 ? this.state.defaultMsg : `Ocorreu um erro inesperado, erro: ${promiseTimeout.status}`
+        }
+      }
+
       return promiseTimeout
     } catch (e) {
       return {
@@ -215,11 +210,21 @@ class VistaAPI {
 
     try {
       let promiseTimeout = await this.startFetch(30000, fetch(endPoint, params))
-      return promiseTimeout
+
+      if( ! promiseTimeout.ok) {
+
+        return {
+          ok: false,
+          error:  promiseTimeout.status == 500 ? this.state.defaultMsg : `Ocorreu um erro inesperado, erro: ${promiseTimeout.status}`
+        }
+      }
+
+      return promiseTimeout;
+
     } catch (e) {
       return {
         ok: false,
-        error: typeof e.message !== 'undefined' ? e.message : e.error
+        error: typeof e !== 'undefined' ? e.message : "Ocorreu um erro inesperado"
       }
     }
   }

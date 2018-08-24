@@ -91,4 +91,9 @@ class NumberPicker extends Component {
     }
 }
 
-export {getIconMesa, NumberPicker}
+
+const _formatMoney = (value) =>{
+    return parseFloat(Math.round(value * 100) / 100).toFixed(2)
+}
+
+export {getIconMesa, NumberPicker, _formatMoney}

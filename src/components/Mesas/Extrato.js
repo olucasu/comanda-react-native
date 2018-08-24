@@ -2,6 +2,7 @@ import React , {Component} from 'react';
 import {FlatList, Text,View, ScrollView, RefreshControl} from 'react-native';
 import { styles } from '../Styles';
 import EmptyResult from '../../components/Helpers/EmptyResult';
+import {_formatMoney} from '../../components/Helpers/uiHelper';
 
 export default class Extrato extends Component{
    
@@ -43,7 +44,7 @@ export default class Extrato extends Component{
                                 <Text style={styles.text}>Qtd: {item.qtde_item}</Text>
                             </View>
                             <View style={{flex:1,justifyContent:'flex-end', flexDirection: 'row' }}>
-                                 <Text style={styles.text}>Subtotal: R${item.total_item}</Text>
+                                 <Text style={styles.text}>Subtotal: R${_formatMoney(item.total_item)}</Text>
                             </View>
                         </View>
                     )

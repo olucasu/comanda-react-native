@@ -2,35 +2,39 @@ import React, {Component} from 'react';
 import {Text,View,TouchableOpacity, StatusBar, FlatList, Button} from 'react-native';
 import Modal from 'react-native-modal';
 import ListaProduto from './ListaProduto';
-import {styles} from '../../components/Styles'
+import {styles, Colors} from '../../components/Styles'
 export default class ModalListaProduto extends Component {
 
     state = {
         isVisible: false
     }
 
+ 
 
     render(){
         this.state.isVisible = this.props.modalIsVisible;
         return(
             <View style={{ flex: 1 }}>
-        
-                <Modal useNativeDriver={true} onRequestClose={ () => this.props._closeModal()}  isVisible={this.props.modalIsVisible}>
-                    <StatusBar
-                        backgroundColor="#000"
-                        barStyle="dark-content"
+     
+                <Modal backdropColor={Colors.primary.textDark} useNativeDriver={true} onRequestClose={ () => this.props._closeModal()}  isVisible={this.props.modalIsVisible}>
+                     <StatusBar
+                        backgroundColor={Colors.primary.darkColor}
+                        barStyle={Colors.primary.barStyle}
                     />
                     <View style={[styles.container, styles.containerBorder]}>
                         <View style={styles.viewHeader}>
                             <Text style={[styles.viewHeaderText, styles.fontSemiBold]} > {this.props.categoriaSelecionada.grupo_descricao}  </Text>
                         </View>
                         <ListaProduto _closeModal={this.props._closeModal} modalIsVisible={this.state.isVisible} categoria={this.props.categoriaSelecionada} />
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity  activeOpacity={0.9} style={[styles.button,styles.buttonSecondary]}  onPress={this.props._closeModal}>
-                                <Text style={styles.buttonDarkText}>
-                                    Voltar
-                                </Text>
-                            </TouchableOpacity>
+                        <View style={styles.buttonGroup}>
+                            {this.props._checarPedidoButton()}
+                            <View style={styles.buttonContainer}>
+                                <TouchableOpacity  activeOpacity={0.9} style={[styles.button,styles.buttonSecondary]}  onPress={this.props._closeModal}>
+                                    <Text style={styles.buttonDarkText}>
+                                        Voltar
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </Modal>

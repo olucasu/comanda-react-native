@@ -23,11 +23,20 @@ class Mesas extends Component {
         tables: '',
         isLoading: false,
         refreshing: false,
-        error: false
+        error: false,
+        updatedFromOutside: false
     }
+
+    this.fetchData = this.fetchData.bind(this);
+    this,this.updateMesas = this.updateMesas.bind(this)
+    this.props.screenProps._updateMesasIndex = this.updateMesas;
   }
 
+
+
+
   async fetchData () {
+
     this.setState({
       isLoading: true
     })
@@ -57,8 +66,21 @@ class Mesas extends Component {
     }
   }
 
+  updateMesas(){
+    this.setState({
+      updatedFromOutside
+    }, this.fetchData)
+
+  }
+
   componentDidMount() {
       this.fetchData();
+      console.log("INDEX MONTOU");
+  }
+
+  componentWillUnmount(){
+    console.log("INDEX DESMONTOU");
+
   }
 
   _onRefresh () {
@@ -102,6 +124,21 @@ class Mesas extends Component {
       )
     } else {
       if (!this.state.error) {
+      if(!tables){
+        return(
+          <ScrollView 
+              contentContainerStyle={{flexGrow: 1}}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                />
+          }>
+            <EmptyResult showUpdate={this.fetchData}  message="Não há mesas." />
+        </ScrollView>
+        )
+         
+      } 
         return (
           <Container style={styles.container}>
               <FlatList 
@@ -128,8 +165,9 @@ class Mesas extends Component {
                       idVenda: item.id_venda,
                       dataAbertura: item.ab_data,
                       screenTitle: tipoMesa + ' ' + item.id,
-                      navigate : navigate
+                      navigate : navigate,
                   }
+
 
                   return (
                     <TouchableOpacity
@@ -159,9 +197,8 @@ class Mesas extends Component {
               />
             }
           >
-
           
-            <EmptyResult icon={{iconName: "warning", iconType:"MaterialIcons" }} onRefresh message={this.state.error} />
+            <EmptyResult showUpdate={this.fetchData} icon={{iconName: "warning", iconType:"MaterialIcons" }} onRefresh message={this.state.error} />
 
           </ScrollView>
         )

@@ -26,7 +26,7 @@ export default class MesaDetails extends Component {
       navigate: this.props.navigation.getParam('navigate', 'Não informado'),
       extrato: [],
       usuario: [],
-      updateMesa: this._updateMesa.bind(this)
+      updateMesa: this._updateMesa.bind(this) 
     }
  
   }
@@ -69,6 +69,7 @@ export default class MesaDetails extends Component {
 
   _updateMesa(){
     this.fetchData();
+    this.props.screenProps._updateMesasIndex();
   }
 
   _getHeaderExtrato(){

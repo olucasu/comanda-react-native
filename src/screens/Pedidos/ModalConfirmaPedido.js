@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text,View,TouchableOpacity, StatusBar, Alert} from 'react-native';
 import Modal from 'react-native-modal';
-import {styles} from '../../components/Styles';
+import {styles,Colors} from '../../components/Styles';
 import Pedido from './Pedido';
 import {Container} from 'native-base';
 
@@ -77,12 +77,11 @@ export default class ModalConfirmaPedido extends Component {
 
         return(
         
-                <Modal   useNativeDriver={true} onRequestClose={ () => this.props._closeModal()}  isVisible={this.props.modalIsVisible}>
-                    <StatusBar
-                        backgroundColor="#000"
-                        barStyle="dark-content"
+                <Modal backdropColor={Colors.primary.textDark}  useNativeDriver={true} onRequestClose={ () => this.props._closeModal()}  isVisible={this.props.modalIsVisible}>
+                     <StatusBar
+                        backgroundColor={Colors.primary.darkColor}
+                        barStyle={Colors.primary.barStyle}
                     />
-              
                     <View style={[styles.container, styles.containerBorder]}>
                         {this._getValorPedido()}
                         <Pedido update={this.updateModal} pedido={this.props.pedido} />

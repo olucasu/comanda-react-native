@@ -1,20 +1,23 @@
-import React from 'react'
-import { FlatList, Text, View, TouchableOpacity, ScrollView } from 'react-native'
-import { styles } from '../../components/Styles'
-import EmptyResult from '../../components/Helpers/EmptyResult'
-
+import React from 'react';
+import { FlatList, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { styles } from '../../components/Styles';
+import EmptyResult from '../../components/Helpers/EmptyResult';
+import {_formatMoney} from  '../../components/Helpers/uiHelper';
 const hasComplemento = complemento => {
   if (complemento != ""  &&  complemento != null) {
-      
     return <Text style={styles.text}> Complemento: {complemento}</Text>
   } else {
     return false
   }
 }
 
-
+/**
+ * 
+ * Component pedido
+ * 
+ * Retorna pedido que está sendo montado
+ */
 const Pedido = props => {
- 
 
   if (props.pedido.length > 0) {
 
@@ -53,11 +56,10 @@ const Pedido = props => {
                   }}
                 >
                   <Text style={styles.text}>
-                    Subtotal: R${item.vlr_vendido}
+                    Vlr {item.unidade}: R${  _formatMoney(item.vlr_vendido) }
                   </Text>
                 </View>
                 <View>
-                 
                     <TouchableOpacity onPress={ () => { removeItem(props.pedido, item) } }>
                         <Text> Remover Item</Text>
                     </TouchableOpacity>

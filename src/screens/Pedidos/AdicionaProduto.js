@@ -2,7 +2,7 @@ import React, {Component} from  'react';
 import {Text,View, TextInput, Button, ToastAndroid, TouchableOpacity, ScrollView} from 'react-native';
 import {styles, Colors} from '../../components/Styles'
 import {Container, Content} from 'native-base'
-import {NumberPicker} from '../../components/Helpers/uiHelper';
+import {NumberPicker, _formatMoney} from '../../components/Helpers/uiHelper';
 export default class AdicionaProduto extends Component{
 
     constructor(props){
@@ -58,7 +58,7 @@ export default class AdicionaProduto extends Component{
                     <View style={styles.headerAddItem}>
                         <View style={styles.headerAddItemContent}>
                             <Text style={ styles.headerAddItemProduct}>{this.state.descricao}</Text>
-                            <Text style={[styles.text, styles.headerAddItemValue]}>R${this.state.vlr_vendido}</Text>
+                            <Text style={[styles.text, styles.headerAddItemValue]}>R${ _formatMoney(this.state.vlr_vendido)}</Text>
                         </View>
                         <NumberPicker onChangeText={text => this.setState({qtde:text})} unity={this.state.unidade}  />
                         <View style={styles.content}>

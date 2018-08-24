@@ -355,6 +355,9 @@ const styles = StyleSheet.create({
         overflow:'hidden'
     },
 
+
+
+
     numberPickerIcon:{
         margin: 0,
         padding:0,
@@ -371,7 +374,25 @@ const styles = StyleSheet.create({
         fontFamily: regularFont,
         padding:0,
         margin: 0
-    }
+    },
+
+
+    //Helpers 
+    mb30:{
+        marginBottom: 30
+    },
+
+    //Input
+    inputForm:{
+        fontFamily: regularFont,
+        backgroundColor: '#eee',
+        paddingHorizontal: 15,
+        borderRadius: 10,
+        borderColor: "#eee",
+        borderWidth: 1,
+        fontSize: 18,
+        color: Colors.primary.textDark
+    },
 
 });
 

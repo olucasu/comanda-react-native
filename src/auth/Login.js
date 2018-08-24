@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
-import { AsyncStorage, Alert , TouchableOpacity, View, TextInput, Image, StatusBar} from 'react-native'
+import { AsyncStorage, Alert , TouchableOpacity, View, TextInput, Image, StatusBar, ScrollView} from 'react-native'
 import VistaAPI from '../api/VistaAPI';
 import Loader from '../components/Helpers/loader'
 
 import {
   Container,
-  Content,
-  Form,
-  Item,
-  Input,
-  Button,
   Text,
-  Label,
 } from 'native-base'
 
 import {styles, Colors} from '../components/Styles'
@@ -55,7 +49,6 @@ class Login extends Component {
   }
 
   async login () {
-
     if(this.state.urlServer == "") {
       Alert.alert('Mas primeiro: ', 'Configure a URL do servidor');
       return this.props.navigation.navigate('ConfigurarUrlServer');
@@ -98,27 +91,32 @@ class Login extends Component {
             id_cliente: responseJson.id_cliente
           }
         })
-
         await this._storeDataAsync()
-
         this.setState({
           isLoading: false
         })
-
         this.props.navigation.navigate('AuthLoading')
+
       } else {
+
         this.setState({
           isLoading: false
         })
+        
+        responseJson = responseJson.constructor == Array ? responseJson.shift(): responseJson;
 
-        alert('Não foi possível fazer o Login: ' + responseJson.vMensagem)
+      
+
+        Alert.alert('Opa', responseJson.vMensagem );
       }
     } else {
+      
       this.setState({
         isLoading: false,
         error: response.error
       })
 
+ 
       Alert.alert('Opa, tivemos um problema', response.error ? response.error : "Não consegui realizar o login, a URL está correta?"  );
     }
   }
@@ -150,6 +148,7 @@ class Login extends Component {
     } else {
       return (
         <Container style={styles.container} >
+          <ScrollView>
                 <StatusBar
                 backgroundColor={Colors.primary.containerColor}
                 barStyle={Colors.primary.barStyle}
@@ -168,7 +167,8 @@ class Login extends Component {
                     />
                   </View>
                   <TextInput
-                  underlineColorAndroid ={Colors.primary.lightColor}
+                  style={[styles.inputForm,styles.mb30]}
+                  underlineColorAndroid ='transparent'
                   placeholder="Usuário"
                     onChangeText={usuarioNome =>
                       this.setState({ usuarioNome: usuarioNome })}
@@ -176,8 +176,9 @@ class Login extends Component {
                   />
                 
                   <TextInput
-                    underlineColorAndroid ={Colors.primary.lightColor}
-                  placeholder="Senha"
+                    style={styles.inputForm}
+                    underlineColorAndroid ='transparent'
+                    placeholder="Senha"
                     secureTextEntry
                     onChangeText={usuarioSenha =>
                       this.setState({ usuarioSenha: usuarioSenha })}
@@ -185,7 +186,7 @@ class Login extends Component {
                   />
                 </View>
             
-              <View style={[styles.buttonGroup, {marginBottom:100}]}>
+              <View style={[styles.buttonGroup]}>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
                           style={[styles.button, styles.buttonPrimary]}
@@ -203,7 +204,7 @@ class Login extends Component {
                         </TouchableOpacity>
                     </View>
               </View>
-        
+              </ScrollView>
           </Container>
       )
     }
