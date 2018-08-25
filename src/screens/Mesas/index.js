@@ -10,7 +10,7 @@ import {styles} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
 import { Container, Content, View } from 'native-base';
-import {getIconMesa} from '../../components/Helpers/uiHelper';
+import {getIconMesa, _getStatusStyle} from '../../components/Helpers/uiHelper';
 import EmptyResult from '../../components/Helpers/EmptyResult';
 class Mesas extends Component {
   
@@ -88,25 +88,6 @@ class Mesas extends Component {
 
     this.forceUpdate()
   }
-  
-  getStatusStyle(status){
-    switch(status) {
-      case 'OCUPADA(O)':
-          return 'tableCardOcupado'
-          break;
-      case 'CONTA':
-          return 'tableCardConta'
-          break;
-      case 'RESERVADA(O)':
-          return 'tableCardReservado'
-          break;
-      case 'Livre':
-          return 'tableCardLivre'
-          break;
-      default:
-          return 'tableCardLivre'
-    }
-  }
 
   render () {
 
@@ -147,7 +128,6 @@ class Mesas extends Component {
                 numColumns={2}
                 renderItem={({ item }) => {
 
-                  const styleStatus = this.getStatusStyle(item.status_descricao)
                   const tipoMesa = item.tipo_mesa_cartao === 'MESA'? 'Mesa' : 'Cartão';   
                   let icon = getIconMesa(item.status_descricao);
 
@@ -160,6 +140,13 @@ class Mesas extends Component {
                       dataAbertura: item.ab_data,
                       screenTitle: tipoMesa + ' ' + item.id,
                       navigate : navigate,
+                      reserva: {
+                        reserva_nome: item.reserva_nome,
+                        reserva_fone: item.reserva_fone,
+                        reserva_hora: item.reserva_hora,
+                        reserva_pessoas: item.reserva_pessoas,
+
+                      }
                   }
 
 
@@ -172,7 +159,7 @@ class Mesas extends Component {
                     >
                       {icon}
                       <Text style={styles.tableCardText}>{tipoMesa}</Text>
-                      <Text style={[styles.tableCardText, styles.tableCardNumber]}>{ item.id}</Text>
+                      <Text style={ styles.tableCardNumber}>{ item.id}</Text>
                     </TouchableOpacity>
                   )
                 }}
@@ -192,7 +179,7 @@ class Mesas extends Component {
             }
           >
           
-            <EmptyResult showUpdate={this.fetchData} icon={{iconName: "warning", iconType:"MaterialIcons" }} onRefresh message={this.state.error} />
+          <EmptyResult showUpdate={this.fetchData} icon={{iconName: "warning", iconType:"MaterialIcons" }} onRefresh message={this.state.error} />
 
           </ScrollView>
         )

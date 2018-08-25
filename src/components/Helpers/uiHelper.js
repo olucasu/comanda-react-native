@@ -4,6 +4,27 @@ import {Text, TouchableOpacity, TextInput, View , TouchableNativeFeedback} from 
 import TextInputMask from 'react-native-text-input-mask';
 import {Colors,styles} from '../../components/Styles';
 
+
+const _getStatusStyle = (status) => {
+    console.log(status);
+    switch(status) {
+      case 'OCUPADA(O)':
+          return 'bgOcupado'
+          break;
+      case 'CONTA':
+          return 'bgConta'
+          break;
+      case 'RESERVADA(O)':
+          return 'bgReservado'
+          break;
+      case 'Livre':
+          return 'bgLivre'
+          break;
+      default:
+          return 'bgLivre'
+    }
+}
+
 const getIconMesa = (tipoMesa) => {
     
     let type, name, style;
@@ -96,4 +117,4 @@ const _formatMoney = (value) =>{
     return parseFloat(Math.round(value * 100) / 100).toFixed(2)
 }
 
-export {getIconMesa, NumberPicker, _formatMoney}
+export {getIconMesa, NumberPicker, _formatMoney, _getStatusStyle}

@@ -22,8 +22,8 @@ class Login extends Component {
       status: false,
       isLoading: false,
       urlServer: "",
-      usuarioNome: "Vistafood",
-      usuarioSenha: "123",
+      usuarioNome: "",
+      usuarioSenha: "",
       usuario: {
         vvendas_portador: "",
         vcaixa_id: "",

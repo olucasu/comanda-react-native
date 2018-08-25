@@ -10,7 +10,10 @@ import {
 import { Container} from 'native-base';
 import {styles} from '../../components/Styles';
 import Extrato from '../../components/Mesas/Extrato';
+import Reserva from '../../components/Mesas/Reserva';
+
 import Loader from '../../components/Helpers/loader';
+import { _getStatusStyle } from '../../components/Helpers/uiHelper';
 
 export default class MesaDetails extends Component {
   
@@ -26,6 +29,7 @@ export default class MesaDetails extends Component {
       navigate: this.props.navigation.getParam('navigate', 'Não informado'),
       extrato: [],
       usuario: [],
+      reserva:this.props.navigation.getParam('reserva', 'Não informado'),
       updateMesa: this._updateMesa.bind(this) 
     }
  
@@ -79,22 +83,48 @@ export default class MesaDetails extends Component {
     this.fetchData();
   }
 
+  _getMesaReserva(){
 
+    if(this.state.status == "RESERVADA(O)") {
+      return(
+        <Reserva reserva={this.state.reserva} />
+      )
+    }
+
+    return null;
+ 
+  }
 
   _getHeaderExtrato(){
-    let valor = 0
-    if(this.state.extrato != null) {
-      this.state.extrato.map(item =>  valor += (item.total_item * item.qtde_item) )
 
-      const subTotal = parseFloat(Math.round( valor * 100) / 100).toFixed(2)
+    const subTotal = () =>{
+      let valor = 0
+      if(this.state.extrato != null) {
+        this.state.extrato.map(item =>  valor += (item.total_item * item.qtde_item) )
+        const subTotal = parseFloat(Math.round( valor * 100) / 100).toFixed(2)
+        return(`Comanda | SubTotal: ${subTotal}`);
+      }
+      return "";
+    }
+
+    return(
+      <View style={[styles.viewHeader, styles[_getStatusStyle(this.state.status)]]}>
+          <Text style={styles.viewHeaderText}>{`${this.state.status}  ${subTotal()}`}</Text>
+       </View>
+    )
+  }
+
+  getButtonContainer(){
+    if(this.state.status != "CONTA") {
       return(
-        <View style={styles.viewHeader}>
-            <Text style={styles.viewHeaderText} > Comanda | Total: R$ {subTotal}</Text>
-         </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={()=> this.props.navigation.navigate('Pedidos', this.state)}>
+              <Text style={styles.buttonLightText}>Adicionar Item</Text>
+          </TouchableOpacity>
+        </View>
       )
     }
   }
-
 
   render () {
     if(this.state.isLoading) {
@@ -105,12 +135,9 @@ export default class MesaDetails extends Component {
       return(
         <Container style={styles.container}>
             {this._getHeaderExtrato()}
+            {this._getMesaReserva()}
             <Extrato extrato={this.state.extrato} />
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity activeOpacity={0.9} style={[styles.button,styles.buttonPrimary]} onPress={()=> this.props.navigation.navigate('Pedidos', this.state)}>
-                    <Text style={styles.buttonLightText}>Adicionar Item</Text>
-                </TouchableOpacity>
-            </View>
+            {this.getButtonContainer()}
         </Container>
       )
     }

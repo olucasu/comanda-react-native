@@ -57,12 +57,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         marginVertical: 10,
         paddingVertical:20,
-        paddingHorizontal:15,
+        paddingHorizontal: 15,
         borderRadius: 7,
         flexDirection: 'row',
         alignItems: 'center',
         flex:1,
-        margin: 10
+        margin: 10,
+        justifyContent: 'space-between'
     },
    
     tableCardLivre:{
@@ -80,27 +81,49 @@ const styles = StyleSheet.create({
     tableCardReservado:{
         color:"#111E6C"
     },
+
+    
+    bgLivre:{
+        backgroundColor: '#4CAF50'
+    },
+   
+    bgOcupado:{
+       backgroundColor: '#FF9800'
+    },
+   
+    bgConta:{
+       backgroundColor: '#03A9F4'
+    },
+    
+    bgReservado:{
+        backgroundColor:"#111E6C"
+    },
+
+
+
+
+
    
     tableCardText:{
         color: Colors.primary.defaultDarkColor ,
         fontFamily: regularFont,
         fontSize: 15,
-        marginRight: 15
+        marginRight: 15,
     },
 
     
     tableCardIcon:{
         height: 30,
         width:30,
-        marginRight: 15,
         fontSize: 30,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        flex: 1
     },
     
     tableCardNumber:{
         color: Colors.primary.textDark,
         fontSize:16,
-        fontFamily: boldFont
+        fontFamily: boldFont,
     },
     
     container :{
