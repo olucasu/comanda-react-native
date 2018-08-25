@@ -68,19 +68,13 @@ class Mesas extends Component {
 
   updateMesas(){
     this.setState({
-      updatedFromOutside
+      updatedFromOutside: true
     }, this.fetchData)
 
   }
 
   componentDidMount() {
       this.fetchData();
-      console.log("INDEX MONTOU");
-  }
-
-  componentWillUnmount(){
-    console.log("INDEX DESMONTOU");
-
   }
 
   _onRefresh () {

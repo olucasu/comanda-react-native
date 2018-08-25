@@ -6,6 +6,10 @@ import Loader from '../components/Helpers/loader'
 import {
   Container,
   Text,
+  Header,
+  Right,
+  Icon,
+  Button
 } from 'native-base'
 
 import {styles, Colors} from '../components/Styles'
@@ -148,6 +152,17 @@ class Login extends Component {
     } else {
       return (
         <Container style={styles.container} >
+          <Header style={{backgroundColor:'#fff',borderWidth:0}}>
+          <Right>
+            <Button transparent   onPress={() => this.props.navigation.navigate('Configuracoes')}>
+                <Icon
+                  name='cog'
+                  type='FontAwesome'
+                  style={{ fontSize: 24, color:Colors.primary.textDark}}
+                />
+            </Button>
+          </Right>
+        </Header>
           <ScrollView>
                 <StatusBar
                 backgroundColor={Colors.primary.containerColor}
@@ -159,7 +174,8 @@ class Login extends Component {
                     flexDirection: 'column',
                     height: '20%',
                     justifyContent: 'center',
-                    marginVertical: 80,
+                    marginBottom: 80,
+                    marginTop: 40,
                     alignItems: 'center',}}>
                     <Image
                       style={{ height: 180, width: 180 }}
@@ -174,9 +190,8 @@ class Login extends Component {
                       this.setState({ usuarioNome: usuarioNome })}
                     value={this.state.usuarioNome}
                   />
-                
                   <TextInput
-                    style={styles.inputForm}
+                  style={[styles.inputForm,styles.mb30]}
                     underlineColorAndroid ='transparent'
                     placeholder="Senha"
                     secureTextEntry
@@ -184,26 +199,13 @@ class Login extends Component {
                       this.setState({ usuarioSenha: usuarioSenha })}
                     value={this.state.usuarioSenha}
                   />
+                    <TouchableOpacity
+                      style={[styles.button, styles.buttonPrimary]}
+                      onPress={() => this.login()}
+                    >
+                      <Text style={styles.buttonLightText}>Entrar</Text>
+                    </TouchableOpacity>
                 </View>
-            
-              <View style={[styles.buttonGroup]}>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity
-                          style={[styles.button, styles.buttonPrimary]}
-                          onPress={() => this.login()}
-                        >
-                          <Text style={styles.buttonLightText}>Entrar</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity
-                          style={[styles.button, styles.buttonSecondary]}
-                          onPress={() => this.props.navigation.navigate('Configuracoes')}
-                        >
-                          <Text style={styles.buttonLightText}>Configurar</Text>
-                        </TouchableOpacity>
-                    </View>
-              </View>
               </ScrollView>
           </Container>
       )

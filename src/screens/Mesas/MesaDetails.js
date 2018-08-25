@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import VistaAPI from '../../api/VistaAPI'
 import {
-  ScrollView,
   View,
   TouchableOpacity,
-  FlatList,
-  Text
+  Text,
+  BackHandler
 } from 'react-native';
-import { Container, Content, H2, H3 , Button} from 'native-base';
+
+import { Container} from 'native-base';
 import {styles} from '../../components/Styles';
 import Extrato from '../../components/Mesas/Extrato';
 import Loader from '../../components/Helpers/loader';
@@ -65,12 +65,21 @@ export default class MesaDetails extends Component {
 
   componentDidMount () {
     this.fetchData();
+    const screenProps = this.props.screenProps;
+     this.backHandler = BackHandler.addEventListener('hardwareBackPress', function() {
+      screenProps._updateMesasIndex();
+    });
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
   }
 
   _updateMesa(){
     this.fetchData();
-    this.props.screenProps._updateMesasIndex();
   }
+
+
 
   _getHeaderExtrato(){
     let valor = 0

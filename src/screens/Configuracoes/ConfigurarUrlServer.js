@@ -72,7 +72,7 @@ class ConfigurarUrlServer extends Component {
                       style={[styles.button, styles.buttonPrimary]}
                       onPress={()=> this._storeDataAsync()}
                     >
-                      <Text style={styles.buttonLightText}>Salvar Alterções</Text>
+                      <Text style={styles.buttonLightText}>Salvar Alterações</Text>
                     </TouchableOpacity>
                 </View>
             </View>
