@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, TextInput, Text, Switch, FlatList} from 'react-native';
+import {View, TextInput, Text, TouchableOpacity, FlatList} from 'react-native';
 import {styles,Colors} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
@@ -13,12 +13,12 @@ class Complemento extends Component{
         this.state = {
             produto:props.produto,
             isLoading:false,
+            defaultComplemento: "",
             produtoComplemento:[],
             switchValue:false,
             tipoComplemento: "GERAL",
+            strComplemento: "",
         };
-
-        console.dir(props);
     }
 
     componentDidMount(){
@@ -71,17 +71,12 @@ class Complemento extends Component{
                 complemento.selecionado = false;
                 itemIndex++
             });
-
-            console.log(responseJson)
             return this.setState({produtoComplemento: responseJson}, this.isNotLoading)
           } else {
             return this.setState({isLoading:false})
           }
     
         } else {
-            console.log(api);
-            console.log(response);
-
           this.setState({
             isLoading: false,
             error: response.error
@@ -89,40 +84,89 @@ class Complemento extends Component{
         }
     }
 
+    isPizza(){
+        return this.state.tipoComplemento === "PIZZA";
+    }
 
     _listaComplemento(){
 
         let nameProp = "nome_complemento";
+        let contentType = "Complementos";
 
         let atualState =  Object.assign({}, this.state);
 
-        if(this.state.tipoComplemento === "PIZZA") {
-           nameProp = "produto_descricao" 
+        if(this.isPizza()) {
+           nameProp = "produto_descricao"
+           contentType = "Adicionar sabores"; 
         }
 
-        console.log(this.state.produtoComplemento)
+    
+
+        const handlePress =  (item) => {
+            let checked = atualState.produtoComplemento[item.itemIndex].selecionado;
+            atualState.produtoComplemento[item.itemIndex].selecionado = !checked;
+            this.setState({produtoComplemento: atualState.produtoComplemento}) 
+
+            const {setComplemento, setValorVendido} = this.props;
+
+            var str ="";
+
+            let maiorValor = this.state.produto.pvenda;
+
+            
+            this.setState({strComplemento: ""});
+           
+           
+            atualState.produtoComplemento.map((complemento)=>{
+                if(complemento.selecionado) {
+                    str+= `${complemento[nameProp]}\n`;
+
+                 
+
+                    this.setState({strComplemento: str}, () =>{
+                        setComplemento(str);
+                    });
+
+
+                    if(this.isPizza()) {
+                        maiorValor = complemento.pvenda >= maiorValor ? complemento.pvenda : maiorValor;
+                    }
+                } 
+            })
+
+            if( atualState.defaultComplemento != "")
+            str += `${atualState.defaultComplemento}\n`;
+
+            setValorVendido(maiorValor);
+
+        }
 
         return(
-            <FlatList
-            data={this.state.produtoComplemento}
-            extraData={this.state}
-            renderItem={({ item }) => {
-                console.log(item)
-                return(
-                    <View>
-                        <Text>{item[nameProp]}</Text>
-                        <Switch
-                        onValueChange = {(value)=> {
-                            atualState.produtoComplemento[item.itemIndex].selecionado = value;
-                            this.setState({produtoComplemento: atualState.produtoComplemento}) }
+            <View style={styles.content}>
+            <Text style={styles.contentTitle}> 
+                {contentType}
+            </Text>
+                <FlatList
+                        data={this.state.produtoComplemento}
+                        extraData={this.state}
+                        renderItem={({ item }) => {
+                            return(
+                                <TouchableOpacity 
+                                    style={[styles.listItem, styles.sideBySide, {paddingRight: 20}]}
+                                    onPress={ () => handlePress(item)}
+                                     activeOpacity={0.9}>
+                                    <Text style={styles.text}>{item[nameProp]}</Text>
+                                    <CheckBox
+                                    onPress={ () => handlePress(item)}
+                                    checked={item.selecionado} color={Colors.primary.lightColor}/>
+                                </TouchableOpacity>
+                            )}
                         }
-                        value = {item.selecionado}/>
-                    </View>
-                )}
-            }
 
-            keyExtractor={item => item.itemIndex.toString()}
-          />
+                        keyExtractor={item => item.itemIndex.toString()}
+                    />
+            </View>
+       
         )
     }
 
@@ -138,12 +182,23 @@ class Complemento extends Component{
         return this.state.produtoComplemento.length > 0 ? "Outro complemento" : "Complemento";
     }
 
+    handleDefaultComplemento(text){
+        
+        const {setComplemento} = this.props;
+        this.setState({defaultComplemento: text},()=>{
+            let str = this.state.strComplemento;
+            str+= `${this.state.defaultComplemento}\n`;
+            setComplemento(str);
+        })
+    
+    }
+
     render(){
-        console.log("Render!")
+    
         return(
             <View style={styles.content}>
                 {this._complementoSwitchSelector()}
-                <TextInput underlineColorAndroid ={Colors.primary.lightColor} placeholder={this.getInputPlaceholder()} onChangeText={ text => this.props.setComplemento(text)} value={this.props.getComplemento()} />
+                <TextInput multiline={true}  style={styles.text} underlineColorAndroid ={Colors.primary.lightColor} placeholder={this.getInputPlaceholder()} onChangeText={ text => this.handleDefaultComplemento(text) } value={this.state.defaultComplemento} />
             </View> 
         );
     }

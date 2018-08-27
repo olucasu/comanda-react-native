@@ -6,7 +6,6 @@ import {Colors,styles} from '../../components/Styles';
 
 
 const _getStatusStyle = (status) => {
-    console.log(status);
     switch(status) {
       case 'OCUPADA(O)':
           return 'bgOcupado'

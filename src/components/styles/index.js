@@ -6,8 +6,6 @@ import Colors from './Colors'
 const regularFont = "Montserrat-Regular";
 const semiBoldFont = "Montserrat-SemiBold";
 
-const boldFont = "Montserrat-Bold";
-const blackFont = "Montserrat-Black";
 
 
 const styles = StyleSheet.create({
@@ -123,7 +121,7 @@ const styles = StyleSheet.create({
     tableCardNumber:{
         color: Colors.primary.textDark,
         fontSize:16,
-        fontFamily: boldFont,
+        fontFamily: semiBoldFont,
     },
     
     container :{
@@ -160,7 +158,7 @@ const styles = StyleSheet.create({
     
     contentTitle: {
         color:Colors.primary.defaultDarkColor,
-        fontFamily: regularFont,
+        fontFamily: semiBoldFont,
     },
    
     list :{
@@ -219,10 +217,6 @@ const styles = StyleSheet.create({
     text: {
         color: Colors.primary.defaultDarkColor,
         fontFamily: regularFont
-    },
-    
-    fontBold : {
-        fontFamily: boldFont
     },
 
     fontSemiBold: {

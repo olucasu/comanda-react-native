@@ -23,7 +23,7 @@ const Reserva = (props) =>{
                 <Text style={styles.text}>Titular: {props.reserva.reserva_nome}</Text>
             </View>
             <View style={{flex:1 }}>
-                <Text style={styles.text}>Telefone: {props.reserva.reserva_hora}</Text>
+                <Text style={styles.text}>Hora: {props.reserva.reserva_hora}</Text>
             </View>
             <View style={{flex:1 }}>
                 <Text style={styles.text}>Nº de Pessoas: {props.reserva.reserva_pessoas}</Text>

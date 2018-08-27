@@ -24,47 +24,46 @@ export default class AdicionaProduto extends Component{
 
         this.setStateComplemento = this.setStateComplemento.bind(this);
         this.getStateComplemento = this.getStateComplemento.bind(this);
+        this.setStateValorVendido = this.setStateValorVendido.bind(this);
 
     }
 
     adicionaItemPedido(){
 
-        if(this.state.complemento != "") {
-            const spliStr = this.state.complemento.split(" ");
-
-            let res ="";
-            spliStr.map(str=>{
-                if(typeof str != 'undefined') {
-                    res += str.toUpperCase() + "\r\n" ;
-                }
-             
-            })
-            
-            this.setState({complemento: res})
-    
-            this.state.complemento = res; 
-        }
-
         if(this.state.qtde <= 0)
             return ToastAndroid.show('Quantidade Inválida', ToastAndroid.SHORT);
 
-        this.props.screenProps.addItemComanda(this.state);
+        this.setState({complemento: this.state.complemento.toUpperCase()}, ()=>{
+          
+            this.props.screenProps.addItemComanda(this.state);
+            this.props.navigation.navigate("Pedidos");
+        
+        });
 
-        this.props.navigation.navigate("Pedidos");
+      
 
     }   
 
+    setStateValorVendido(valor){
+        this.setState({vlr_vendido:valor})
+    }
+
     setStateComplemento(complemento){
-        this.setState({complemento:complemento})
+        this.setState(() => {
+            return({
+                complemento: complemento
+            })
+        })
     }
 
     getStateComplemento(){
         return this.state.complemento;
     }
 
-
+    
     render(){
         return(
+            
             <Container style={styles.container}>
                 <ScrollView>
                     <View style={styles.headerAddItem}>
@@ -73,7 +72,7 @@ export default class AdicionaProduto extends Component{
                             <Text style={[styles.text, styles.headerAddItemValue]}>R${ _formatMoney(this.state.vlr_vendido)}</Text>
                         </View>
                         <NumberPicker onChangeText={text => this.setState({qtde:text})} unity={this.state.unidade}  />
-                        <Complemento produto={this.state.produto}  setComplemento={this.setStateComplemento} getComplemento={this.getStateComplemento} />
+                        <Complemento setValorVendido = {this.setStateValorVendido} produto={this.state.produto}  setComplemento={this.setStateComplemento} getComplemento={this.getStateComplemento} />
                     </View>
                 </ScrollView>
                 <View style={[styles.buttonContainer]}>

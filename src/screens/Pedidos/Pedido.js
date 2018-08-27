@@ -5,7 +5,12 @@ import EmptyResult from '../../components/Helpers/EmptyResult';
 import {_formatMoney} from  '../../components/Helpers/uiHelper';
 const hasComplemento = complemento => {
   if (complemento != ""  &&  complemento != null) {
-    return <Text style={styles.text}> Complemento: {complemento}</Text>
+    return (
+        <View> 
+            <Text style={[styles.text, styles.fontSemiBold]}>Complemento(s):</Text>
+            <Text style={styles.text}>{complemento}</Text>
+        </View>
+    )
   } else {
     return false
   }

@@ -70,15 +70,18 @@ export default class Pedido extends Component {
     if(pedido.length > 0) {
         
       let estaNoPedido = false;
+      let temComplemento = false;
         
       pedido.map((itemNoPedido)=>{
-        if( itemNoPedido.id_produto === item.id_produto ){
+        if( itemNoPedido.id_produto === item.id_produto && item.complemento == "" ){
             estaNoPedido = true;
             itemNoPedido.qtde = parseFloat(item.qtde) + parseFloat(itemNoPedido.qtde) ;
-          } 
+        } else if(item.complemento  != '') {
+            temComplemento = true;
+        }
       });
 
-      if(! estaNoPedido) {
+      if(! estaNoPedido || temComplemento) {
         pedido.push(item);
       }
 

@@ -2,7 +2,6 @@ function isUrl(str)
 {
   regexp =  /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
 
-  console.log(str);
 
   if (regexp.test(str))
       {
