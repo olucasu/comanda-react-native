@@ -25,6 +25,12 @@ const _getStatusStyle = (status) => {
     }
 }
 
+/**
+ * 
+ * @param {*} tipoMesa 
+ * 
+ * Retorna Componente ícone baseado no tipo de mesa
+ */
 const getIconMesa = (tipoMesa) => {
     
     let type, name, style;
@@ -59,6 +65,12 @@ const getIconMesa = (tipoMesa) => {
     return <Icon name={name} type={type} style={[styles.tableCardIcon, style]} /> 
 } 
 
+
+/**
+ * Componenente visual
+ * 
+ * Retorna componente contador
+ */
 class NumberPicker extends Component {
     constructor(props){
         super(props);

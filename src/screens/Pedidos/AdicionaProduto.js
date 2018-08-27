@@ -1,8 +1,9 @@
 import React, {Component} from  'react';
-import {Text,View, TextInput, Button, ToastAndroid, TouchableOpacity, ScrollView} from 'react-native';
+import {Text,View, ToastAndroid, TouchableOpacity, ScrollView} from 'react-native';
 import {styles, Colors} from '../../components/Styles'
 import {Container, Content} from 'native-base'
 import {NumberPicker, _formatMoney} from '../../components/Helpers/uiHelper';
+import Complemento from './Complemento';
 export default class AdicionaProduto extends Component{
 
     constructor(props){
@@ -18,9 +19,11 @@ export default class AdicionaProduto extends Component{
             estoque: String(produto.saldo_geral),
             descricao: produto.produto_descricao,
             unidade: produto.unidade,
+            produto: produto
         }
 
-        this.adicionaItemPedido = this.adicionaItemPedido.bind(this);
+        this.setStateComplemento = this.setStateComplemento.bind(this);
+        this.getStateComplemento = this.getStateComplemento.bind(this);
 
     }
 
@@ -51,6 +54,15 @@ export default class AdicionaProduto extends Component{
 
     }   
 
+    setStateComplemento(complemento){
+        this.setState({complemento:complemento})
+    }
+
+    getStateComplemento(){
+        return this.state.complemento;
+    }
+
+
     render(){
         return(
             <Container style={styles.container}>
@@ -61,9 +73,7 @@ export default class AdicionaProduto extends Component{
                             <Text style={[styles.text, styles.headerAddItemValue]}>R${ _formatMoney(this.state.vlr_vendido)}</Text>
                         </View>
                         <NumberPicker onChangeText={text => this.setState({qtde:text})} unity={this.state.unidade}  />
-                        <View style={styles.content}>
-                            <TextInput underlineColorAndroid ={Colors.primary.lightColor} placeholder="Complemento" onChangeText={ text => this.setState({complemento:text})} value={this.state.complemento} />
-                        </View> 
+                        <Complemento produto={this.state.produto}  setComplemento={this.setStateComplemento} getComplemento={this.getStateComplemento} />
                     </View>
                 </ScrollView>
                 <View style={[styles.buttonContainer]}>

@@ -133,6 +133,7 @@ class Mesas extends Component {
 
                   const navigate = this.props.navigation.navigate;
 
+
                   const itemParams = {
                       id: item.id,
                       status: item.status_descricao,
@@ -145,7 +146,6 @@ class Mesas extends Component {
                         reserva_fone: item.reserva_fone,
                         reserva_hora: item.reserva_hora,
                         reserva_pessoas: item.reserva_pessoas,
-
                       }
                   }
 

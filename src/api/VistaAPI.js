@@ -41,11 +41,10 @@ class VistaAPI {
     password: 'KalisbaTec08809',
     apiMethod: '',
     uri: '',
-    response: '',
     isFetching: true,
-    endPoint: '',
     usuario: '',
     body: '', 
+    removedIdEmpresa: false,
     defaultMsg: "Ocorreu um erro no servidor o IP está correto? Verifique se há necessidade de informar a porta.\n Exemplo: 192.168.0.1:8080.",
   }
 
@@ -93,11 +92,24 @@ class VistaAPI {
   /** 
     * Create request
     * Recebe objeto
-    * uri - treicho da url que representa o métodos
+    * 
+    * PARAMS -----
+    * 
+    * uri - treicho da url que representa o métodos - OPCIONAL
+    * 
+    * apiMethod - Método da API a ser utilizado - OBRIGATÓRIO
+    * 
+    * options - Objeto -
+    *  
+    * removedIdEmpresa : boolean - Define se ná uri constará ou não o id da empresa
   */
   create (obj) {
-    this.state.uri = obj.uri;
+    this.state.uri = obj.uri ? obj.uri : "";
     this.state.apiMethod = obj.apiMethod;
+    
+    if(obj.options) {
+      if(obj.options.removedIdEmpresa) this.state.removedIdEmpresa = obj.options.removedIdEmpresa
+    }
     if( obj.body != null) this.state.body = obj.body;
   }
 
@@ -149,12 +161,14 @@ class VistaAPI {
     await this.setUsuarioAsync();
 
     const baseUrl = await this.state.baseUrl;
-    const idEmpresa = await this.state.usuario.id_empresa;
+    let idEmpresa = await this.state.usuario.id_empresa;
 
+    idEmpresa = this.state.removedIdEmpresa ? idEmpresa = "": `${idEmpresa}/`;
 
-    endPoint = baseUrl+this.state.apiMethod+'/'+idEmpresa+'/'+this.state.uri;
+    endPoint = `${baseUrl + this.state.apiMethod}/${idEmpresa}${this.state.uri}`;
 
     const credentials = this.state.username + ':' + this.state.password
+
     let params = {
       method: 'GET',
       headers: new Headers({
