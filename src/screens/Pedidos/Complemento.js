@@ -3,7 +3,8 @@ import {View, TextInput, Text, Switch, FlatList} from 'react-native';
 import {styles,Colors} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
-
+import {CheckBox} from 'native-base'
+ 
 
 class Complemento extends Component{
 
@@ -93,34 +94,33 @@ class Complemento extends Component{
 
         let nameProp = "nome_complemento";
 
-        let atualState =  Object.assign({}, this.state.produtoComplemento);
+        let atualState =  Object.assign({}, this.state);
 
         if(this.state.tipoComplemento === "PIZZA") {
            nameProp = "produto_descricao" 
         }
 
-        console.log("LISTA COMPLEMENTO");
-        console.log(atualState);
+        console.log(this.state.produtoComplemento)
 
         return(
             <FlatList
             data={this.state.produtoComplemento}
+            extraData={this.state}
             renderItem={({ item }) => {
-                console.log(item);
+                console.log(item)
                 return(
                     <View>
                         <Text>{item[nameProp]}</Text>
                         <Switch
                         onValueChange = {(value)=> {
-                         
-                            atualState[item.itemIndex].selecionado = value;
-                            this.setState({produtoComplemento: atualState}) }
+                            atualState.produtoComplemento[item.itemIndex].selecionado = value;
+                            this.setState({produtoComplemento: atualState.produtoComplemento}) }
                         }
                         value = {item.selecionado}/>
                     </View>
-
                 )}
             }
+
             keyExtractor={item => item.itemIndex.toString()}
           />
         )
