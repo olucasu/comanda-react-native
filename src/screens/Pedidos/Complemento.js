@@ -3,7 +3,8 @@ import {View, TextInput, Text, TouchableOpacity, FlatList} from 'react-native';
 import {styles,Colors} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
-import {CheckBox} from 'native-base'
+import {CheckBox} from 'native-base';
+import {_formatMoney} from '../../components/Helpers/uiHelper';
  
 
 class Complemento extends Component{
@@ -92,60 +93,74 @@ class Complemento extends Component{
 
         let nameProp = "nome_complemento";
         let contentType = "Complementos";
+        let valueProp = "valor";
 
         let atualState =  Object.assign({}, this.state);
 
         if(this.isPizza()) {
-           nameProp = "produto_descricao"
-           contentType = "Adicionar sabores"; 
+           nameProp = "produto_descricao";
+           contentType = "Adicionar sabores";
+           valueProp = "pvenda"; 
         }
 
     
 
         const handlePress =  (item) => {
+
             let checked = atualState.produtoComplemento[item.itemIndex].selecionado;
+
             atualState.produtoComplemento[item.itemIndex].selecionado = !checked;
+
             this.setState({produtoComplemento: atualState.produtoComplemento}) 
 
-            const {setComplemento, setValorVendido} = this.props;
+            const {setComplemento, setValorVendido, produto} = this.props;
 
             var str ="";
 
-            let maiorValor = this.state.produto.pvenda;
+            let valorAtual = produto.pvenda;
+            let valorComplementos = 0;
 
-            
             this.setState({strComplemento: ""});
            
            
             atualState.produtoComplemento.map((complemento)=>{
                 if(complemento.selecionado) {
-                    str+= `${complemento[nameProp]}\n`;
-
-                 
-
+                    str+= `${complemento[nameProp]} - R$${ _formatMoney(complemento[valueProp])}\n`;
                     this.setState({strComplemento: str}, () =>{
                         setComplemento(str);
                     });
 
-
                     if(this.isPizza()) {
-                        maiorValor = complemento.pvenda >= maiorValor ? complemento.pvenda : maiorValor;
+                        valorAtual = complemento.pvenda >= valorAtual ? complemento.pvenda : valorAtual;
+                    } else {
+                        valorComplementos += complemento.valor
                     }
                 } 
             })
 
-            if( atualState.defaultComplemento != "")
-            str += `${atualState.defaultComplemento}\n`;
+            if( atualState.defaultComplemento != "")  str += `${atualState.defaultComplemento}\n`;
 
-            setValorVendido(maiorValor);
+            if(this.isPizza()) setValorVendido( valorAtual);
+            if( ! this.isPizza())  {
+                valorAtual  += valorComplementos ;
+                setValorVendido( valorAtual);   
+            }
 
         }
 
+        const getTitle = () =>{
+            if(this.state.produtoComplemento.length > 0){
+                return(
+                    <Text style={styles.contentTitle}> 
+                        {contentType}
+                    </Text>
+                )
+            }
+        }
+
         return(
-            <View style={styles.content}>
-            <Text style={styles.contentTitle}> 
-                {contentType}
-            </Text>
+            <View>
+               {getTitle()}
                 <FlatList
                         data={this.state.produtoComplemento}
                         extraData={this.state}
@@ -155,7 +170,7 @@ class Complemento extends Component{
                                     style={[styles.listItem, styles.sideBySide, {paddingRight: 20}]}
                                     onPress={ () => handlePress(item)}
                                      activeOpacity={0.9}>
-                                    <Text style={styles.text}>{item[nameProp]}</Text>
+                                    <Text style={styles.text}>{item[nameProp]} - R${_formatMoney(item[valueProp])}</Text>
                                     <CheckBox
                                     onPress={ () => handlePress(item)}
                                     checked={item.selecionado} color={Colors.primary.lightColor}/>
@@ -198,7 +213,7 @@ class Complemento extends Component{
         return(
             <View style={styles.content}>
                 {this._complementoSwitchSelector()}
-                <TextInput multiline={true}  style={styles.text} underlineColorAndroid ={Colors.primary.lightColor} placeholder={this.getInputPlaceholder()} onChangeText={ text => this.handleDefaultComplemento(text) } value={this.state.defaultComplemento} />
+                <TextInput multiline={true}  style={[styles.text, styles.listItem]} underlineColorAndroid ={Colors.primary.lightColor} placeholder={this.getInputPlaceholder()} onChangeText={ text => this.handleDefaultComplemento(text) } value={this.state.defaultComplemento} />
             </View> 
         );
     }

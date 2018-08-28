@@ -46,7 +46,11 @@ export default class Pedido extends Component {
     this._checarPedidoButton = this._checarPedidoButton.bind(this);
     this.props.screenProps.addItemComanda = this.addItemComanda;
     this.props.screenProps.pedido = this.state.pedido;
-  
+    this.setPedido = this.setPedido.bind(this);
+  }
+
+  setPedido(pedido){
+    this.setState({pedido:pedido})
   }
 
   async addItemComanda (item) {
@@ -68,29 +72,53 @@ export default class Pedido extends Component {
     let pedido = this.state.pedido; 
 
     if(pedido.length > 0) {
-        
-      let estaNoPedido = false;
-      let temComplemento = false;
+      
+      // Se essa variavel for verdaeira, NAO será adicionado um novo ITEM        
+      let itemAdicionadoEstaNoPedido = false;
+
+      // Se essa variavel for verdaeira, SERÁ adicionado um novo ITEM      
+      let itemAdicionadoTemComplemento = false;
         
       pedido.map((itemNoPedido)=>{
-        if( itemNoPedido.id_produto === item.id_produto && item.complemento == "" ){
-            estaNoPedido = true;
-            itemNoPedido.qtde = parseFloat(item.qtde) + parseFloat(itemNoPedido.qtde) ;
-        } else if(item.complemento  != '') {
-            temComplemento = true;
-        }
-      });
 
-      if(! estaNoPedido || temComplemento) {
+          //  Item adcionado tem complemento
+          if( item.complemento != "") {
+
+              //  Se o complemento for identico ao item do pedido como tambem seu id
+              if(itemNoPedido.complemento === item.complemento && itemNoPedido.id_produto == item.id_produto){
+                  itemAdicionadoEstaNoPedido = true;
+                  itemNoPedido.qtde = parseInt(item.qtde) + parseInt(itemNoPedido.qtde);
+                  itemNoPedido.vlr_vendido = parseInt(itemNoPedido.qtde) * parseFloat(item.vlr_vendido); 
+              } 
+              
+              //  Item adcionado existe no pedido, e ambos item adicionado e existente nao tem complemento
+            } else if( itemNoPedido.id_produto === item.id_produto  && itemNoPedido.complemento == "" ){
+                itemAdicionadoTemComplemento = false;
+                itemAdicionadoEstaNoPedido = true;
+                itemNoPedido.qtde = parseInt(item.qtde) + parseInt(itemNoPedido.qtde);
+                itemNoPedido.vlr_vendido = parseInt(itemNoPedido.qtde) * parseFloat(item.vlr_vendido); 
+                
+            } 
+
+            // Se passar direto adiciona um novo item do mesmo jeito já que
+            // "itemAdicionadoEstaNoPedido " é falso
+ 
+       });
+      
+
+      if( ! itemAdicionadoEstaNoPedido || itemAdicionadoTemComplemento) {
+        item.vlr_vendido = parseInt(item.qtde) * parseFloat(item.vlr_vendido); 
         pedido.push(item);
       }
 
     } else {
-      this.state.pedido.push(item)
+      item.vlr_vendido = parseInt(item.qtde) * parseFloat(item.vlr_vendido); 
+      pedido.push(item);
     }
   
     ToastAndroid.show(`Adicionado ${item.qtde} ${item.descricao} ao pedido para envio`, ToastAndroid.SHORT);
     
+    this.forceUpdate();
   }
   
   /**
@@ -303,7 +331,7 @@ export default class Pedido extends Component {
             </View>
             <CategoriasProduto _checarPedidoButton={this._checarPedidoButton} />
             { this._checarPedidoButton()}
-            <ModalConfirmaPedido mesa={this.state.screenTitle} pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
+            <ModalConfirmaPedido setPedido={this.setPedido} mesa={this.state.screenTitle} pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
           </Container>
         )
       } else {
@@ -314,7 +342,7 @@ export default class Pedido extends Component {
             </View>
             <ListaProduto keyPressed={this.state.key} uriInputBusca={this.state.queryForSearch} />
             { this._checarPedidoButton()}
-            <ModalConfirmaPedido mesa={this.state.screenTitle} pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
+            <ModalConfirmaPedido setPedido={this.setPedido} mesa={this.state.screenTitle} pedido={this.state.pedido} modalIsVisible={this.state.enviarPedidoIsVisible} _enviarPedido ={this.enviarPedido} _closeModal={this._closeModal}    />
           </Container>
         )
       }

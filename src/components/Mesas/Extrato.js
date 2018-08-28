@@ -11,25 +11,17 @@ export default class Extrato extends Component{
         refreshing:false
     }
 
-    _onRefresh () {
-        this.setState({
-          refreshing: true
-        })
-        this.forceUpdate()
-    }
-   
+    
     render(){
         if(this.props.extrato != null) {
             return(
                 <ScrollView>
-                
+                    <View style={styles.content}>
+                        <Text style={styles.contentTitle}> 
+                            Extrato
+                        </Text>    
+                    </View>
                     <FlatList 
-                       refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this._onRefresh.bind(this)}
-                        />
-                        }
                     style={styles.list}
                     keyExtractor={(item, index) => index.toString()}
                     data={this.props.extrato}

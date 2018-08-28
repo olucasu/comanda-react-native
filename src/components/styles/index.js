@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     },
     
     contentTitle: {
-        color:Colors.primary.defaultDarkColor,
+        color:Colors.primary.defaultColor,
         fontFamily: semiBoldFont,
     },
    
@@ -173,6 +173,13 @@ const styles = StyleSheet.create({
         padding:10,
         borderRadius: 7,
         flex:1,
+    },
+
+    listActionButton:{
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        backgroundColor: "#eee",
+        borderRadius: 40
     },
 
     listItemBig :{
@@ -218,6 +225,10 @@ const styles = StyleSheet.create({
         color: Colors.primary.defaultDarkColor,
         fontFamily: regularFont
     },
+    
+    textSmall :{
+        fontSize: 12
+    },
 
     fontSemiBold: {
         fontFamily: semiBoldFont
@@ -244,6 +255,11 @@ const styles = StyleSheet.create({
         paddingVertical:15,
         borderRadius: 60,
         elevation: 4,
+    },
+    badge:{
+        paddingHorizontal:10,
+        borderRadius: 60,
+        paddingVertical:5,
     },
     buttonPrimary: {
         backgroundColor:Colors.primary.defaultColor,

@@ -102,14 +102,14 @@ export default class MesaDetails extends Component {
       if(this.state.extrato != null) {
         this.state.extrato.map(item =>  valor += (item.total_item * item.qtde_item) )
         const subTotal = parseFloat(Math.round( valor * 100) / 100).toFixed(2)
-        return(`Comanda | SubTotal: ${subTotal}`);
+        return(` - SubTotal: R$${subTotal}`);
       }
       return "";
     }
 
     return(
       <View style={[styles.viewHeader, styles[_getStatusStyle(this.state.status)]]}>
-          <Text style={styles.viewHeaderText}>{`${this.state.status}  ${subTotal()}`}</Text>
+          <Text style={styles.viewHeaderText}>{`Status: ${this.state.status} ${subTotal()}`}</Text>
        </View>
     )
   }

@@ -4,13 +4,12 @@ import Modal from 'react-native-modal';
 import {styles,Colors} from '../../components/Styles';
 import Pedido from './Pedido';
 import {Container} from 'native-base';
+import {_formatMoney} from '../../components/Helpers/uiHelper';
 
 export default class ModalConfirmaPedido extends Component {
 
     constructor(props){
         super(props)
-
-        this.updateModal = this.updateModal.bind(this);
     }
 
     state = {
@@ -48,18 +47,14 @@ export default class ModalConfirmaPedido extends Component {
    
     }
 
-    updateModal(){
-        this.forceUpdate();
-    }
-
     _getValorPedido = () => {
         if (this.props.pedido != null && this.props.pedido.length > 0) {
 
             let valor = 0
             
-            this.props.pedido.map(item => (valor += item.vlr_vendido * item.qtde))
+            this.props.pedido.map(item => (valor +=  parseFloat(item.vlr_vendido)))
        
-            valor = parseFloat(Math.round(valor * 100) / 100).toFixed(2)
+            valor = _formatMoney(valor);
        
             return(
                 <View style={styles.viewHeader}>
@@ -84,7 +79,7 @@ export default class ModalConfirmaPedido extends Component {
                     />
                     <View style={[styles.container, styles.containerBorder]}>
                         {this._getValorPedido()}
-                        <Pedido update={this.updateModal} pedido={this.props.pedido} />
+                        <Pedido setPedido={this.props.setPedido} pedido={this.props.pedido} />
                         <View style={styles.buttonGroup}>
                             {this._enviarPedidoButton()}
                             <View style={[styles.buttonContainer]}>
