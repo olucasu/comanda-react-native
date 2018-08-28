@@ -45,7 +45,7 @@ const Pedido = props => {
         })
         pedido[index].qtde =  parseInt(pedido[index].qtde) + 1 ;
         let valorFinal = parseFloat(pedido[index].vlr_unidade) * pedido[index].qtde;
-        pedido[index].vlr_vendido = _formatMoney(valorFinal);
+        pedido[index].vlr_vendido = valorFinal;
         props.setPedido(pedido)
     }
 
@@ -58,7 +58,7 @@ const Pedido = props => {
       })
       pedido[index].qtde > 1 ? pedido[index].qtde =  parseInt(pedido[index].qtde) - 1 : "";
       let valorFinal = parseFloat(pedido[index].vlr_unidade) * pedido[index].qtde;
-      pedido[index].vlr_vendido = _formatMoney(valorFinal);
+      pedido[index].vlr_vendido = valorFinal;
       props.setPedido(pedido)
     }
 

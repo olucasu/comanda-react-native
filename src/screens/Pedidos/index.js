@@ -91,7 +91,7 @@ export default class Pedido extends Component {
                   itemNoPedido.vlr_vendido = parseInt(itemNoPedido.qtde) * parseFloat(item.vlr_vendido); 
               } 
               
-              //  Item adcionado existe no pedido, e ambos item adicionado e existente nao tem complemento
+              //  Item adicionado existe no pedido, e ambos item adicionado e existente nao tem complemento
             } else if( itemNoPedido.id_produto === item.id_produto  && itemNoPedido.complemento == "" ){
                 itemAdicionadoTemComplemento = false;
                 itemAdicionadoEstaNoPedido = true;
@@ -138,6 +138,8 @@ export default class Pedido extends Component {
 
     const pedido = this.state.pedido
 
+    console.log(pedido);
+
     if (pedido.length > 0) {
       const api = new VistaAPI()
 
@@ -148,6 +150,7 @@ export default class Pedido extends Component {
 
       let response = await api.post()
 
+      console.log(response);
       try {
         if (typeof response !== 'undefined' && response.ok) {
           let responseJson = await response.json()
@@ -174,6 +177,7 @@ export default class Pedido extends Component {
         } else {
 
           responseJson = await response.json();
+          console.log(responseJson);
 
           typeof response.error == 'undefined' || ! response.error ? response.error = "Ocorreu um erro inesperado." : "";  
           Alert.alert('Opa', 'Não foi possível enviar o pedido! \n'+ response.error);

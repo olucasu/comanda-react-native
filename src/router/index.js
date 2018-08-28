@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { styles, Colors } from '../components/Styles'
 import { Icon } from 'native-base'
 import { YellowBox } from 'react-native'
-import {tests} from '../tests';
 import {
   createMaterialTopTabNavigator,
   createStackNavigator,
@@ -271,8 +270,7 @@ const AppAuth = createSwitchNavigator(
     Auth: {
       screen: loginStack
     },
-    AppNav: WrapperWithRootNavigation,
-    tests: tests
+    AppNav: WrapperWithRootNavigation
 
   },
   {
