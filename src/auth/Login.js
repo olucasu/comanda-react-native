@@ -152,7 +152,7 @@ class Login extends Component {
     } else {
       return (
         <Container style={styles.container} >
-          <Header style={{backgroundColor:'#fff',borderWidth:0}}>
+          <Header style={{backgroundColor: Colors.primary.containerColor,borderWidth:0}}>
           <Right>
             <Button transparent   onPress={() => this.props.navigation.navigate('Configuracoes')}>
                 <Icon

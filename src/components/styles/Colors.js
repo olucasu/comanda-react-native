@@ -13,32 +13,34 @@ class Colors {
 			textOnPrimary: '#ffffff',
 			textInactiveOnPrimary:  "#fafafa",
 			containerColor:'#fff',
-			containerColorInverse:'#f1f1f1',
+			containerColorInverse:'#fff',
 			barStyle: "dark-content",
 			textDark: "rgba(0,0,0,0.6)",
+			containerDark: "#000"
+
 		}
 		this.secondary = {
 			textOnSecondary:  "#000000",
 			defaultColor: '#ffab00'
 		}
 
-
 	}
 
 	setDarkTheme(){
 		this.primary = {
-			defaultColor : '#b71c1c',
-			lightColor:	'#f05545',
-			darkColor: '#7f0000',
+			defaultColor : '#e65100',
+			lightColor:	'#ff833a',
+			darkColor: '#ac1900',
 			textOnPrimary: '#ffffff',
 			textInactiveOnPrimary:  "#fafafa",
-			containerColor:'#fff',
-			containerColorInverse:'#f1f1f1',
-			barStyle: "dark-content",
-			textDark: "rgba(0,0,0,0.6)",
+			containerColor:'#212121',
+			containerColorInverse:'#000',
+			barStyle: "light-content",
+			textDark: "#fff",
+			containerDark: "#000"
 		}
 		this.secondary = {
-			textOnSecondary:  "#000000",
+			textOnSecondary:  "#fff",
 			defaultColor: '#ffab00'
 		}
 	}

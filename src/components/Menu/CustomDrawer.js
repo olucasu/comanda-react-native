@@ -43,8 +43,8 @@ const CustomDrawer = props => {
   } 
   
   return (
-    <ScrollView>
-      <Header style={{ marginBottom: 15, height: 170, backgroundColor:"#fff"}}>
+    <ScrollView style={{backgroundColor:Colors.primary.containerColor}}>
+      <Header style={{ marginBottom: 15, height: 170, backgroundColor: Colors.primary.containerColor}}>
        <StatusBar
             backgroundColor={Colors.primary.containerColor}
             barStyle={Colors.primary.barStyle}
@@ -57,7 +57,7 @@ const CustomDrawer = props => {
         </SafeAreaView>
        
       </Header>
-      <Content>
+      <Content >
         <FlatList
           data={items}
           renderItem={({ item }) => (
@@ -76,7 +76,7 @@ const CustomDrawer = props => {
           keyExtractor={item => item.title}
         />
       </Content>
-      <Content>
+      <Content >
         <ListItem
         style={{ marginLeft: 19 }}
           noBorder
@@ -88,7 +88,6 @@ const CustomDrawer = props => {
                 name='sign-out'
                 type='FontAwesome'
                 style={{ fontSize: 24 ,color: Colors.primary.textDark}}
-                color={Colors.primaryColor}
               />
             </View>
          

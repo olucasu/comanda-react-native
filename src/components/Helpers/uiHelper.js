@@ -109,7 +109,7 @@ class NumberPicker extends Component {
                 </View>
                 <View style={styles.numberPickerItem}>
                     <TextInputMask style={styles.numberPickerInput} underlineColorAndroid='rgba(0,0,0,0)' defaultValue={this.state.value} maxLength={this.state.maxLength}  keyboardType={'numeric'} mask={"[000]{,}[000]"} value={this.state.value} onChangeText={(formatted, value) => { this.setParams(value); } } />
-                    <Text>{this.props.unity}</Text>
+                    <Text style={styles.text} >{this.props.unity}</Text>
                 </View>
                 <View style={styles.numberPickerItem}>
                 <TouchableNativeFeedback   onPress={ () =>this.add()} >

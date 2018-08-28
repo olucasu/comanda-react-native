@@ -245,20 +245,20 @@ const loginStack = createStackNavigator({
     navigationOptions: {
       title: 'Configurações',
       headerStyle: {
-        backgroundColor: Colors.defaultBgColor,
+        backgroundColor: Colors.primary.containerColor,
       },
-      headerTintColor: Colors.primaryColor,
+      headerTintColor: Colors.primary.defaultColor,
       headerTitleStyle: styles.headerText
     }
   },
   ConfigurarUrlServer: {
     screen: ConfigurarUrlServer,
     navigationOptions: {
-      title: 'Configurar Servidor ',
+      title: 'Configurar Servidor',
       headerStyle: {
-        backgroundColor: Colors.defaultBgColor,
+        backgroundColor: Colors.primary.containerColor,
       },
-      headerTintColor: Colors.primaryColor,
+      headerTintColor: Colors.primary.defaultColor,
       headerTitleStyle: styles.headerText
     }
   }

@@ -17,7 +17,7 @@ import {
 export default class Configuracoes extends Component {
   render () {
     return (
-      <Container>
+      <Container style={styles.container}>
          <StatusBar
             backgroundColor={Colors.primary.containerColor}
             barStyle={Colors.primary.barStyle}

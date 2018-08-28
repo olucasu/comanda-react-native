@@ -1,7 +1,5 @@
-import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import Colors from './Colors'
-
 
 const regularFont = "Montserrat-Regular";
 const semiBoldFont = "Montserrat-SemiBold";
@@ -52,7 +50,7 @@ const styles = StyleSheet.create({
    
     tableCard:{
         elevation: 1.3,
-        backgroundColor: "#fff",
+        backgroundColor: Colors.primary.containerColor,
         marginVertical: 10,
         paddingVertical:20,
         paddingHorizontal: 15,
@@ -97,13 +95,9 @@ const styles = StyleSheet.create({
         backgroundColor:"#111E6C"
     },
 
-
-
-
-
    
     tableCardText:{
-        color: Colors.primary.defaultDarkColor ,
+        color: Colors.primary.textDark ,
         fontFamily: regularFont,
         fontSize: 15,
         marginRight: 15,
@@ -157,7 +151,7 @@ const styles = StyleSheet.create({
     },
     
     contentTitle: {
-        color:Colors.primary.defaultColor,
+        color:Colors.primary.textDark,
         fontFamily: semiBoldFont,
     },
    
@@ -168,7 +162,7 @@ const styles = StyleSheet.create({
     
     listItem:{
         elevation: 0.6,
-        backgroundColor: "#fff",
+        backgroundColor: Colors.primary.containerColor,
         margin: 9,
         padding:10,
         borderRadius: 7,
@@ -188,7 +182,7 @@ const styles = StyleSheet.create({
    
     listItemTitle: {
         fontSize: 15,
-        color:Colors.primary.defaultDarkColor,
+        color:Colors.primary.textDark,
         fontFamily: regularFont,
     },
    
@@ -222,7 +216,7 @@ const styles = StyleSheet.create({
     },
     
     text: {
-        color: Colors.primary.defaultDarkColor,
+        color: Colors.primary.textDark,
         fontFamily: regularFont
     },
     
@@ -322,7 +316,8 @@ const styles = StyleSheet.create({
     headerAddItemProduct:{
         fontSize:24,
         textAlign: 'center',
-        fontFamily: semiBoldFont
+        fontFamily: semiBoldFont,
+        color: Colors.primary.textDark
     },  
     headerAddItemContent : {
         padding: 15
