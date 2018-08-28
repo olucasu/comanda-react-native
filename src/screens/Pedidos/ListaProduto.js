@@ -97,12 +97,13 @@ class ListaProduto extends Component {
   addOne(produto){
      const addItemComanda = this.props.navigation.getScreenProps().addItemComanda;
 
+
      const produtoEnviado = {
         qtde: 1,
         id_produto: produto.id_produto,
         complemento:"",
-        vlr_vendido: _formatMoney(produto.pvenda),
-        vlr_unidade: _formatMoney(produto.pvenda),
+        vlr_vendido: parseFloat(produto.pvenda),
+        vlr_unidade: parseFloat(produto.pvenda),
         estoque: produto.saldo_geral,
         descricao: produto.produto_descricao,
         unidade: produto.unidade,

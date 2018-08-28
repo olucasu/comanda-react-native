@@ -47,6 +47,7 @@ export default class Pedido extends Component {
     this.props.screenProps.addItemComanda = this.addItemComanda;
     this.props.screenProps.pedido = this.state.pedido;
     this.setPedido = this.setPedido.bind(this);
+
   }
 
   setPedido(pedido){
@@ -68,6 +69,7 @@ export default class Pedido extends Component {
     item.id_portador      = usuario.id_portador
     item.data_caixa       = usuario.caixa_abertura
     item.vlr_vendido      = parseFloat(item.vlr_vendido)
+
           
     let pedido = this.state.pedido; 
 
@@ -88,7 +90,7 @@ export default class Pedido extends Component {
               if(itemNoPedido.complemento === item.complemento && itemNoPedido.id_produto == item.id_produto){
                   itemAdicionadoEstaNoPedido = true;
                   itemNoPedido.qtde = parseInt(item.qtde) + parseInt(itemNoPedido.qtde);
-                  itemNoPedido.vlr_vendido = parseInt(itemNoPedido.qtde) * parseFloat(item.vlr_vendido); 
+                  itemNoPedido.vlr_vendido = parseInt(itemNoPedido.qtde) * parseFloat(item.vlr_unidade); 
               } 
               
               //  Item adicionado existe no pedido, e ambos item adicionado e existente nao tem complemento
@@ -96,7 +98,7 @@ export default class Pedido extends Component {
                 itemAdicionadoTemComplemento = false;
                 itemAdicionadoEstaNoPedido = true;
                 itemNoPedido.qtde = parseInt(item.qtde) + parseInt(itemNoPedido.qtde);
-                itemNoPedido.vlr_vendido = parseInt(itemNoPedido.qtde) * parseFloat(item.vlr_vendido); 
+                itemNoPedido.vlr_vendido = parseInt(itemNoPedido.qtde) * parseFloat(item.vlr_unidade); 
                 
             } 
 
@@ -107,12 +109,14 @@ export default class Pedido extends Component {
       
 
       if( ! itemAdicionadoEstaNoPedido || itemAdicionadoTemComplemento) {
-        item.vlr_vendido = parseInt(item.qtde) * parseFloat(item.vlr_vendido); 
+        item.vlr_vendido =  parseInt(item.qtde) * parseFloat(item.vlr_unidade);
+        item.qtde = parseInt(item.qtde);
         pedido.push(item);
       }
 
     } else {
-      item.vlr_vendido = parseInt(item.qtde) * parseFloat(item.vlr_vendido); 
+      item.vlr_vendido = parseInt(item.qtde) * parseFloat(item.vlr_unidade);
+      item.qtde = parseInt(item.qtde);
       pedido.push(item);
     }
   
@@ -138,10 +142,16 @@ export default class Pedido extends Component {
 
     const pedido = this.state.pedido
 
-    console.log(pedido);
+
 
     if (pedido.length > 0) {
       const api = new VistaAPI()
+
+      pedido.map(p => {
+        p.vlr_vendido = p.vlr_unidade
+      })
+
+
 
       api.create({
         apiMethod: 'ItemVenda',
@@ -150,7 +160,6 @@ export default class Pedido extends Component {
 
       let response = await api.post()
 
-      console.log(response);
       try {
         if (typeof response !== 'undefined' && response.ok) {
           let responseJson = await response.json()
@@ -177,7 +186,6 @@ export default class Pedido extends Component {
         } else {
 
           responseJson = await response.json();
-          console.log(responseJson);
 
           typeof response.error == 'undefined' || ! response.error ? response.error = "Ocorreu um erro inesperado." : "";  
           Alert.alert('Opa', 'Não foi possível enviar o pedido! \n'+ response.error);

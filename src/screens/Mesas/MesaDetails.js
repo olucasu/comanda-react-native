@@ -100,7 +100,7 @@ export default class MesaDetails extends Component {
     const subTotal = () =>{
       let valor = 0
       if(this.state.extrato != null) {
-        this.state.extrato.map(item =>  valor += (item.total_item * item.qtde_item) )
+        this.state.extrato.map(item =>  valor += ( parseFloat(item.total_item) ) )
         const subTotal = parseFloat(Math.round( valor * 100) / 100).toFixed(2)
         return(` - SubTotal: R$${subTotal}`);
       }

@@ -46,8 +46,10 @@ const Pedido = props => {
         pedido[index].qtde =  parseInt(pedido[index].qtde) + 1 ;
         let valorFinal = parseFloat(pedido[index].vlr_unidade) * pedido[index].qtde;
         pedido[index].vlr_vendido = valorFinal;
+
         props.setPedido(pedido)
-    }
+
+      }
 
    const removeSingleItem = (pedido, item) => {
       let index = "";
@@ -56,6 +58,7 @@ const Pedido = props => {
              index = pedido.indexOf(item);
           }
       })
+
       pedido[index].qtde > 1 ? pedido[index].qtde =  parseInt(pedido[index].qtde) - 1 : "";
       let valorFinal = parseFloat(pedido[index].vlr_unidade) * pedido[index].qtde;
       pedido[index].vlr_vendido = valorFinal;
