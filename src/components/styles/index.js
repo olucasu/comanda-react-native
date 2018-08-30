@@ -358,6 +358,11 @@ const styles = StyleSheet.create({
         fontFamily: regularFont
     },
 
+    inputShadowBorder: {
+        borderTopRightRadius: 50,
+        borderBottomRightRadius: 50,
+    },
+
     // Number Picker Component
 
     numberPickerContainer:{

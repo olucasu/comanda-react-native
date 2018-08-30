@@ -5,12 +5,13 @@ import {
   RefreshControl,
   FlatList,
   TouchableOpacity,
+  TextInput
 } from 'react-native'
-import {styles} from '../../components/Styles';
+import {styles,Colors} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
-import { Container, Content, View } from 'native-base';
-import {getIconMesa, _getStatusStyle} from '../../components/Helpers/uiHelper';
+import { Container, View, Icon } from 'native-base';
+import {getIconMesa} from '../../components/Helpers/uiHelper';
 import EmptyResult from '../../components/Helpers/EmptyResult';
 class Mesas extends Component {
   
@@ -24,7 +25,9 @@ class Mesas extends Component {
         isLoading: false,
         refreshing: false,
         error: false,
-        updatedFromOutside: false
+        updatedFromOutside: false,
+        inputBuscaMesa: "" ,
+        localMemoryTables:[]
     }
 
     this.fetchData = this.fetchData.bind(this);
@@ -55,6 +58,7 @@ class Mesas extends Component {
 
       this.setState({
         tables: responseJson,
+        localMemoryTables: responseJson,
         isLoading: false,
         error: false
       })
@@ -89,9 +93,60 @@ class Mesas extends Component {
     this.forceUpdate()
   }
 
+
+  handleSearch (stringEmpty, string) { 
+
+    const prevTables = this.state.tables;
+
+    if(stringEmpty) {
+      return this.setState({ tables: this.state.localMemoryTables, inputBuscaMesa: ""} )
+    }
+
+    let searchResultArr = []; 
+
+    prevTables.filter(item => {
+      if(item.id.toString().indexOf(string) >= 0) {
+        searchResultArr.push(item)
+      }
+    });
+
+    this.setState( () => {
+      return { tables: searchResultArr, inputBuscaMesa:string, listIsLoading: true}
+    })
+
+  }
+
+
+  inputBuscaMesas(autofocus) {
+    return (
+      <View style={[styles.buttonContainer,  {flexDirection:'row'}]}>
+          <TextInput
+            autoFocus={autofocus}
+            style={[styles.inputShadow, styles.inputShadowBorder, {flex:1}]}
+            keyboardType={"numeric"}
+            placeholder='Buscar Mesa'
+            underlineColorAndroid = "transparent"
+            placeholderTextColor={Colors.primary.textDark}
+            onChangeText={(inputBuscaPorNome) => {
+              if( inputBuscaPorNome.length <= 0) return this.handleSearch(true)
+                this.handleSearch(false,inputBuscaPorNome)
+            }}
+            onKeyPress={(e)=> {  if(e.nativeEvent.key == "Backspace" && this.state.tables.length >= 1){
+              this.setState({tables:this.state.localMemoryTables})
+            }}}
+           
+            value={this.state.inputBuscaMesa}
+          />
+          </View>
+          
+    )
+  }
+
   render () {
 
     const tables = this.state.tables
+
+    console.log(tables);
 
     if (this.state.isLoading) {
       return (
@@ -99,8 +154,9 @@ class Mesas extends Component {
       )
     } else {
       if (!this.state.error) {
-      if(!tables){
+      if(!tables || tables.length <= 0){
         return(
+
           <ScrollView 
               contentContainerStyle={{flexGrow: 1}}
               refreshControl={
@@ -109,6 +165,8 @@ class Mesas extends Component {
                   onRefresh={this._onRefresh.bind(this)}
                 />
           }>
+             {this.inputBuscaMesas(true)}
+
             <EmptyResult showUpdate={this.fetchData}  message="Não há mesas." />
         </ScrollView>
         )
@@ -116,6 +174,7 @@ class Mesas extends Component {
       } 
         return (
           <Container style={styles.container}>
+             {this.inputBuscaMesas()}
               <FlatList 
                 refreshControl={
                   <RefreshControl
@@ -153,8 +212,10 @@ class Mesas extends Component {
                   return (
                     <TouchableOpacity
                       activeOpacity={0.9}
-                      onPress={() =>
+                      onPress={() => {
+                        this.setState({inputBuscaMesa:""})
                         this.props.navigation.navigate('Details', itemParams)}
+                      }
                         style={[styles.tableCard]}
                     >
                       {icon}

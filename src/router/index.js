@@ -247,7 +247,7 @@ const loginStack = createStackNavigator({
       headerStyle: {
         backgroundColor: Colors.primary.containerColor,
       },
-      headerTintColor: Colors.primary.defaultColor,
+      headerTintColor: Colors.primary.textDark,
       headerTitleStyle: styles.headerText
     }
   },
@@ -258,7 +258,7 @@ const loginStack = createStackNavigator({
       headerStyle: {
         backgroundColor: Colors.primary.containerColor,
       },
-      headerTintColor: Colors.primary.defaultColor,
+      headerTintColor: Colors.primary.textDark,
       headerTitleStyle: styles.headerText
     }
   }
