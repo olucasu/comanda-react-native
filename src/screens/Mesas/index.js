@@ -124,7 +124,7 @@ class Mesas extends Component {
             autoFocus={autofocus}
             style={[styles.inputShadow, styles.inputShadowBorder, {flex:1}]}
             keyboardType={"numeric"}
-            placeholder='Buscar Mesa'
+            placeholder='Buscar Mesa ou cartão'
             underlineColorAndroid = "transparent"
             placeholderTextColor={Colors.primary.textDark}
             onChangeText={(inputBuscaPorNome) => {
