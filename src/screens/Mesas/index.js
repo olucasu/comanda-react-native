@@ -146,8 +146,6 @@ class Mesas extends Component {
 
     const tables = this.state.tables
 
-    console.log(tables);
-
     if (this.state.isLoading) {
       return (
         <Loader />
