@@ -54,7 +54,7 @@ class VistaAPI {
   async setUrlServerAsync () {
     const urlServer = await AsyncStorage.getItem('urlServer')
     
-    this.state.baseUrl =  `http://${urlServer}/datasnap/rest/TServerFOOD/`;
+    this.state.baseUrl =  `http://${urlServer}/lotuserp/datasnap/rest/TServerFOOD/`;
 
     return urlServer
   }
