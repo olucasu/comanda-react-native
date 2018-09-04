@@ -36,6 +36,19 @@ export default class Configuracoes extends Component {
                  <Icon active name='arrow-forward' />
             </Right>
           </ListItem>
+          <ListItem icon onPress={()=> this.props.navigation.navigate('Logs')}>
+            <Left>
+              <Button transparent>
+                <Icon style={styles.icon} type="FontAwesome"  name='code' />
+              </Button>
+            </Left>
+            <Body>
+              <Text style={styles.text}>Logs</Text>
+            </Body>
+            <Right>
+                 <Icon active name='arrow-forward' />
+            </Right>
+          </ListItem>
         </Content>
       </Container>
     )
