@@ -187,6 +187,7 @@ class VistaAPI {
 
     try {
       let promiseTimeout = await this.startFetch(30000, fetch(endPoint, params))
+
       if( ! promiseTimeout.ok) {
 
         return {
@@ -225,13 +226,16 @@ class VistaAPI {
     }
 
     try {
+
       let promiseTimeout = await this.startFetch(30000, fetch(endPoint, params))
 
       if( ! promiseTimeout.ok) {
 
+        let responseJson = await promiseTimeout.json();
+
         return {
           ok: false,
-          error:  promiseTimeout.status == 500 ? this.state.defaultMsg : `Ocorreu um erro inesperado, erro: ${promiseTimeout.status}`
+          error:  responseJson.error && responseJson != null ? responseJson.error : `Ocorreu um erro inesperado, erro: ${promiseTimeout.status}`
         }
       }
 
