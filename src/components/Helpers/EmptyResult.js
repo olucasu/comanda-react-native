@@ -39,7 +39,7 @@ class emptyResult extends Component {
     return (
       <View style={[styles.container, styles.alignItemsCenter, styles.containerBorder]}>
           <Icon style={styles.iconHeroMessage} type={this.state.iconType} name={this.state.iconName} size={54} />
-          <Text style={styles.text}> {this.props.message} </Text>
+          <Text style={[styles.text, {textAlign:'center'}]}> {this.props.message} </Text>
           {this.buttonUpdate()}
       </View> 
     )

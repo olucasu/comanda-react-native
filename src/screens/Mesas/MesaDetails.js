@@ -23,6 +23,7 @@ export default class MesaDetails extends Component {
     this.state = {
       id: this.props.navigation.getParam('id', 'Não informado') ,
       status: this.props.navigation.getParam('status', 'Não informado'),
+      activeTab: this.props.navigation.getParam('activeTab', 'Não informado'),
       screenTitle : this.props.navigation.getParam('screenTitle', 'Não informado'),
       idVenda:this.props.navigation.getParam('idVenda', 'Não informado'),
       dataAbertura: this.props.navigation.getParam('dataAbertura', 'Não informado'),
@@ -64,15 +65,12 @@ export default class MesaDetails extends Component {
     }
   }
   
-
-
-
   componentDidMount () {
     this.fetchData();
     const screenProps = this.props.screenProps;
      this.backHandler = BackHandler.addEventListener('hardwareBackPress', function() {
-      screenProps._updateMesasIndex();
-    });
+      screenProps._updateMesasIndex(this.state.activeTab);
+    }.bind(this));
   }
 
   componentWillUnmount() {
@@ -99,7 +97,9 @@ export default class MesaDetails extends Component {
 
     const subTotal = () =>{
       let valor = 0
-      if(this.state.extrato != null) {
+
+      if(this.state.extrato != null && this.state.extrato.length > 0) {
+        if( this.state.status != "OCUPADA(O)") this.setState({status:"OCUPADA(O)"}); 
         this.state.extrato.map(item =>  valor += ( parseFloat(item.total_item) ) )
         const subTotal = parseFloat(Math.round( valor * 100) / 100).toFixed(2)
         return(` - SubTotal: R$${subTotal}`);

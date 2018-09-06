@@ -30,7 +30,7 @@ export default class AdicionaProduto extends Component{
 
     adicionaItemPedido(){
 
-        if(this.state.qtde <= 0)
+        if(this.state.qtde <= 0 || isNaN(this.state.qtde) )
             return ToastAndroid.show('Quantidade Inválida', ToastAndroid.SHORT);
 
         this.setState({complemento: this.state.complemento.toUpperCase()}, ()=>{
@@ -62,10 +62,14 @@ export default class AdicionaProduto extends Component{
     }
 
     handleCounter(qtde){
-        this.setState( (prevState) =>{
-            let valorFinal = parseFloat(prevState.vlr_unidade) * parseInt(qtde)
-            return {qtde:qtde, vlr_vendido: valorFinal}   
-        })
+        if(qtde) {
+            qtde = qtde.toString().replace(',', '.');
+            this.setState( (prevState) =>{
+                let valorFinal = parseFloat(prevState.vlr_unidade) * parseFloat(qtde)
+                return {qtde:qtde, vlr_vendido: valorFinal}   
+            })
+        }
+  
     }
     
     render(){
@@ -77,7 +81,11 @@ export default class AdicionaProduto extends Component{
                     <View style={styles.headerAddItem}>
                         <View style={styles.headerAddItemContent}>
                             <Text style={ styles.headerAddItemProduct}>{this.state.descricao}</Text>
-                            <Text style={[styles.text, styles.headerAddItemValue]}>R${ _formatMoney(this.state.vlr_vendido)}</Text>
+                            <View>
+                                <Text style={[styles.text,styles.headerAddItemValueSecondary]}>R${ _formatMoney(this.state.vlr_unidade)}</Text>
+                                <Text style={[styles.text, styles.headerAddItemValue]}>R${ _formatMoney(this.state.vlr_vendido)}</Text>
+                            </View>
+                          
                         </View>
                         <NumberPicker onChangeText={number => this.handleCounter(number)} unity={this.state.unidade}  />
                         <Complemento totalProdutos={this.state.qtde} setValorVendido = {this.setStateValorVendido} produto={produto}  setComplemento={this.setStateComplemento} getComplemento={this.getStateComplemento} />

@@ -36,11 +36,8 @@ class ListaProduto extends Component {
     let uri = "";
 
     if(this.props.categoria) {
+       
         let categoriaId = this.props.categoria.id_grupo;
-
-        if(categoriaId == 1) 
-            categoriaId = "";
-        
 
         uri = categoriaId;
 

@@ -10,7 +10,7 @@ import {
 import {styles,Colors} from '../../components/Styles';
 import Loader from '../../components/Helpers/loader';
 import VistaAPI from '../../api/VistaAPI';
-import { Container, View, Icon } from 'native-base';
+import { Container, View } from 'native-base';
 import {getIconMesa} from '../../components/Helpers/uiHelper';
 import EmptyResult from '../../components/Helpers/EmptyResult';
 class Mesas extends Component {
@@ -27,19 +27,20 @@ class Mesas extends Component {
         error: false,
         updatedFromOutside: false,
         inputBuscaMesa: "" ,
-        localMemoryTables:[]
+        localMemoryTables:[],
     }
 
     this.fetchData = this.fetchData.bind(this);
-    this,this.updateMesas = this.updateMesas.bind(this)
+    this.updateMesas = this.updateMesas.bind(this)
     this.props.screenProps._updateMesasIndex = this.updateMesas;
   }
 
 
 
 
-  async fetchData () {
+  async fetchData (context) {
 
+    
     this.setState({
       isLoading: true
     })
@@ -47,10 +48,12 @@ class Mesas extends Component {
     const api = new VistaAPI;
 
     api.create({
-      uri: this.state.routeName,
+      uri: context ? context : this.state.routeName,
       apiMethod : 'GETMesas'
     })
 
+
+    
     let response = await api.get()
 
     if (typeof response !== 'undefined' && response.ok) {
@@ -60,8 +63,11 @@ class Mesas extends Component {
         tables: responseJson,
         localMemoryTables: responseJson,
         isLoading: false,
-        error: false
+        error: false,
+      },  () => {
       })
+
+
     } else {
       this.setState({
         isLoading: false,
@@ -70,11 +76,8 @@ class Mesas extends Component {
     }
   }
 
-  updateMesas(){
-    this.setState({
-      updatedFromOutside: true
-    }, this.fetchData)
-
+  updateMesas(context){
+    this.fetchData(context)
   }
 
   componentDidMount() {
@@ -89,8 +92,6 @@ class Mesas extends Component {
     this.fetchData()
 
     this.setState({ refreshing: false })
-
-    this.forceUpdate()
   }
 
 
@@ -104,16 +105,17 @@ class Mesas extends Component {
 
     let searchResultArr = []; 
 
-    prevTables.filter(item => {
-      if(item.id.toString().indexOf(string) >= 0) {
-        searchResultArr.push(item)
-      }
-    });
-
-    this.setState( () => {
-      return { tables: searchResultArr, inputBuscaMesa:string, listIsLoading: true}
-    })
-
+    if(prevTables) {
+      prevTables.filter(item => {
+        if(item.id.toString().indexOf(string) >= 0) {
+          searchResultArr.push(item)
+        }
+      });
+  
+      this.setState( () => {
+        return { tables: searchResultArr, inputBuscaMesa:string, listIsLoading: true}
+      })
+    }
   }
 
 
@@ -144,15 +146,13 @@ class Mesas extends Component {
 
   render () {
 
-    const tables = this.state.tables
-
     if (this.state.isLoading) {
       return (
         <Loader />
       )
     } else {
       if (!this.state.error) {
-      if(!tables || tables.length <= 0){
+      if(!this.state.tables || this.state.tables.length <= 0){
         return(
 
           <ScrollView 
@@ -180,8 +180,9 @@ class Mesas extends Component {
                     onRefresh={this._onRefresh.bind(this)}
                   />
                 }
-                keyExtractor={(item, index) => index}
-                data={tables}
+                extraData={this.state}
+                keyExtractor={(item, index) => item.id}
+                data={this.state.tables}
                 numColumns={2}
                 renderItem={({ item }) => {
 
@@ -194,6 +195,7 @@ class Mesas extends Component {
                   const itemParams = {
                       id: item.id,
                       status: item.status_descricao,
+                      activeTab: this.state.routeName,
                       idVenda: item.id_venda,
                       dataAbertura: item.ab_data,
                       screenTitle: tipoMesa + ' ' + item.id,

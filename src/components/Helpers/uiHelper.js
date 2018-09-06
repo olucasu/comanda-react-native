@@ -79,6 +79,10 @@ class NumberPicker extends Component {
         }
     }
 
+    getMask(){
+        return "[990]{,}[999]";
+    }
+
     add(){
         const newValue = String(parseFloat(this.state.value) + parseFloat("1,000"));
         this.setParams(newValue);
@@ -108,7 +112,7 @@ class NumberPicker extends Component {
                     </TouchableNativeFeedback>
                 </View>
                 <View style={styles.numberPickerItem}>
-                    <TextInputMask style={styles.numberPickerInput} underlineColorAndroid='rgba(0,0,0,0)' defaultValue={this.state.value} maxLength={this.state.maxLength}  keyboardType={'numeric'} mask={"[000]{,}[000]"} value={this.state.value} onChangeText={(formatted, value) => { this.setParams(value); } } />
+                    <TextInputMask style={styles.numberPickerInput} underlineColorAndroid='rgba(0,0,0,0)' defaultValue={this.state.value} maxLength={this.state.maxLength}  keyboardType={'numeric'} mask={this.getMask()} value={this.state.value} onChangeText={(formatted, value) => { this.setParams(formatted); } } />
                     <Text style={styles.text} >{this.props.unity}</Text>
                 </View>
                 <View style={styles.numberPickerItem}>

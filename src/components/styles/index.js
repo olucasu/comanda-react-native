@@ -326,9 +326,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 24,
         paddingHorizontal: 15,
-        paddingVertical: 10,
+        paddingVertical: 15,
         borderRadius: 100,
-        marginVertical: 15
+        color: Colors.primary.lightColor,
+    },
+    headerAddItemValueSecondary:{
+        textAlign: 'center',
+        fontSize: 18,
+        marginVertical: 5,
+        paddingHorizontal: 0,
+        paddingVertical: 0,
     },
     buttonFlex:{
         flex: 1

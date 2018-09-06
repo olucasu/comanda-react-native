@@ -34,7 +34,8 @@ class Login extends Component {
         vMensagem: "",
         vpdv_formapagto: "",
         vid_usuario: "",
-        vpdv_cliente: ""
+        vpdv_cliente: "",
+        empresa_fantasia: ""
       }
     }
 
@@ -92,7 +93,9 @@ class Login extends Component {
             vMensagem: responseJson.vMensagem,
             id_fpagto: responseJson.id_fpagto,
             id_usuario: responseJson.id_usuario,
-            id_cliente: responseJson.id_cliente
+            id_cliente: responseJson.id_cliente,
+            empresa_fantasia: responseJson.empresa_fantasia
+
           }
         })
         await this._storeDataAsync()

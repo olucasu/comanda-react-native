@@ -69,6 +69,9 @@ export default class Pedido extends Component {
     item.id_portador      = usuario.id_portador
     item.data_caixa       = usuario.caixa_abertura
     item.vlr_vendido      = parseFloat(item.vlr_vendido)
+    item.vlr_unidade      = parseFloat(item.vlr_unidade)
+    item.qtde             = parseFloat(item.qtde)
+
 
           
     let pedido = this.state.pedido; 
@@ -83,22 +86,26 @@ export default class Pedido extends Component {
         
       pedido.map((itemNoPedido)=>{
 
+          itemNoPedido.vlr_vendido      = parseFloat(itemNoPedido.vlr_vendido)
+          itemNoPedido.vlr_unidade      = parseFloat(itemNoPedido.vlr_unidade)
+          itemNoPedido.qtde             = parseFloat(itemNoPedido.qtde)
+        
           //  Item adcionado tem complemento
           if( item.complemento != "") {
 
               //  Se o complemento for identico ao item do pedido como tambem seu id
               if(itemNoPedido.complemento === item.complemento && itemNoPedido.id_produto == item.id_produto){
                   itemAdicionadoEstaNoPedido = true;
-                  itemNoPedido.qtde = parseInt(item.qtde) + parseInt(itemNoPedido.qtde);
-                  itemNoPedido.vlr_vendido = parseInt(itemNoPedido.qtde) * parseFloat(item.vlr_unidade); 
+                  itemNoPedido.qtde = item.qtde + itemNoPedido.qtde;
+                  itemNoPedido.vlr_vendido = itemNoPedido.qtde * item.vlr_unidade; 
               } 
               
               //  Item adicionado existe no pedido, e ambos item adicionado e existente nao tem complemento
             } else if( itemNoPedido.id_produto === item.id_produto  && itemNoPedido.complemento == "" ){
                 itemAdicionadoTemComplemento = false;
                 itemAdicionadoEstaNoPedido = true;
-                itemNoPedido.qtde = parseInt(item.qtde) + parseInt(itemNoPedido.qtde);
-                itemNoPedido.vlr_vendido = parseInt(itemNoPedido.qtde) * parseFloat(item.vlr_unidade); 
+                itemNoPedido.qtde = item.qtde + itemNoPedido.qtde;
+                itemNoPedido.vlr_vendido = itemNoPedido.qtde * item.vlr_unidade; 
                 
             } 
 
@@ -109,14 +116,14 @@ export default class Pedido extends Component {
       
 
       if( ! itemAdicionadoEstaNoPedido || itemAdicionadoTemComplemento) {
-        item.vlr_vendido =  parseInt(item.qtde) * parseFloat(item.vlr_unidade);
-        item.qtde = parseInt(item.qtde);
+        item.vlr_vendido =  item.qtde * item.vlr_unidade;
+        item.qtde = item.qtde;
         pedido.push(item);
       }
 
     } else {
-      item.vlr_vendido = parseInt(item.qtde) * parseFloat(item.vlr_unidade);
-      item.qtde = parseInt(item.qtde);
+      item.vlr_vendido = item.qtde * item.vlr_unidade;
+      item.qtde = item.qtde;
       pedido.push(item);
     }
   
@@ -187,8 +194,8 @@ export default class Pedido extends Component {
 
           responseJson = await response.json();
 
-          typeof response.error == 'undefined' || ! response.error ? response.error = "Ocorreu um erro inesperado." : "";  
-          Alert.alert('Opa', 'Não foi possível enviar o pedido! \n'+ response.error);
+          typeof responseJson.error == 'undefined' || ! responseJson.error ? responseJson.error = "Ocorreu um erro inesperado." : "";  
+          Alert.alert('Opa', 'Não foi possível enviar o pedido! \n'+ responseJson.error);
           this.setState({
             isLoading: false,
             error: response.error

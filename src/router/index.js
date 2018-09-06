@@ -6,7 +6,8 @@ import {
   createMaterialTopTabNavigator,
   createStackNavigator,
   createDrawerNavigator,
-  createSwitchNavigator
+  createSwitchNavigator,
+  withNavigationFocus 
 } from 'react-navigation'
 import Menu from '../components/Menu'
 import CustomDrawer from '../components/Menu/CustomDrawer'
@@ -46,7 +47,7 @@ import ConfigurarUrlServer from '../screens/Configuracoes/ConfigurarUrlServer'
 const InsideTabMesa = createMaterialTopTabNavigator(
   {
     Todas: {
-      screen: Mesas,
+      screen: withNavigationFocus(Mesas),
       navigationOptions: () => {
         return {
           title: 'Todas'
@@ -54,7 +55,7 @@ const InsideTabMesa = createMaterialTopTabNavigator(
       }
     },
     LIVRE: {
-      screen: Mesas,
+      screen: withNavigationFocus(Mesas),
       navigationOptions: () => {
         return {
           title: 'Livre'
@@ -62,19 +63,19 @@ const InsideTabMesa = createMaterialTopTabNavigator(
       }
     },
     'OCUPADA(O)': {
-      screen: Mesas,
+      screen:withNavigationFocus(Mesas),
       navigationOptions: {
         title: 'Ocupadas'
       }
     },
     CONTA: {
-      screen: Mesas,
+      screen: withNavigationFocus(Mesas),
       navigationOptions: {
         title: 'Conta'
       }
     },
     'RESERVADA(O)': {
-      screen: Mesas,
+      screen: withNavigationFocus(Mesas),
       navigationOptions: {
         title: 'Reservadas'
       }
