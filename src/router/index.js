@@ -36,9 +36,9 @@ import AdicionaProduto from '../screens/Pedidos/AdicionaProduto';
 
 
 // Configurações
-import Configuracoes from '../screens/Configuracoes'
-import ConfigurarUrlServer from '../screens/Configuracoes/ConfigurarUrlServer'
-
+import Configuracoes from '../screens/Configuracoes';
+import ConfigurarUrlServer from '../screens/Configuracoes/ConfigurarUrlServer';
+import Logs from '../screens/Configuracoes/Logs';
 
 /*
     * Navegação interna
@@ -185,7 +185,9 @@ const ConfigStack = createStackNavigator({
       headerTintColor: Colors.primaryColor,
       headerTitleStyle: styles.headerText
     }
-  }
+  },
+  Logs: Logs
+
 })
 
 const AppNav = createDrawerNavigator( {
@@ -256,6 +258,17 @@ const loginStack = createStackNavigator({
     screen: ConfigurarUrlServer,
     navigationOptions: {
       title: 'Configurar Servidor',
+      headerStyle: {
+        backgroundColor: Colors.primary.containerColor,
+      },
+      headerTintColor: Colors.primary.textDark,
+      headerTitleStyle: styles.headerText
+    }
+  },
+  Logs: {
+    screen: Logs,
+    navigationOptions: {
+      title: 'Logs',
       headerStyle: {
         backgroundColor: Colors.primary.containerColor,
       },
